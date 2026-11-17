@@ -139,34 +139,13 @@ function App() {
     const activeDescription = isContact
       ? 'Contact Muntaha Shafique to discuss an AI workflow, full-stack website, or digital product. Based in Pakistan and available worldwide.'
       : 'Explore Muntaha Shafique’s portfolio of agentic AI workflows, full-stack web applications, and thoughtful digital products. Based in Pakistan and available worldwide.';
-    const awayMessages = [
-      { title: 'Your next idea is waiting', body: 'Websites, AI workflows, and digital products—let’s make yours happen.' },
-      { title: 'Ready when you are, Muntaha', body: 'Tell me what you want to build, and we can shape the next step together.' },
-      { title: 'Let’s make your next idea real', body: 'Thoughtful design and dependable development, shaped around your goals.' }
+    const awayTitles = [
+      'Your next idea is waiting…',
+      'Ready when you are, Muntaha',
+      'Let’s make your next idea real'
     ];
     let awayIndex = 0;
-    let lastPopupAt = 0;
-    let currentPopup;
-    let awayTimer;
-    const clearAwayPopup = () => {
-      window.clearInterval(awayTimer);
-      awayTimer = undefined;
-      currentPopup?.close();
-      currentPopup = undefined;
-    };
-    const displayAwayMessage = () => {
-      const message = awayMessages[awayIndex];
-      awayIndex = (awayIndex + 1) % awayMessages.length;
-      const popup = new Notification(message.title, {
-        body: message.body,
-        icon: new URL('assets/icons/favicon.svg', window.location.href).href,
-        tag: 'muntaha-portfolio-away',
-        renotify: true,
-        silent: true
-      });
-      currentPopup = popup;
-      window.setTimeout(() => popup.close(), 6500);
-    };
+    let awayTitleTimer;
     const syncTitle = () => {
       document.title = activeTitle;
       document.querySelector('meta[name="description"]')?.setAttribute('content', activeDescription);
@@ -175,41 +154,26 @@ function App() {
       document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', activeTitle);
       document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', activeDescription);
     };
-    const showAwayPopup = () => {
-      syncTitle();
+    const syncAwayTitle = () => {
       if (!document.hidden) {
-        clearAwayPopup();
+        window.clearInterval(awayTitleTimer);
+        awayTitleTimer = undefined;
+        syncTitle();
         return;
       }
-      if (!document.hidden || !('Notification' in window) || Notification.permission !== 'granted') return;
-      try {
-        if (localStorage.getItem('portfolio-away-popups') !== 'yes') return;
-        const now = Date.now();
-        if (now - lastPopupAt < 12000) return;
-        lastPopupAt = now;
-        displayAwayMessage();
-        let remaining = awayMessages.length - 1;
-        awayTimer = window.setInterval(() => {
-          if (!document.hidden || remaining <= 0) {
-            clearAwayPopup();
-            return;
-          }
-          displayAwayMessage();
-          remaining -= 1;
-          if (remaining <= 0) {
-            window.clearInterval(awayTimer);
-            awayTimer = undefined;
-          }
-        }, 4000);
-      } catch {
-        // Browser notification APIs can be unavailable even after permission was granted.
-      }
+      if (awayTitleTimer) return;
+      const showNextAwayTitle = () => {
+        document.title = awayTitles[awayIndex];
+        awayIndex = (awayIndex + 1) % awayTitles.length;
+      };
+      showNextAwayTitle();
+      awayTitleTimer = window.setInterval(showNextAwayTitle, 4000);
     };
     syncTitle();
-    document.addEventListener('visibilitychange', showAwayPopup);
+    document.addEventListener('visibilitychange', syncAwayTitle);
     return () => {
-      document.removeEventListener('visibilitychange', showAwayPopup);
-      clearAwayPopup();
+      document.removeEventListener('visibilitychange', syncAwayTitle);
+      window.clearInterval(awayTitleTimer);
     };
   }, [isContact]);
   useEffect(() => {
