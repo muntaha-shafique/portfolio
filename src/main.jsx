@@ -20,7 +20,7 @@ function FloatingNav() {
   </nav></div>;
 }
 
-function ContactPage({ awayMessage }) {
+function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', portfolio_middle_name: '' });
   const [status, setStatus] = useState({ busy: false, error: '', notice: '', success: false });
   const update = (event) => setForm({ ...form, [event.target.name]: event.target.value });
@@ -88,7 +88,7 @@ function ContactPage({ awayMessage }) {
   return <>
     <div className="hero-top-bar contact-top-bar"><a href="#/home" className="nav-logo contact-home-logo" aria-label="Go to homepage">MS<span className="dot" /></a><div className="hero-role-tag"><span>FULL-STACK DEVELOPER</span><span>&amp; AGENTIC AI ENGINEER</span></div><nav className="hero-top-nav" aria-label="Main Navigation"><a href="#/about" className="hero-nav-item">ABOUT</a><a href="#/services" className="hero-nav-item">SERVICES</a><a href="#/projects" className="hero-nav-item">PROJECTS</a><a href="#/contact" className="hero-nav-item">CONTACT</a></nav></div>
     <main className="contact-page">
-      <section className="contact-page-hero" aria-labelledby="contactPageTitle"><canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" /><div className="contact-page-hero-inner">{awayMessage && <aside className="hero-away-popup contact-away-popup" role="status" aria-live="polite"><span className="hero-away-popup-mark" aria-hidden="true"><Icon name="sparkles" size={16} /></span><span><strong>{awayMessage.title}</strong><small>{awayMessage.body}</small></span></aside>}<p>LET’S CONNECT</p><h1 id="contactPageTitle">Contact</h1></div></section>
+      <section className="contact-page-hero" aria-labelledby="contactPageTitle"><canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" /><div className="contact-page-hero-inner"><p>LET’S CONNECT</p><h1 id="contactPageTitle">Contact</h1></div></section>
       <section className="contact-page-main" id="contact-form" aria-labelledby="contactHelpTitle"><div className="contact-page-grid">
         <div className="contact-page-form-column"><p className="contact-page-eyebrow">HAVE A PROJECT IN MIND?</p><h2 id="contactHelpTitle">Do you need <span>help?</span></h2><p className="contact-page-intro">Share a little about what you’re building. I’ll get back to you to discuss the details and next steps.</p>
           <div className="contact-page-form-card"><form onSubmit={submit} noValidate>
@@ -132,7 +132,6 @@ function Field({ label, name, type = 'text', placeholder, minLength, value, upda
 function App() {
   const [routeHash, setRouteHash] = useState(window.location.hash);
   const [isContact, setIsContact] = useState(window.location.hash.startsWith('#/contact'));
-  const [awayMessage, setAwayMessage] = useState(null);
   useEffect(() => {
     const activeTitle = isContact
       ? 'Contact Muntaha Shafique | Portfolio'
@@ -149,8 +148,6 @@ function App() {
     let lastPopupAt = 0;
     let currentPopup;
     let awayTimer;
-    let pagePopupTimer;
-    let hasLeftTab = false;
     const clearAwayPopup = () => {
       window.clearInterval(awayTimer);
       awayTimer = undefined;
@@ -182,17 +179,8 @@ function App() {
       syncTitle();
       if (!document.hidden) {
         clearAwayPopup();
-        if (hasLeftTab) {
-          hasLeftTab = false;
-          const message = awayMessages[awayIndex];
-          awayIndex = (awayIndex + 1) % awayMessages.length;
-          setAwayMessage(message);
-          window.clearTimeout(pagePopupTimer);
-          pagePopupTimer = window.setTimeout(() => setAwayMessage(null), 6500);
-        }
         return;
       }
-      hasLeftTab = true;
       if (!document.hidden || !('Notification' in window) || Notification.permission !== 'granted') return;
       try {
         if (localStorage.getItem('portfolio-away-popups') !== 'yes') return;
@@ -222,7 +210,6 @@ function App() {
     return () => {
       document.removeEventListener('visibilitychange', showAwayPopup);
       clearAwayPopup();
-      window.clearTimeout(pagePopupTimer);
     };
   }, [isContact]);
   useEffect(() => {
@@ -257,10 +244,10 @@ function App() {
   return <>
     <div id="homeRoute" hidden={isContact}>
       <FloatingNav />
-      <HomePage awayMessage={awayMessage} />
+      <HomePage />
     </div>
     <div id="contactRoute" hidden={!isContact}>
-      <ContactPage awayMessage={awayMessage} />
+      <ContactPage />
     </div>
     <Footer />
   </>;
