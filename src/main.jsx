@@ -144,6 +144,8 @@ function App() {
   useEffect(() => {
     document.body.classList.toggle('contact-page-body', isContact);
     document.title = isContact ? 'Contact Muntaha Shafique | Portfolio' : 'Muntaha Shafique | Agentic AI Engineer & Full-Stack Developer';
+    const pageBeingHidden = document.getElementById(isContact ? 'homeRoute' : 'contactRoute');
+    if (pageBeingHidden?.contains(document.activeElement)) document.activeElement.blur();
     const frame = window.requestAnimationFrame(() => {
       const sectionId = routeHash.match(/^#\/(home|about|services|projects)$/)?.[1];
       if (isContact) {
@@ -161,11 +163,11 @@ function App() {
     return () => script.remove();
   }, []);
   return <>
-    <div hidden={isContact} aria-hidden={isContact}>
+    <div id="homeRoute" hidden={isContact}>
       <FloatingNav />
       <HomePage />
     </div>
-    <div hidden={!isContact} aria-hidden={!isContact}>
+    <div id="contactRoute" hidden={!isContact}>
       <ContactPage />
     </div>
     <Footer />

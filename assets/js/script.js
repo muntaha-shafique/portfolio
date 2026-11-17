@@ -600,7 +600,7 @@ const initializePortfolio = () => {
     anchor.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
       if (href.startsWith('#/')) return;
-      const target = document.querySelector(href);
+      const target = href.length > 1 ? document.getElementById(href.slice(1)) : null;
       if (!target) return;
       e.preventDefault();
       const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
@@ -806,12 +806,22 @@ const initializePortfolio = () => {
   const coverflowTrack = document.getElementById('coverflowTrack');
   const coverCards = coverflowTrack ? Array.from(coverflowTrack.querySelectorAll('.cover-card')) : [];
   const dotsContainer = document.getElementById('coverflowDots');
+  const servicesMobileMore = document.getElementById('servicesMobileMore');
   const totalCards = coverCards.length;
   let coverProgress = 0;
   let coverTarget = 0;
   let lastDotIndex = -1;
 
   if (coverflowSection && coverCards.length) {
+    if (servicesMobileMore) {
+      servicesMobileMore.addEventListener('click', () => {
+        const expanded = coverflowSection.classList.toggle('is-expanded');
+        servicesMobileMore.setAttribute('aria-expanded', String(expanded));
+        const label = servicesMobileMore.querySelector('span');
+        if (label) label.textContent = expanded ? 'Show fewer services' : 'View more services';
+        servicesMobileMore.classList.toggle('is-expanded', expanded);
+      });
+    }
     if (dotsContainer) {
       coverCards.forEach((_, i) => {
         const dot = document.createElement('button');
@@ -936,8 +946,7 @@ const initializePortfolio = () => {
         projectsMobileMore.setAttribute('aria-expanded', String(expanded));
         const label = projectsMobileMore.querySelector('span');
         if (label) label.textContent = expanded ? 'Show fewer projects' : 'View more projects';
-        const icon = projectsMobileMore.querySelector('[aria-hidden="true"]');
-        if (icon) icon.textContent = expanded ? '↑' : '↓';
+        projectsMobileMore.classList.toggle('is-expanded', expanded);
       });
     }
 

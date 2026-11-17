@@ -290,6 +290,9 @@ export default function HomePage() {
 
         <div className="coverflow-dots" id="coverflowDots" aria-hidden="true"></div>
       </div>
+      <button className="services-mobile-more" id="servicesMobileMore" type="button" aria-expanded="false" aria-controls="coverflowTrack">
+        <span>View more services</span><Icon name="chevronDown" size={17} />
+      </button>
     </div>
   </div>
 </section>
@@ -475,7 +478,7 @@ export default function HomePage() {
   <button className="project-modal-backdrop" type="button" data-close-project aria-label="Close project details"></button>
   <article className="project-modal-card" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
     <button className="project-modal-close" type="button" data-close-project aria-label="Close project details">×</button>
-    <div className="project-modal-image"><img id="projectModalImage" src="" alt="" /></div>
+    <div className="project-modal-image"><img id="projectModalImage" alt="" /></div>
     <div className="project-modal-content">
       <p className="project-modal-category" id="projectModalCategory"></p>
       <h2 id="projectModalTitle"></h2>

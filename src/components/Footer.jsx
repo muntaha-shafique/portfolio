@@ -78,7 +78,7 @@ export default function Footer() {
     <a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer" aria-label="Open Muntaha Shafique's LinkedIn profile">LinkedIn</a>
   </div>
   <button className="quick-contact-toggle" id="quickContactToggle" type="button" aria-label="Open email and WhatsApp links" aria-expanded="false" aria-controls="quickContactLinks">
-    <span className="quick-contact-live-dot" aria-hidden="true"></span><span>QUICK CONTACT</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    <span className="quick-contact-live-dot" aria-hidden="true"></span><span>QUICK CONTACT</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
 </div>
 
@@ -115,7 +115,7 @@ export default function Footer() {
         <button type="button">Contact Muntaha</button>
       </div>
       <form className="portfolio-chat-compose" id="portfolioChatForm">
-        <input id="portfolioChatInput" type="text" maxlength="500" autocomplete="off" placeholder="Ask about Muntaha’s work…" aria-label="Type your question" />
+        <input id="portfolioChatInput" type="text" maxLength="500" autoComplete="off" placeholder="Ask about Muntaha’s work…" aria-label="Type your question" />
         <button type="submit" aria-label="Send message"><Icon name="send" size={17} /></button>
       </form>
     </div>
