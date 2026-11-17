@@ -275,7 +275,7 @@ const initializePortfolio = () => {
               vx: (Math.random() - 0.5) * 0.45,
               vy: -0.25 - Math.random() * 0.5,
               life: 1,
-              size: header.classList.contains('footer') ? 1.1 + Math.random() * 1.1 : 2 + Math.random() * 2.2,
+              size: 2 + Math.random() * 2.2,
               angle: Math.random() * Math.PI
             });
           }

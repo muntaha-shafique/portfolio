@@ -23,6 +23,32 @@ function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', portfolio_middle_name: '' });
   const [status, setStatus] = useState({ busy: false, error: '', notice: '', success: false });
   const update = (event) => setForm({ ...form, [event.target.name]: event.target.value });
+  useEffect(() => {
+    const section = document.querySelector('.contact-page-benefits');
+    if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const shapes = [...section.querySelectorAll('.contact-orbit-shape')];
+    const moveShapes = (event) => {
+      const sectionRect = section.getBoundingClientRect();
+      if (!sectionRect.width || !sectionRect.height) return;
+      shapes.forEach((shape) => {
+        const shapeRect = shape.getBoundingClientRect();
+        const dx = (event.clientX - (shapeRect.left + shapeRect.width / 2)) / sectionRect.width;
+        const dy = (event.clientY - (shapeRect.top + shapeRect.height / 2)) / sectionRect.height;
+        shape.style.setProperty('--parallax-x', Math.max(-24, Math.min(24, dx * 42)) + 'px');
+        shape.style.setProperty('--parallax-y', Math.max(-18, Math.min(18, dy * 32)) + 'px');
+      });
+    };
+    const resetShapes = () => shapes.forEach((shape) => {
+      shape.style.setProperty('--parallax-x', '0px');
+      shape.style.setProperty('--parallax-y', '0px');
+    });
+    section.addEventListener('pointermove', moveShapes, { passive: true });
+    section.addEventListener('pointerleave', resetShapes, { passive: true });
+    return () => {
+      section.removeEventListener('pointermove', moveShapes);
+      section.removeEventListener('pointerleave', resetShapes);
+    };
+  }, []);
   async function submit(event) {
     event.preventDefault();
     if (!event.currentTarget.reportValidity()) return;
@@ -77,7 +103,15 @@ function ContactPage() {
         </div>
         <aside className="contact-page-info-card" aria-label="Contact information"><p className="contact-page-eyebrow">CONTACT INFORMATION</p><h3>Let’s talk about your idea.</h3><p>Reach out directly if you’d prefer. I’m happy to discuss new projects and how I can help.</p><a href="tel:+923141163432"><span aria-hidden="true">☎</span>+92 314 1163432</a><a href="mailto:muntahashafique6@gmail.com"><span aria-hidden="true">✉</span>muntahashafique6@gmail.com</a><div className="contact-page-socials"><a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></aside>
       </div></section>
-      <section className="contact-page-benefits" aria-label="What to expect"><div className="contact-page-benefit"><span aria-hidden="true">↗</span><h3>Clear communication</h3><p>I’ll keep goals, decisions, and progress easy to follow.</p></div><div className="contact-page-benefit"><span aria-hidden="true">◇</span><h3>Thoughtful planning</h3><p>I’ll define the right scope before development begins.</p></div><div className="contact-page-benefit"><span aria-hidden="true">✓</span><h3>Reliable delivery</h3><p>Focused development with attention to quality and detail.</p></div></section>
+      <section className="contact-page-benefits" aria-label="What to expect">
+        <span className="contact-orbit-shape contact-orbit-amber" aria-hidden="true"></span>
+        <svg className="contact-orbit-shape contact-orbit-waves" viewBox="0 0 64 48" fill="none" aria-hidden="true"><path d="M7 8c18 0 8 31 27 31M20 4c18 0 8 31 27 31M33 1c18 0 8 31 27 31" /></svg>
+        <svg className="contact-orbit-shape contact-orbit-triangle" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M5 23 14 6l9 17H5Z" /></svg>
+        <span className="contact-orbit-shape contact-orbit-coral" aria-hidden="true"></span>
+        <div className="contact-page-benefit"><span aria-hidden="true">↗</span><h3>Clear communication</h3><p>I’ll keep goals, decisions, and progress easy to follow.</p></div>
+        <div className="contact-page-benefit"><span aria-hidden="true">◇</span><h3>Thoughtful planning</h3><p>I’ll define the right scope before development begins.</p></div>
+        <div className="contact-page-benefit"><span aria-hidden="true">✓</span><h3>Reliable delivery</h3><p>Focused development with attention to quality and detail.</p></div>
+      </section>
       <section className="contact-friendly-cta" aria-labelledby="contactFriendlyTitle"><div className="contact-friendly-inner"><div className="contact-friendly-photo-space"><img src="assets/images/contact-friendly-portrait.png" alt="Muntaha in a black veil portrait emblem" loading="lazy" /></div><div className="contact-friendly-copy"><p className="contact-page-eyebrow">GOOD THINGS START WITH A HELLO</p><h2 id="contactFriendlyTitle">Let’s make something <span>great.</span></h2><p>Have a clear plan or just the start of an idea? Tell me what’s on your mind, and I’ll help you find the next step.</p><a className="contact-friendly-button" href="#contact-form">Let’s talk <span aria-hidden="true">↗</span></a></div></div></section>
     </main>
     {status.success && <div className="site-popup is-open" role="dialog" aria-modal="true" aria-labelledby="contactSuccessTitle">
