@@ -1,6 +1,6 @@
 import Icon from '../components/Icon.jsx';
 
-export default function HomePage() {
+export default function HomePage({ awayMessage }) {
   return (
     <>
 {/* ========== HERO ========== */}
@@ -75,6 +75,11 @@ export default function HomePage() {
 
   <canvas className="hero-cursor-trail" aria-hidden="true"></canvas>
   <div className="hero-cursor-glow" aria-hidden="true"></div>
+
+  {awayMessage && <aside className="hero-away-popup" role="status" aria-live="polite">
+    <span className="hero-away-popup-mark" aria-hidden="true"><Icon name="sparkles" size={16} /></span>
+    <span><strong>{awayMessage.title}</strong><small>{awayMessage.body}</small></span>
+  </aside>}
 
   {/* Main role title stays centered, as before. */}
   <div className="hero-portfolio-wrap" aria-hidden="true">

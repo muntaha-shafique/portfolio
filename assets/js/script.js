@@ -200,7 +200,47 @@ const initializePortfolio = () => {
   }
 
   // Keep the original sparkle spotlight in the page headers and footer.
-  const attachHeaderPointerEffect = (header) => {
+  const drawPointerGlyph = (context, kind, size) => {
+    const r = size / 2;
+    context.lineWidth = Math.max(1, size * 0.11);
+    context.lineCap = 'round';
+    context.lineJoin = 'round';
+    context.beginPath();
+    if (kind === 0) {
+      context.moveTo(0, -r); context.lineTo(r * .22, -r * .22); context.lineTo(r, 0);
+      context.lineTo(r * .22, r * .22); context.lineTo(0, r); context.lineTo(-r * .22, r * .22);
+      context.lineTo(-r, 0); context.lineTo(-r * .22, -r * .22); context.closePath(); context.fill();
+    } else if (kind === 1) {
+      context.moveTo(-r * .25, -r * .7); context.lineTo(-r * .72, 0); context.lineTo(-r * .25, r * .7);
+      context.moveTo(r * .25, -r * .7); context.lineTo(r * .72, 0); context.lineTo(r * .25, r * .7); context.stroke();
+    } else if (kind === 2) {
+      context.arc(0, 0, r * .6, 0, Math.PI * 2); context.moveTo(r * .9, -r * .55);
+      context.arc(0, 0, r * .9, -.55, .55); context.moveTo(r * .18, 0); context.arc(0, 0, r * .18, 0, Math.PI * 2); context.stroke();
+    } else if (kind === 3) {
+      context.moveTo(-r * .72, -r * .5); context.quadraticCurveTo(-r * .72, -r * .72, -r * .5, -r * .72);
+      context.lineTo(r * .5, -r * .72); context.quadraticCurveTo(r * .72, -r * .72, r * .72, -r * .5);
+      context.lineTo(r * .72, r * .22); context.quadraticCurveTo(r * .72, r * .45, r * .48, r * .45);
+      context.lineTo(-r * .05, r * .45); context.lineTo(-r * .55, r * .8); context.lineTo(-r * .45, r * .45);
+      context.quadraticCurveTo(-r * .72, r * .4, -r * .72, r * .15); context.closePath(); context.stroke();
+    } else if (kind === 4) {
+      context.arc(0, 0, r * .42, 0, Math.PI * 2);
+      for (let tooth = 0; tooth < 8; tooth += 1) {
+        const angle = tooth * Math.PI / 4;
+        context.moveTo(Math.cos(angle) * r * .56, Math.sin(angle) * r * .56);
+        context.lineTo(Math.cos(angle) * r * .86, Math.sin(angle) * r * .86);
+      }
+      context.stroke();
+    } else if (kind === 5) {
+      context.moveTo(-r * .8, r * .65); context.bezierCurveTo(-r * .25, -r * .8, r * .8, -r * .8, r * .7, r * .45);
+      context.bezierCurveTo(r * .1, r * .95, -r * .55, r * .35, -r * .8, r * .65);
+      context.moveTo(-r * .55, r * .5); context.lineTo(r * .48, -r * .48); context.stroke();
+    } else {
+      context.moveTo(-r * .75, 0); context.lineTo(r * .45, 0); context.moveTo(r * .05, -r * .48);
+      context.lineTo(r * .55, 0); context.lineTo(r * .05, r * .48); context.stroke();
+    }
+  };
+
+  const attachHeaderPointerEffect = (header, useIconTrail = false) => {
     if (!header || !hasFinePointer || reducePointerMotion) return;
     const portrait = header.querySelector('.hero-girl-container');
     const canvas = header.querySelector('.hero-cursor-trail');
@@ -235,10 +275,12 @@ const initializePortfolio = () => {
         context.globalAlpha = particle.life * 0.86;
         context.translate(particle.x, particle.y);
         context.rotate(particle.angle += 0.018);
-        context.fillStyle = '#d9e5c2';
-        context.shadowColor = 'rgba(205,225,170,.8)';
-        context.shadowBlur = 9;
-        context.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+        context.strokeStyle = particle.color;
+        context.fillStyle = particle.color;
+        context.shadowColor = 'rgba(205,225,170,.65)';
+        context.shadowBlur = useIconTrail ? 4 : 7;
+        if (useIconTrail) drawPointerGlyph(context, particle.kind, particle.size);
+        else context.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
         context.restore();
       }
       if (particles.length) frame = window.requestAnimationFrame(drawTrail);
@@ -267,19 +309,22 @@ const initializePortfolio = () => {
       }
       if (canvas && context && previous) {
         const distance = Math.hypot(x - previous.x, y - previous.y);
-        if (distance > 7) {
-          const count = Math.min(2, Math.floor(distance / 18) + 1);
+        if (distance > (useIconTrail ? 14 : 7)) {
+          const count = useIconTrail ? 6 : Math.min(2, Math.floor(distance / 18) + 1);
           for (let i = 0; i < count; i += 1) {
             particles.push({
-              x: previous.x + (x - previous.x) * (i + 1) / count,
-              y: previous.y + (y - previous.y) * (i + 1) / count,
-              vx: (Math.random() - 0.5) * 0.45,
-              vy: -0.25 - Math.random() * 0.5,
+              x: previous.x + (x - previous.x) * (i + 1) / count + (useIconTrail ? (Math.random() - .5) * 20 : 0),
+              y: previous.y + (y - previous.y) * (i + 1) / count + (useIconTrail ? (Math.random() - .5) * 20 : 0),
+              vx: (Math.random() - 0.5) * (useIconTrail ? .75 : .45),
+              vy: -0.18 - Math.random() * (useIconTrail ? .72 : .5),
               life: 1,
-              size: 2 + Math.random() * 2.2,
-              angle: Math.random() * Math.PI
+              size: useIconTrail ? 8 + Math.random() * 5 : 2 + Math.random() * 2.2,
+              angle: Math.random() * Math.PI,
+              kind: useIconTrail ? (i + Math.floor(Math.random() * 7)) % 7 : 0,
+              color: Math.random() > .48 ? '#d9e5c2' : '#f2ead4'
             });
           }
+          if (useIconTrail && particles.length > 42) particles.splice(0, particles.length - 42);
           if (!frame) frame = window.requestAnimationFrame(drawTrail);
         }
       }
@@ -297,8 +342,8 @@ const initializePortfolio = () => {
     });
   };
 
-  attachHeaderPointerEffect(document.getElementById('home'));
-  attachHeaderPointerEffect(document.querySelector('.contact-page-hero'));
+  attachHeaderPointerEffect(document.getElementById('home'), true);
+  attachHeaderPointerEffect(document.querySelector('.contact-page-hero'), true);
   attachHeaderPointerEffect(document.querySelector('.footer'));
 
   // Bottom-left contact menu replaces the floating WhatsApp shortcut.
@@ -610,22 +655,46 @@ const initializePortfolio = () => {
   });
 
   /* ===== Reveal ===== */
-  const io = new IntersectionObserver(
-    (entries) => {
+  const revealTargets = Array.from(document.querySelectorAll('.reveal'));
+  const reduceRevealMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceRevealMotion || !('IntersectionObserver' in window)) {
+    revealTargets.forEach((element) => element.classList.add('visible'));
+  } else if (revealTargets.length) {
+    document.body.classList.add('has-scroll-reveal');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          io.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) return;
+        const element = entry.target;
+        element.classList.add('visible');
+        const mobileMotion = window.matchMedia('(max-width: 640px)').matches;
+        const travel = mobileMotion ? 9 : 14;
+        element.querySelectorAll('h1, h2, h3, p, img').forEach((part, partIndex) => {
+          const direction = (partIndex + (element.dataset.revealDirection === 'right' ? 1 : 0)) % 2 === 0 ? -1 : 1;
+          const animation = part.animate([
+            { opacity: 0, transform: `translate3d(${travel * direction}px, 10px, 0)` },
+            { opacity: 1, transform: 'translate3d(0, 0, 0)' }
+          ], {
+            duration: 440,
+            delay: 75 + partIndex * 55,
+            easing: 'cubic-bezier(.2,.75,.25,1)',
+            fill: 'both'
+          });
+          animation.onfinish = () => animation.cancel();
+        });
+        observer.unobserve(entry.target);
       });
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-  );
-  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+    revealTargets.forEach((element, index) => {
+      element.dataset.revealDirection = index % 2 === 0 ? 'left' : 'right';
+      element.style.setProperty('--reveal-x', index % 2 === 0 ? '-38px' : '38px');
+      element.style.setProperty('--reveal-delay', `${(index % 4) * 65}ms`);
+      revealObserver.observe(element);
+    });
+  }
 
   /* One-time soft reveals for the portfolio's text-bearing cards and panels. */
   const textBoxTargets = Array.from(document.querySelectorAll(
-    '.hero-left-card, .services-stack-left, .cover-card-inner, .project-cover-inner, .skill-tile, .contact-page-form-card, .contact-page-info-card, .contact-page-benefit, .contact-friendly-copy, .footer-brand, .footer-connect'
+    '.hero-left-card, .services-stack-left, .cover-card-inner, .project-cover-inner, .skill-tile, .contact-page-form-card, .contact-page-info-card, .contact-page-benefit, .contact-friendly-photo-space, .contact-friendly-copy, .contact-page-hero-inner, .contact-page-form-column > h2, .contact-page-intro, .footer-brand, .footer-connect'
   )).filter((element) => !element.classList.contains('reveal') && !element.closest('.reveal'));
 
   if (textBoxTargets.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
@@ -633,25 +702,30 @@ const initializePortfolio = () => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const element = entry.target;
+        const mobileMotion = window.matchMedia('(max-width: 640px)').matches;
+        const direction = element.dataset.textBoxDirection === 'right' ? 1 : -1;
+        const entryX = (mobileMotion ? 22 : 42) * direction;
         const animation = element.animate([
-          { opacity: 0, transform: 'translateY(36px) scale(.97)', filter: 'blur(7px)' },
-          { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0)' }
+          { opacity: 0, transform: `translate3d(${entryX}px, 22px, 0) scale(.985)` },
+          { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)' }
         ], {
-          duration: 780,
+          duration: 680,
           delay: Number(element.dataset.textBoxDelay || 0),
           easing: 'cubic-bezier(.16,1,.3,1)',
           fill: 'both'
         });
         animation.onfinish = () => animation.cancel();
 
-        const textParts = element.querySelectorAll('h2, h3, p, a, li, .stack-card-top, .project-cat, .project-cover-actions, .review-stars, .review-author, .contact-page-benefit > span');
+        const textParts = element.querySelectorAll('h1, h2, h3, p, a, li, img, .stack-card-top, .project-cat, .project-cover-actions, .review-stars, .review-author, .contact-page-benefit > span');
         textParts.forEach((part, partIndex) => {
+          const partDirection = (partIndex + (direction > 0 ? 1 : 0)) % 2 === 0 ? -1 : 1;
+          const partX = (mobileMotion ? 9 : 14) * partDirection;
           const textAnimation = part.animate([
-            { opacity: 0, transform: 'translateY(12px)' },
-            { opacity: 1, transform: 'translateY(0)' }
+            { opacity: 0, transform: `translate3d(${partX}px, 10px, 0)` },
+            { opacity: 1, transform: 'translate3d(0, 0, 0)' }
           ], {
-            duration: 460,
-            delay: 110 + partIndex * 55,
+            duration: 420,
+            delay: 90 + partIndex * 48,
             easing: 'cubic-bezier(.2,.75,.25,1)',
             fill: 'both'
           });
@@ -663,6 +737,7 @@ const initializePortfolio = () => {
 
     textBoxTargets.forEach((element, index) => {
       element.dataset.textBoxDelay = String((index % 4) * 85);
+      element.dataset.textBoxDirection = index % 2 === 0 ? 'left' : 'right';
       textBoxObserver.observe(element);
     });
   }

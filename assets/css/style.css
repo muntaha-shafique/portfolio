@@ -2006,12 +2006,23 @@ button, input, textarea {
 .reveal {
   opacity: 1;
   transform: none;
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity .72s cubic-bezier(.2,.75,.25,1) var(--reveal-delay, 0ms), transform .72s cubic-bezier(.2,.75,.25,1) var(--reveal-delay, 0ms);
+  backface-visibility: hidden;
+}
+body.has-scroll-reveal .reveal:not(.visible) {
+  opacity: 0;
+  transform: translate3d(var(--reveal-x, 0px), 24px, 0);
 }
 
 .reveal.visible {
   opacity: 1;
   transform: none;
+}
+@media (max-width: 640px) {
+  body.has-scroll-reveal .reveal:not(.visible) { transform: translate3d(var(--reveal-x, 0px), 18px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, body.has-scroll-reveal .reveal:not(.visible), .reveal.visible { opacity: 1; transform: none; transition: none; }
 }
 
 /* ========== RESPONSIVE ========== */
@@ -3719,9 +3730,38 @@ textarea:focus-visible {
 .contact-page-hero .hero-cursor-glow { z-index: 0; }
 .contact-page-hero-inner p { color: rgba(245,243,237,.72); }
 .contact-page-hero h1 { font-size: clamp(3.5rem,9vw,7rem); text-shadow: 0 2px 22px rgba(0,0,0,.18); }
+.hero-away-popup {
+  position: absolute;
+  top: clamp(104px,16%,152px);
+  left: 50%;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: min(390px,calc(100% - 32px));
+  padding: 12px 16px;
+  border: 1px solid rgba(217,229,194,.32);
+  border-radius: 16px;
+  background: rgba(24,25,22,.88);
+  color: #f5f2ea;
+  box-shadow: 0 14px 36px rgba(0,0,0,.26),0 0 24px rgba(205,225,170,.12);
+  backdrop-filter: blur(14px);
+  transform: translate(-50%,0);
+  animation: hero-away-popup-in .48s cubic-bezier(.2,.8,.2,1) both;
+  pointer-events: none;
+}
+.hero-away-popup-mark { display: grid; flex: 0 0 34px; width: 34px; height: 34px; place-items: center; border-radius: 11px; background: rgba(217,229,194,.12); color: #d9e5c2; }
+.hero-away-popup > span:last-child { display: grid; gap: 3px; min-width: 0; }
+.hero-away-popup strong { font-size: .83rem; letter-spacing: -.01em; }
+.hero-away-popup small { color: #c2c0b8; font-size: .72rem; line-height: 1.4; }
+.contact-away-popup { top: -86px; left: 0; transform: none; }
+@keyframes hero-away-popup-in { from { opacity: 0; translate: 0 10px; scale: .96; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@media (prefers-reduced-motion: reduce) { .hero-away-popup { animation: none; } }
 @media (max-width: 560px) {
   .contact-page-hero { min-height: 280px; padding: 118px 22px 56px; background-position: 58% center; }
   .contact-page-hero h1 { font-size: clamp(3.4rem,16vw,5rem); }
+  .hero-away-popup { top: 104px; padding: 10px 12px; }
+  .contact-away-popup { top: -76px; }
 }
 
 /* Use the supplied portrait in the final contact callout and tighten it to the footer. */
