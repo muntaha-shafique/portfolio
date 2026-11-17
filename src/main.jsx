@@ -105,10 +105,10 @@ function ContactPage() {
         <aside className="contact-page-info-card" aria-label="Contact information"><p className="contact-page-eyebrow">CONTACT INFORMATION</p><h3>Let’s talk about your idea.</h3><p>Reach out directly if you’d prefer. I’m happy to discuss new projects and how I can help.</p><a href="tel:+923141163432"><Icon name="phone" size={19} />+92 314 1163432</a><a href="mailto:muntahashafique6@gmail.com"><Icon name="mail" size={19} />muntahashafique6@gmail.com</a><div className="contact-page-socials"><a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn <Icon name="arrowUpRight" size={15} /></a><a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrowUpRight" size={15} /></a></div></aside>
       </div></section>
       <section className="contact-page-benefits" aria-label="What to expect">
-        <span className="contact-orbit-shape contact-orbit-amber" aria-hidden="true"></span>
-        <svg className="contact-orbit-shape contact-orbit-waves" viewBox="0 0 64 48" fill="none" aria-hidden="true"><path d="M7 8c18 0 8 31 27 31M20 4c18 0 8 31 27 31M33 1c18 0 8 31 27 31" /></svg>
-        <svg className="contact-orbit-shape contact-orbit-triangle" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M5 23 14 6l9 17H5Z" /></svg>
-        <span className="contact-orbit-shape contact-orbit-coral" aria-hidden="true"></span>
+        <span className="contact-orbit-shape contact-orbit-amber" aria-hidden="true"><Icon name="sparkles" size={21} /></span>
+        <span className="contact-orbit-shape contact-orbit-waves" aria-hidden="true"><Icon name="code" size={21} /></span>
+        <span className="contact-orbit-shape contact-orbit-triangle" aria-hidden="true"><Icon name="layers" size={21} /></span>
+        <span className="contact-orbit-shape contact-orbit-coral" aria-hidden="true"><Icon name="rocket" size={21} /></span>
         <div className="contact-page-benefit"><span className="benefit-icon"><Icon name="message" size={23} /></span><h3>Clear communication</h3><p>I’ll keep goals, decisions, and progress easy to follow.</p></div>
         <div className="contact-page-benefit"><span className="benefit-icon"><Icon name="plan" size={23} /></span><h3>Thoughtful planning</h3><p>I’ll define the right scope before development begins.</p></div>
         <div className="contact-page-benefit"><span className="benefit-icon"><Icon name="checkCircle" size={23} /></span><h3>Reliable delivery</h3><p>Focused development with attention to quality and detail.</p></div>
@@ -136,11 +136,33 @@ function App() {
     const activeTitle = isContact
       ? 'Contact Muntaha Shafique | Portfolio'
       : 'Muntaha Shafique | Agentic AI Engineer & Full-Stack Developer';
-    const awayTitle = '✨ Your next idea is waiting…';
-    const syncTitle = () => { document.title = document.hidden ? awayTitle : activeTitle; };
+    const awayMessages = [
+      '✨ Your next idea is waiting…',
+      '👋 Ready when you are, Muntaha!',
+      '💡 Let’s make your next idea happen'
+    ];
+    let awayIndex = 0;
+    let awayTimer;
+    const syncTitle = () => {
+      if (document.hidden) {
+        if (awayTimer) return;
+        document.title = awayMessages[awayIndex];
+        awayTimer = window.setInterval(() => {
+          awayIndex = (awayIndex + 1) % awayMessages.length;
+          document.title = awayMessages[awayIndex];
+        }, 4000);
+        return;
+      }
+      window.clearInterval(awayTimer);
+      awayTimer = undefined;
+      document.title = activeTitle;
+    };
     syncTitle();
     document.addEventListener('visibilitychange', syncTitle);
-    return () => document.removeEventListener('visibilitychange', syncTitle);
+    return () => {
+      document.removeEventListener('visibilitychange', syncTitle);
+      window.clearInterval(awayTimer);
+    };
   }, [isContact]);
   useEffect(() => {
     const route = () => {
