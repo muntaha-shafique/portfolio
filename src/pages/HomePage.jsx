@@ -1,3 +1,5 @@
+import Icon from '../components/Icon.jsx';
+
 export default function HomePage() {
   return (
     <>
@@ -136,7 +138,7 @@ export default function HomePage() {
         <p className="about-lead">I build thoughtful digital experiences, intelligent systems and modern web products.</p>
         <p>I’m an Agentic AI engineer and full-stack developer focused on turning complex ideas into reliable software. My work spans autonomous agents, intelligent workflows, and polished web platforms.</p>
         <p>I care about clarity, performance, and building products around the way people and businesses actually work.</p>
-        <a href="#/contact" className="about-cta">Let’s talk about your project <span aria-hidden="true">↗</span></a>
+        <a href="#/contact" className="about-cta">Let’s talk about your project <Icon name="arrowUpRight" size={17} /></a>
       </div>
     </div>
     <div className="about-stats reveal" aria-label="Professional highlights">
@@ -463,7 +465,7 @@ export default function HomePage() {
         </article>
       </div>
       <button className="projects-mobile-more" id="projectsMobileMore" type="button" aria-expanded="false" aria-controls="projectsCoverflowTrack">
-        <span>View more projects</span><span aria-hidden="true">↓</span>
+        <span>View more projects</span><Icon name="chevronDown" size={17} />
       </button>
     </div>
   </div>
@@ -571,17 +573,17 @@ export default function HomePage() {
 
         <div className="contact-direct-list">
           <a className="contact-direct-item" href="https://wa.me/923141163432" target="_blank" rel="noopener noreferrer">
-            <span className="contact-direct-icon" aria-hidden="true">↗</span>
+            <span className="contact-direct-icon"><Icon name="phone" size={21} /></span>
             <span>+92 314 1163432</span>
           </a>
           <a className="contact-direct-item" href="mailto:muntahashafique6@gmail.com">
-            <span className="contact-direct-icon" aria-hidden="true">✉</span>
+            <span className="contact-direct-icon"><Icon name="mail" size={21} /></span>
             <span>muntahashafique6@gmail.com</span>
           </a>
         </div>
         <div className="contact-social-links">
-          <a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-          <a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn <Icon name="arrowUpRight" size={15} /></a>
+          <a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrowUpRight" size={15} /></a>
         </div>
       </div>
     </div>
@@ -591,7 +593,7 @@ export default function HomePage() {
         <p className="contact-eyebrow">LET’S BUILD SOMETHING</p>
         <h3>Interested in <span>working with me?</span></h3>
         <p>Tell me what you’re planning. I’ll help shape it into a clear next step.</p>
-        <a className="contact-invite-button" href="#/contact">Get in touch <span aria-hidden="true">↗</span></a>
+        <a className="contact-invite-button" href="#/contact">Get in touch <Icon name="arrowUpRight" size={17} /></a>
       </div>
       <div className="contact-invite-photo-space">
         <img src="assets/images/contact-invite-portrait.png" alt="Muntaha in a black hijab portrait emblem" />

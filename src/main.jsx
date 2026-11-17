@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import HomePage from './pages/HomePage.jsx';
 import Footer from './components/Footer.jsx';
+import Icon from './components/Icon.jsx';
 
 function FloatingNav() {
   const [open, setOpen] = useState(false);
@@ -85,7 +86,7 @@ function ContactPage() {
   }
   const closeSuccess = () => setStatus((current) => ({ ...current, success: false }));
   return <>
-    <div className="hero-top-bar contact-top-bar"><div className="hero-role-tag"><span>FULL-STACK DEVELOPER</span><span>&amp; AGENTIC AI ENGINEER</span></div><nav className="hero-top-nav" aria-label="Main Navigation"><a href="#about" className="hero-nav-item">ABOUT</a><a href="#services" className="hero-nav-item">SERVICES</a><a href="#projects" className="hero-nav-item">PROJECTS</a><a href="#contact-form" className="hero-nav-item">CONTACT</a></nav></div>
+    <div className="hero-top-bar contact-top-bar"><div className="hero-role-tag"><span>FULL-STACK DEVELOPER</span><span>&amp; AGENTIC AI ENGINEER</span></div><nav className="hero-top-nav" aria-label="Main Navigation"><a href="#/about" className="hero-nav-item">ABOUT</a><a href="#/services" className="hero-nav-item">SERVICES</a><a href="#/projects" className="hero-nav-item">PROJECTS</a><a href="#/contact" className="hero-nav-item">CONTACT</a></nav></div>
     <main className="contact-page">
       <section className="contact-page-hero" aria-labelledby="contactPageTitle"><canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" /><div className="contact-page-hero-inner"><p>LET’S CONNECT</p><h1 id="contactPageTitle">Contact</h1></div></section>
       <section className="contact-page-main" id="contact-form" aria-labelledby="contactHelpTitle"><div className="contact-page-grid">
@@ -98,19 +99,19 @@ function ContactPage() {
             <Field label="Email" name="email" type="email" placeholder="you@example.com" value={form.email} update={update} />
             <Field label="Subject" name="subject" placeholder="What would you like to build?" minLength={3} value={form.subject} update={update} />
             <div className="contact-page-field"><label htmlFor="contactMessage">Message</label><textarea id="contactMessage" name="message" required minLength="10" maxLength="5000" placeholder="Tell me about your project..." value={form.message} onChange={update} /></div>
-            <button className="contact-page-submit" type="submit" disabled={status.busy}>{status.busy ? 'Sending…' : 'Send message'} <span aria-hidden="true">↗</span></button>
+            <button className="contact-page-submit" type="submit" disabled={status.busy}>{status.busy ? 'Sending…' : 'Send message'} <Icon name="arrowUpRight" size={17} /></button>
           </form></div>
         </div>
-        <aside className="contact-page-info-card" aria-label="Contact information"><p className="contact-page-eyebrow">CONTACT INFORMATION</p><h3>Let’s talk about your idea.</h3><p>Reach out directly if you’d prefer. I’m happy to discuss new projects and how I can help.</p><a href="tel:+923141163432"><span aria-hidden="true">☎</span>+92 314 1163432</a><a href="mailto:muntahashafique6@gmail.com"><span aria-hidden="true">✉</span>muntahashafique6@gmail.com</a><div className="contact-page-socials"><a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></aside>
+        <aside className="contact-page-info-card" aria-label="Contact information"><p className="contact-page-eyebrow">CONTACT INFORMATION</p><h3>Let’s talk about your idea.</h3><p>Reach out directly if you’d prefer. I’m happy to discuss new projects and how I can help.</p><a href="tel:+923141163432"><Icon name="phone" size={19} />+92 314 1163432</a><a href="mailto:muntahashafique6@gmail.com"><Icon name="mail" size={19} />muntahashafique6@gmail.com</a><div className="contact-page-socials"><a href="https://www.linkedin.com/in/muntahashafiiq/" target="_blank" rel="noopener noreferrer">LinkedIn <Icon name="arrowUpRight" size={15} /></a><a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrowUpRight" size={15} /></a></div></aside>
       </div></section>
       <section className="contact-page-benefits" aria-label="What to expect">
         <span className="contact-orbit-shape contact-orbit-amber" aria-hidden="true"></span>
         <svg className="contact-orbit-shape contact-orbit-waves" viewBox="0 0 64 48" fill="none" aria-hidden="true"><path d="M7 8c18 0 8 31 27 31M20 4c18 0 8 31 27 31M33 1c18 0 8 31 27 31" /></svg>
         <svg className="contact-orbit-shape contact-orbit-triangle" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M5 23 14 6l9 17H5Z" /></svg>
         <span className="contact-orbit-shape contact-orbit-coral" aria-hidden="true"></span>
-        <div className="contact-page-benefit"><span aria-hidden="true">↗</span><h3>Clear communication</h3><p>I’ll keep goals, decisions, and progress easy to follow.</p></div>
-        <div className="contact-page-benefit"><span aria-hidden="true">◇</span><h3>Thoughtful planning</h3><p>I’ll define the right scope before development begins.</p></div>
-        <div className="contact-page-benefit"><span aria-hidden="true">✓</span><h3>Reliable delivery</h3><p>Focused development with attention to quality and detail.</p></div>
+        <div className="contact-page-benefit"><span className="benefit-icon"><Icon name="message" size={23} /></span><h3>Clear communication</h3><p>I’ll keep goals, decisions, and progress easy to follow.</p></div>
+        <div className="contact-page-benefit"><span className="benefit-icon"><Icon name="plan" size={23} /></span><h3>Thoughtful planning</h3><p>I’ll define the right scope before development begins.</p></div>
+        <div className="contact-page-benefit"><span className="benefit-icon"><Icon name="checkCircle" size={23} /></span><h3>Reliable delivery</h3><p>Focused development with attention to quality and detail.</p></div>
       </section>
       <section className="contact-friendly-cta" aria-labelledby="contactFriendlyTitle"><div className="contact-friendly-inner"><div className="contact-friendly-photo-space"><img src="assets/images/contact-friendly-portrait.png" alt="Muntaha in a black veil portrait emblem" loading="lazy" /></div><div className="contact-friendly-copy"><p className="contact-page-eyebrow">GOOD THINGS START WITH A HELLO</p><h2 id="contactFriendlyTitle">Let’s make something <span>great.</span></h2><p>Have a clear plan or just the start of an idea? Tell me what’s on your mind, and I’ll help you find the next step.</p><a className="contact-friendly-button" href="#contact-form">Let’s talk <span aria-hidden="true">↗</span></a></div></div></section>
     </main>
@@ -118,7 +119,7 @@ function ContactPage() {
       <button className="site-popup-backdrop" type="button" aria-label="Close confirmation" onClick={closeSuccess} />
       <div className="site-popup-card">
         <button type="button" className="site-popup-close" aria-label="Close" onClick={closeSuccess}>&times;</button>
-        <div className="site-popup-icon" aria-hidden="true">✓</div>
+        <div className="site-popup-icon"><Icon name="checkCircle" size={28} /></div>
         <h3 id="contactSuccessTitle">Message sent!</h3>
         <p>Thank you for reaching out. Your message has been delivered, and I’ll get back to you soon.</p>
         <button type="button" className="site-popup-btn" onClick={closeSuccess}>Done</button>
@@ -129,14 +130,32 @@ function ContactPage() {
 function Field({ label, name, type = 'text', placeholder, minLength, value, update, error }) { return <div className="contact-page-field"><label htmlFor={`contact${name}`}>{label}</label><input type={type} id={`contact${name}`} name={name} required minLength={minLength} value={value} onChange={update} placeholder={placeholder} />{error && <p className="contact-page-error">{error}</p>}</div>; }
 
 function App() {
+  const [routeHash, setRouteHash] = useState(window.location.hash);
   const [isContact, setIsContact] = useState(window.location.hash.startsWith('#/contact'));
-  useEffect(() => { const route = () => setIsContact(window.location.hash.startsWith('#/contact')); window.addEventListener('hashchange', route); return () => window.removeEventListener('hashchange', route); }, []);
+  useEffect(() => {
+    const route = () => {
+      const hash = window.location.hash;
+      setRouteHash(hash);
+      setIsContact(hash.startsWith('#/contact'));
+    };
+    window.addEventListener('hashchange', route);
+    return () => window.removeEventListener('hashchange', route);
+  }, []);
   useEffect(() => {
     document.body.classList.toggle('contact-page-body', isContact);
     document.title = isContact ? 'Contact Muntaha Shafique | Portfolio' : 'Muntaha Shafique | Agentic AI Engineer & Full-Stack Developer';
-    window.scrollTo(0, 0);
-    window.requestAnimationFrame(() => window.dispatchEvent(new Event('scroll')));
-  }, [isContact]);
+    const frame = window.requestAnimationFrame(() => {
+      const sectionId = routeHash.match(/^#\/(home|about|services|projects)$/)?.[1];
+      if (isContact) {
+        window.scrollTo(0, 0);
+      } else if (sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) window.scrollTo({ top: section.getBoundingClientRect().top + window.scrollY - 82, behavior: 'smooth' });
+      }
+      window.dispatchEvent(new Event('scroll'));
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [isContact, routeHash]);
   useEffect(() => {
     const script = document.createElement('script'); script.src = 'assets/js/script.js'; script.async = true; document.body.appendChild(script);
     return () => script.remove();

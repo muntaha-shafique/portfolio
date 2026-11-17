@@ -1,3 +1,5 @@
+import Icon from './Icon.jsx';
+
 export default function Footer() {
   return (
     <>
@@ -28,7 +30,7 @@ export default function Footer() {
       <div className="footer-connect">
         <p className="footer-connect-label">HAVE A PROJECT IN MIND?</p>
         <h3>Let’s make it happen.</h3>
-        <a href="mailto:muntahashafique6@gmail.com">muntahashafique6@gmail.com <span aria-hidden="true">↗</span></a>
+        <a href="mailto:muntahashafique6@gmail.com">muntahashafique6@gmail.com <Icon name="arrowUpRight" size={15} /></a>
         <a className="footer-connect-button" href="#/contact">Start a conversation</a>
       </div>
     </div>
@@ -59,8 +61,8 @@ export default function Footer() {
     </div>
 
     <div className="footer-links">
-      <a href="#about">About</a>
-      <a href="#projects">Work</a>
+      <a href="#/about">About</a>
+      <a href="#/projects">Work</a>
       <a href="#/contact">Contact</a>
     </div>
 

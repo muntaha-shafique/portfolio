@@ -598,7 +598,9 @@ const initializePortfolio = () => {
   /* ===== Smooth anchors ===== */
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
+      const href = this.getAttribute('href');
+      if (href.startsWith('#/')) return;
+      const target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
       const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
