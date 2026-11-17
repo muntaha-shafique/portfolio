@@ -36,6 +36,9 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
 }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 
 body {
   font-family: var(--font-body);
@@ -1025,9 +1028,10 @@ button, input, textarea {
   /* Smooth continuous motion — no discrete jumps */
   transition: none;
   cursor: pointer;
-  will-change: transform, opacity, filter;
+  will-change: auto;
   backface-visibility: hidden;
 }
+.cover-card.is-transitioning { will-change: transform, opacity, filter; }
 
 .cover-card-inner {
   width: 100%;
@@ -1324,7 +1328,7 @@ button, input, textarea {
   transform-style: preserve-3d;
   transition: none;
   cursor: pointer;
-  will-change: transform, opacity, filter;
+  will-change: auto;
   backface-visibility: hidden;
   pointer-events: auto;
 }

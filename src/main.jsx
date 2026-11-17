@@ -183,7 +183,7 @@ function App() {
         window.scrollTo(0, 0);
       } else if (sectionId) {
         const section = document.getElementById(sectionId);
-        if (section) window.scrollTo({ top: section.getBoundingClientRect().top + window.scrollY - 82, behavior: 'smooth' });
+        if (section) window.scrollTo({ top: section.getBoundingClientRect().top + window.scrollY - 82, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       }
       window.dispatchEvent(new Event('scroll'));
     });

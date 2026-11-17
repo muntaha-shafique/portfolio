@@ -4,6 +4,7 @@
  */
 
 const initializePortfolio = () => {
+  const scrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
   const heroTitle = document.querySelector('.hero-portfolio-text');
   if (heroTitle) {
     let letterIndex = 0;
@@ -592,7 +593,7 @@ const initializePortfolio = () => {
     scrollTopBtn.classList.toggle('visible', window.scrollY > 500);
   }
   if (scrollTopBtn) {
-    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: scrollBehavior }));
   }
 
   /* ===== Smooth anchors ===== */
@@ -604,7 +605,7 @@ const initializePortfolio = () => {
       if (!target) return;
       e.preventDefault();
       const top = target.getBoundingClientRect().top + window.pageYOffset - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
+      window.scrollTo({ top, behavior: scrollBehavior });
     });
   });
 
@@ -677,7 +678,7 @@ const initializePortfolio = () => {
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
 
-  let ticking = false;
+  let portraitFrame = 0;
   let tiltX = 0;
   let tiltY = 0;
   let targetTiltX = 0;
@@ -691,10 +692,12 @@ const initializePortfolio = () => {
       const py = (e.clientY - r.top) / r.height - 0.5;
       targetTiltY = px * 18;  // rotateY
       targetTiltX = -py * 14; // rotateX
+      schedulePortrait();
     });
     portrait.addEventListener('mouseleave', () => {
       targetTiltX = 0;
       targetTiltY = 0;
+      schedulePortrait();
     });
   }
 
@@ -733,9 +736,8 @@ const initializePortfolio = () => {
     const radius = lerp(20, 24, t);
     const faceFix = rotateY > 90 ? -1 : 1;
 
-    // Smooth tilt toward mouse
-    tiltX += (targetTiltX - tiltX) * 0.12;
-    tiltY += (targetTiltY - tiltY) * 0.12;
+    tiltX = targetTiltX;
+    tiltY = targetTiltY;
 
     portrait.style.width = w + 'px';
     portrait.style.height = h + 'px';
@@ -755,37 +757,35 @@ const initializePortfolio = () => {
       portrait.classList.remove('is-active');
     }
 
-    ticking = false;
+  }
+
+  function schedulePortrait() {
+    if (!portrait || portraitFrame) return;
+    portraitFrame = requestAnimationFrame(() => {
+      portraitFrame = 0;
+      runPortrait();
+    });
   }
 
   function onScroll() {
     updateNavTheme();
     updateScrollTop();
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(runPortrait);
-    }
-  }
-
-  // Continuous loop so mouse tilt stays smooth even without scroll
-  function loop() {
-    runPortrait();
-    requestAnimationFrame(loop);
+    schedulePortrait();
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => {
     updateNavTheme();
-    runPortrait();
+    schedulePortrait();
   });
   window.addEventListener('load', () => {
     updateNavTheme();
-    runPortrait();
+    schedulePortrait();
   });
 
   updateNavTheme();
   updateScrollTop();
-  requestAnimationFrame(loop);
+  schedulePortrait();
 
   function isDesktopCoverflow() {
     return window.matchMedia('(min-width: 901px)').matches;
@@ -798,6 +798,7 @@ const initializePortfolio = () => {
       card.style.zIndex = '';
       card.style.filter = '';
       card.classList.remove('is-active');
+      card.classList.remove('is-transitioning');
     });
   }
 
@@ -811,6 +812,7 @@ const initializePortfolio = () => {
   let coverProgress = 0;
   let coverTarget = 0;
   let lastDotIndex = -1;
+  let coverAnimationFrame = 0;
 
   if (coverflowSection && coverCards.length) {
     if (servicesMobileMore) {
@@ -838,7 +840,7 @@ const initializePortfolio = () => {
       const sectionTop = window.scrollY + rect.top;
       const scrollable = Math.max(coverflowSection.offsetHeight - window.innerHeight, 1);
       const target = sectionTop + (i / (totalCards - 1)) * scrollable;
-      window.scrollTo({ top: target, behavior: 'smooth' });
+      window.scrollTo({ top: target, behavior: scrollBehavior });
     }
 
     // Continuous 3D fan layout matching the video
@@ -878,15 +880,35 @@ const initializePortfolio = () => {
     }
 
     function animateCoverflow() {
-      coverProgress += (coverTarget - coverProgress) * 0.085;
-      if (Math.abs(coverTarget - coverProgress) < 0.0015) {
+      coverAnimationFrame = 0;
+      if (!isDesktopCoverflow() || document.hidden) {
         coverProgress = coverTarget;
+        resetCoverCardsMobile(coverCards);
+        return;
       }
+      const distance = coverTarget - coverProgress;
+      if (Math.abs(distance) < 0.0015) {
+        coverProgress = coverTarget;
+        layoutCoverflow(coverProgress);
+        coverCards.forEach((card) => card.classList.remove('is-transitioning'));
+        return;
+      }
+      coverProgress += distance * 0.14;
+      coverCards.forEach((card) => card.classList.add('is-transitioning'));
       layoutCoverflow(coverProgress);
-      requestAnimationFrame(animateCoverflow);
+      coverAnimationFrame = requestAnimationFrame(animateCoverflow);
     }
 
     function onCoverflowScroll() {
+      if (document.hidden) return;
+      if (!isDesktopCoverflow()) {
+        if (coverAnimationFrame) window.cancelAnimationFrame(coverAnimationFrame);
+        coverAnimationFrame = 0;
+        coverProgress = 0;
+        coverTarget = 0;
+        resetCoverCardsMobile(coverCards);
+        return;
+      }
       const rect = coverflowSection.getBoundingClientRect();
       const sectionH = coverflowSection.offsetHeight;
       const viewH = window.innerHeight;
@@ -895,6 +917,9 @@ const initializePortfolio = () => {
       let p = scrolled / maxScroll;
       p = Math.max(0, Math.min(1, p));
       coverTarget = p * (totalCards - 1);
+      if (!coverAnimationFrame && Math.abs(coverTarget - coverProgress) >= 0.0015) {
+        coverAnimationFrame = window.requestAnimationFrame(animateCoverflow);
+      }
     }
 
     coverCards.forEach((card) => {
@@ -905,9 +930,16 @@ const initializePortfolio = () => {
     });
 
     layoutCoverflow(0);
-    animateCoverflow();
     window.addEventListener('scroll', onCoverflowScroll, { passive: true });
     window.addEventListener('resize', onCoverflowScroll, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (coverAnimationFrame) window.cancelAnimationFrame(coverAnimationFrame);
+        coverAnimationFrame = 0;
+      } else {
+        onCoverflowScroll();
+      }
+    });
     onCoverflowScroll();
   }
 
