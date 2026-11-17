@@ -507,10 +507,10 @@ export default function HomePage() {
           <span className="skill-tile" data-icon="n8n"><span className="skill-mark"><img src="https://cdn.simpleicons.org/n8n" alt="" loading="lazy" onError={(event) => { event.currentTarget.hidden = true; }} /></span><span>n8n</span></span>
           <span className="skill-tile" data-icon="AI"><span className="skill-mark">AI</span><span>Agentic AI</span></span>
           <span className="skill-tile" data-icon="AG"><span className="skill-mark">AG</span><span>AI Agents</span></span>
-          <span className="skill-tile" data-icon="✳"><span className="skill-mark">✳</span><span>Generative AI</span></span>
+          <span className="skill-tile" data-icon="✳"><span className="skill-mark"><Icon name="sparkles" size={23} /></span><span>Generative AI</span></span>
           <span className="skill-tile" data-icon="LLM"><span className="skill-mark">LLM</span><span>LLM Applications</span></span>
           <span className="skill-tile" data-icon="/›"><span className="skill-mark">/›</span><span>Prompt Engineering</span></span>
-          <span className="skill-tile" data-icon="⚙"><span className="skill-mark">⚙</span><span>AI Automation</span></span>
+          <span className="skill-tile" data-icon="⚙"><span className="skill-mark"><Icon name="settings" size={23} /></span><span>AI Automation</span></span>
         </div>
       </div>
 

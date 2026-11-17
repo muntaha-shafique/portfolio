@@ -116,7 +116,7 @@ export default function Footer() {
       </div>
       <form className="portfolio-chat-compose" id="portfolioChatForm">
         <input id="portfolioChatInput" type="text" maxlength="500" autocomplete="off" placeholder="Ask about Muntaha’s work…" aria-label="Type your question" />
-        <button type="submit" aria-label="Send message">↵</button>
+        <button type="submit" aria-label="Send message"><Icon name="send" size={17} /></button>
       </form>
     </div>
   </section>
