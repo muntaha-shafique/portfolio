@@ -103,14 +103,14 @@ export default function Footer() {
         </div>
       </div>
       <div className="portfolio-chat-suggestions" id="portfolioChatSuggestions" aria-label="Suggested questions">
-        <button type="button">What projects has she built?</button>
-        <button type="button">What services does she offer?</button>
-        <button type="button">Can she make a WordPress website?</button>
-        <button type="button">How much does a project cost?</button>
-        <button type="button">How long does a project take?</button>
-        <button type="button">How does her process work?</button>
-        <button type="button">Does she offer maintenance?</button>
-        <button type="button">How can I contact her?</button>
+        <button type="button">Featured projects</button>
+        <button type="button">Services</button>
+        <button type="button">WordPress websites</button>
+        <button type="button">Project pricing</button>
+        <button type="button">Project timeline</button>
+        <button type="button">Project process</button>
+        <button type="button">Maintenance</button>
+        <button type="button">Contact Muntaha</button>
       </div>
       <form className="portfolio-chat-compose" id="portfolioChatForm">
         <input id="portfolioChatInput" type="text" maxlength="500" autocomplete="off" placeholder="Ask about Muntaha’s work…" aria-label="Type your question" />

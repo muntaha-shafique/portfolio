@@ -3020,6 +3020,11 @@ textarea:focus-visible {
 .portfolio-chat-message.is-user { align-self: flex-end; border-bottom-right-radius: 5px; background: #20231d; color: #f5f2ea; }
 .portfolio-chat-message a { color: #536b3a; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 .portfolio-chat-suggestions { display: flex; flex-wrap: wrap; gap: 7px; }
+.portfolio-chat-content { gap: 9px; }
+.portfolio-chat-message-row.is-assistant { max-width: 100%; }
+.portfolio-chat-message.is-assistant { max-width: 100%; }
+.portfolio-chat-suggestions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; flex: 0 0 auto; }
+.portfolio-chat-suggestions button { min-width: 0; min-height: 32px; padding: 6px 8px; overflow: hidden; font-size: .64rem; letter-spacing: -.01em; white-space: nowrap; text-overflow: ellipsis; }
 .portfolio-chat-suggestions[hidden] { display: none !important; }
 .portfolio-chat-suggestions button { padding: 7px 10px; border: 1px solid rgba(25,27,22,.13); border-radius: 999px; background: #fffefa; color: #404238; font-size: .69rem; cursor: pointer; transition: background .18s ease,border-color .18s ease; }
 .portfolio-chat-suggestions button:hover { border-color: #a5ba88; background: #edf0e7; }
@@ -4197,4 +4202,41 @@ textarea:focus-visible {
 /* Keep the desktop project cards visibly separated. */
 @media (min-width: 901px) {
   .project-slider-group { gap: 24px; padding-right: 24px; }
+  .services-stack { min-height: 260vh; }
+  .project-modal-card {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    max-height: min(680px, calc(100vh - 64px));
+    overflow: hidden;
+  }
+  .project-modal-image {
+    display: flex;
+    min-width: 0;
+    min-height: 440px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+  }
+  .project-modal-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: 680px;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+@media (max-width: 900px) {
+  .project-modal-card { overflow-y: auto; }
+}
+@media (max-width: 640px) {
+  .project-modal-image { height: 230px; min-height: 0; }
+  .project-modal-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: 260px;
+    object-fit: contain;
+  }
 }
