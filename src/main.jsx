@@ -133,6 +133,16 @@ function App() {
   const [routeHash, setRouteHash] = useState(window.location.hash);
   const [isContact, setIsContact] = useState(window.location.hash.startsWith('#/contact'));
   useEffect(() => {
+    const activeTitle = isContact
+      ? 'Contact Muntaha Shafique | Portfolio'
+      : 'Muntaha Shafique | Agentic AI Engineer & Full-Stack Developer';
+    const awayTitle = '✨ Your next idea is waiting…';
+    const syncTitle = () => { document.title = document.hidden ? awayTitle : activeTitle; };
+    syncTitle();
+    document.addEventListener('visibilitychange', syncTitle);
+    return () => document.removeEventListener('visibilitychange', syncTitle);
+  }, [isContact]);
+  useEffect(() => {
     const route = () => {
       const hash = window.location.hash;
       setRouteHash(hash);
@@ -143,7 +153,6 @@ function App() {
   }, []);
   useEffect(() => {
     document.body.classList.toggle('contact-page-body', isContact);
-    document.title = isContact ? 'Contact Muntaha Shafique | Portfolio' : 'Muntaha Shafique | Agentic AI Engineer & Full-Stack Developer';
     const pageBeingHidden = document.getElementById(isContact ? 'homeRoute' : 'contactRoute');
     if (pageBeingHidden?.contains(document.activeElement)) document.activeElement.blur();
     const frame = window.requestAnimationFrame(() => {
