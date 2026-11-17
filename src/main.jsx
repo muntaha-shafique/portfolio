@@ -75,7 +75,7 @@ function ContactPage() {
             <button className="contact-page-submit" type="submit" disabled={status.busy}>{status.busy ? 'Sending…' : 'Send message'} <span aria-hidden="true">↗</span></button>
           </form></div>
         </div>
-        <aside className="contact-page-info-card" aria-label="Contact information"><p className="contact-page-eyebrow">CONTACT INFORMATION</p><h3>Let’s talk about your idea.</h3><p>Reach out directly if you’d prefer. I’m happy to discuss new projects and how I can help.</p><a href="tel:+923141163432"><span aria-hidden="true">☎</span>+92 314 1163432</a><a href="mailto:muntahashafique6@gmail.com"><span aria-hidden="true">✉</span>muntahashafique6@gmail.com</a><div className="contact-page-socials"><a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/sheikhsiddique722-sketch" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></aside>
+        <aside className="contact-page-info-card" aria-label="Contact information"><p className="contact-page-eyebrow">CONTACT INFORMATION</p><h3>Let’s talk about your idea.</h3><p>Reach out directly if you’d prefer. I’m happy to discuss new projects and how I can help.</p><a href="tel:+923141163432"><span aria-hidden="true">☎</span>+92 314 1163432</a><a href="mailto:muntahashafique6@gmail.com"><span aria-hidden="true">✉</span>muntahashafique6@gmail.com</a><div className="contact-page-socials"><a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></aside>
       </div></section>
       <section className="contact-page-benefits" aria-label="What to expect"><div className="contact-page-benefit"><span aria-hidden="true">↗</span><h3>Clear communication</h3><p>I’ll keep goals, decisions, and progress easy to follow.</p></div><div className="contact-page-benefit"><span aria-hidden="true">◇</span><h3>Thoughtful planning</h3><p>I’ll define the right scope before development begins.</p></div><div className="contact-page-benefit"><span aria-hidden="true">✓</span><h3>Reliable delivery</h3><p>Focused development with attention to quality and detail.</p></div></section>
       <section className="contact-friendly-cta" aria-labelledby="contactFriendlyTitle"><div className="contact-friendly-inner"><div className="contact-friendly-photo-space"><img src="assets/images/contact-friendly-portrait.png" alt="Muntaha in a black veil portrait emblem" loading="lazy" /></div><div className="contact-friendly-copy"><p className="contact-page-eyebrow">GOOD THINGS START WITH A HELLO</p><h2 id="contactFriendlyTitle">Let’s make something <span>great.</span></h2><p>Have a clear plan or just the start of an idea? Tell me what’s on your mind, and I’ll help you find the next step.</p><a className="contact-friendly-button" href="#contact-form">Let’s talk <span aria-hidden="true">↗</span></a></div></div></section>
@@ -100,12 +100,23 @@ function App() {
   useEffect(() => {
     document.body.classList.toggle('contact-page-body', isContact);
     document.title = isContact ? 'Contact Muntaha Shafique | Portfolio' : 'Muntaha Shafique | Agentic AI Engineer & Full-Stack Developer';
+    window.scrollTo(0, 0);
+    window.requestAnimationFrame(() => window.dispatchEvent(new Event('scroll')));
   }, [isContact]);
   useEffect(() => {
     const script = document.createElement('script'); script.src = 'assets/js/script.js'; script.async = true; document.body.appendChild(script);
     return () => script.remove();
   }, []);
-  return <>{isContact ? <ContactPage /> : <><FloatingNav /><HomePage /></>}<Footer /></>;
+  return <>
+    <div hidden={isContact} aria-hidden={isContact}>
+      <FloatingNav />
+      <HomePage />
+    </div>
+    <div hidden={!isContact} aria-hidden={!isContact}>
+      <ContactPage />
+    </div>
+    <Footer />
+  </>;
 }
 
 createRoot(document.getElementById('root')).render(<App />);

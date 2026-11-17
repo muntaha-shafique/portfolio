@@ -231,7 +231,7 @@ const initializePortfolio = () => {
           continue;
         }
         context.save();
-        context.globalAlpha = particle.life * 0.7;
+        context.globalAlpha = particle.life * 0.86;
         context.translate(particle.x, particle.y);
         context.rotate(particle.angle += 0.018);
         context.fillStyle = '#d9e5c2';
@@ -247,6 +247,10 @@ const initializePortfolio = () => {
     if (canvas && context) {
       resize();
       window.addEventListener('resize', resize, { passive: true });
+      if ('ResizeObserver' in window) {
+        const observer = new ResizeObserver(resize);
+        observer.observe(header);
+      }
     }
 
     header.addEventListener('pointermove', (event) => {
@@ -271,7 +275,7 @@ const initializePortfolio = () => {
               vx: (Math.random() - 0.5) * 0.45,
               vy: -0.25 - Math.random() * 0.5,
               life: 1,
-              size: 2 + Math.random() * 2.2,
+              size: 2.8 + Math.random() * 2.8,
               angle: Math.random() * Math.PI
             });
           }
@@ -380,11 +384,65 @@ const initializePortfolio = () => {
     const getAssistantReply = (question) => {
       const text = question.toLowerCase().replace(/[^a-z0-9+@.\s-]/g, ' ').replace(/\s+/g, ' ').trim();
       const project = projects.find((item) => text.includes(item.title.toLowerCase()));
+      const contactLinks = [
+        { label: 'Open Contact page', href: '#/contact' },
+        { label: 'Email Muntaha', href: 'mailto:muntahashafique6@gmail.com' },
+        { label: 'Message on WhatsApp', href: 'https://wa.me/923141163432', external: true }
+      ];
 
       if (/^(hi|hello|hey|good morning|good afternoon|good evening)\b/.test(text)) {
-        return { text: 'Hello! What would you like to know about Muntaha’s work? You can ask about projects, skills, services, or contact details.' };
+        return { text: 'Hello! I can help with Muntaha’s freelance services, projects, work process, timelines, pricing, experience, or contact details. What would you like to know?' };
       }
-      if (/\b(thanks|thank you|thx)\b/.test(text)) return { text: 'You’re welcome! Feel free to ask me anything about Muntaha’s portfolio.' };
+      if (/\b(thanks|thank you|thx)\b/.test(text)) return { text: 'You’re welcome! If you have a project in mind, I can also help you get in touch with Muntaha.' };
+      if (/\b(price|pricing|cost|budget|rate|quote|estimate|charge|fee|expensive|cheap)\b/.test(text)) {
+        return { text: 'There is no fixed price listed because every project has a different scope. Share what you want to build, its key features, and your target deadline; Muntaha can review the details and discuss an estimate.', links: contactLinks };
+      }
+      if (/\b(timeline|deadline|delivery date|duration|when can|how soon|turnaround|how long will|how long does|how long to build|how long to finish|project take)\b/.test(text)) {
+        return { text: 'The timeline depends on the project scope, features, and feedback milestones. Muntaha can suggest a realistic schedule after reviewing your brief.', links: contactLinks };
+      }
+      if (/\b(available|availability|accepting clients|taking clients|taking freelance clients|new projects|start date|when can you start|hire|work with you|work together)\b/.test(text)) {
+        return { text: 'For current availability, send Muntaha a short project brief. She can confirm whether the timing and scope are a good fit.', links: contactLinks };
+      }
+      if (/\b(process|workflow|how do you work|how does it work|steps|what happens|getting started|start a project)\b/.test(text)) {
+        return { text: 'Muntaha’s process starts by understanding your goals and audience, then shaping the solution and milestones. She builds and refines it with your feedback, then prepares the finished product for launch. Share your idea to discuss the first step.', links: contactLinks };
+      }
+      if (/\b(revision|revisions|changes|feedback|maintenance|support|handover|source code|ownership|after launch|after delivery)\b/.test(text)) {
+        return { text: 'Revision rounds, handover, and post-launch support depend on the project. Muntaha can agree the exact scope and support terms with you before work begins.', links: contactLinks };
+      }
+      if (/\b(payment|payments|pay|invoice|deposit|advance|milestone payment|payment method)\b/.test(text)) {
+        return { text: 'Payment terms are agreed for each project based on its scope and milestones. Share your brief with Muntaha to discuss the details before starting.', links: contactLinks };
+      }
+      if (/\b(small business|small businesses|startup|startups|company|companies|agency|business owner|who do you work with|type of clients)\b/.test(text)) {
+        return { text: 'Muntaha builds digital products and intelligent workflows tailored to real business needs. Share your business goals and requirements so she can confirm whether the project is a good fit.', links: contactLinks };
+      }
+      if (/\b(hosting|domain|website content|copywriting|nda|confidentiality|contract|content writing)\b/.test(text)) {
+        return { text: 'Hosting, domain setup, content, confidentiality, and contract requirements are not listed as fixed packages. Muntaha can confirm what is included for your project when you share the brief.', links: contactLinks };
+      }
+      if (/\b(contact|email|whatsapp|phone|reach|linkedin|github|instagram|facebook|tiktok|medium|social links|social profiles|social accounts)\b/.test(text)) {
+        const links = [...contactLinks];
+        if (/\blinkedin\b/.test(text)) links.push({ label: 'LinkedIn profile', href: 'https://www.linkedin.com/in/muntahashafiq/', external: true });
+        if (/\bgithub\b/.test(text)) links.push({ label: 'GitHub profile', href: 'https://github.com/muntaha-shafique', external: true });
+        if (/\binstagram\b/.test(text)) links.push({ label: 'Instagram profile', href: 'https://www.instagram.com/muntaha_shafique_/', external: true });
+        if (/\bfacebook\b/.test(text)) links.push({ label: 'Facebook profile', href: 'https://www.facebook.com/profile.php?id=61591833424394', external: true });
+        if (/\btiktok\b/.test(text)) links.push({ label: 'TikTok profile', href: 'https://www.tiktok.com/@muntaha_shafique?lang=en', external: true });
+        if (/\bmedium\b/.test(text)) links.push({ label: 'Medium profile', href: 'https://medium.com/@muntaha_shafique', external: true });
+        if (/\b(social links|social profiles|social accounts)\b/.test(text)) {
+          links.push(
+            { label: 'Instagram profile', href: 'https://www.instagram.com/muntaha_shafique_/', external: true },
+            { label: 'Facebook profile', href: 'https://www.facebook.com/profile.php?id=61591833424394', external: true },
+            { label: 'TikTok profile', href: 'https://www.tiktok.com/@muntaha_shafique?lang=en', external: true },
+            { label: 'Medium profile', href: 'https://medium.com/@muntaha_shafique', external: true },
+            { label: 'LinkedIn profile', href: 'https://www.linkedin.com/in/muntahashafiq/', external: true },
+            { label: 'GitHub profile', href: 'https://github.com/muntaha-shafique', external: true }
+          );
+        } else if (!/\b(linkedin|github|instagram|facebook|tiktok|medium)\b/.test(text)) {
+          links.push(
+            { label: 'LinkedIn profile', href: 'https://www.linkedin.com/in/muntahashafiq/', external: true },
+            { label: 'GitHub profile', href: 'https://github.com/muntaha-shafique', external: true }
+          );
+        }
+        return { text: 'You can contact Muntaha through her Contact page, email, or WhatsApp. I’ve added the relevant links below.', links };
+      }
       if (project) {
         return {
           text: `${project.title}: ${project.description || 'A featured project in Muntaha’s portfolio.'}`,
@@ -399,8 +457,8 @@ const initializePortfolio = () => {
         const uniqueSkills = [...new Set(skills)];
         return { text: uniqueSkills.length ? `Muntaha works with ${uniqueSkills.join(', ')}. Her focus includes agentic AI, full-stack development, backend systems, and polished web interfaces.` : 'Muntaha focuses on agentic AI, full-stack development, backend systems, and polished web interfaces.' };
       }
-      if (/\b(services?|hire|build|develop|website|web app|application|automation)\b/.test(text)) {
-        return { text: 'Muntaha builds agentic AI systems and intelligent workflows, PHP and Laravel applications, WordPress websites, and full-stack web products. Share your idea and requirements to discuss the right approach.' };
+      if (/\b(services?|website|site|web app|application|app|automation|wordpress|ecommerce|e-commerce|landing page|ui ux|figma|design|seo|database|api|dashboard|agent|chatbot|workflow|mobile app|responsive|online store|software|portal|crm|redesign|bug fix|website update)\b/.test(text)) {
+        return { text: 'Muntaha works on agentic AI and workflow automation, PHP/Laravel applications, WordPress and ecommerce websites, custom web apps and APIs, Figma UI/UX, database design, and technical SEO. Her portfolio also describes mobile-ready experiences and app backends. Tell her what you need and she can confirm the right scope.', links: contactLinks };
       }
       if (/\b(contact|email|whatsapp|phone|reach|linkedin|github)\b/.test(text)) {
         return {
@@ -409,21 +467,24 @@ const initializePortfolio = () => {
             { label: 'Email Muntaha', href: 'mailto:muntahashafique6@gmail.com' },
             { label: 'Message on WhatsApp', href: 'https://wa.me/923141163432', external: true },
             { label: 'LinkedIn profile', href: 'https://www.linkedin.com/in/muntahashafiq/', external: true },
-            { label: 'GitHub profile', href: 'https://github.com/sheikhsiddique722-sketch', external: true }
+            { label: 'GitHub profile', href: 'https://github.com/muntaha-shafique', external: true }
           ]
         };
       }
-      if (/\b(about|who is|who\'s|background|experience|tell me about)\b/.test(text)) {
-        return { text: 'Muntaha Shafique is an agentic AI engineer and full-stack developer. She builds autonomous AI systems, intelligent workflows, and modern web products with a focus on clarity, performance, and reliability.' };
+      if (/\b(years? of experience|how long has|since when|how many years)\b/.test(text)) {
+        return { text: 'Muntaha’s portfolio lists 3+ years of freelance experience and says she has been creating since 2021. For details about a specific role, contact her directly.', links: [{ label: 'Request details', href: '#/contact' }] };
       }
-      if (/\b(price|pricing|cost|budget|rate|quote|estimate)\b/.test(text)) {
-        return { text: 'Project pricing depends on the scope, features, and timeline. Share a short project brief with Muntaha and she can discuss an estimate.', links: [{ label: 'Email your project brief', href: 'mailto:muntahashafique6@gmail.com' }] };
+      if (/\b(about|who is|who are you|who\'s|background|experience|years|what do you do|what does she do|tell me about|qualification|education|freelancer|freelance)\b/.test(text)) {
+        return { text: 'Muntaha Shafique is an Agentic AI Engineer and Full-Stack Developer. Her portfolio highlights intelligent workflows, autonomous AI systems, and modern web products, with a focus on clear, reliable digital experiences. For a resume or specific qualifications, contact her directly.', links: [{ label: 'Request details', href: '#/contact' }] };
       }
       if (/\b(resume|cv|curriculum vitae)\b/.test(text)) {
         return { text: 'For Muntaha’s resume or more detailed experience, please contact her directly.', links: [{ label: 'Request it by email', href: 'mailto:muntahashafique6@gmail.com' }] };
       }
-      if (/\b(location|country|based|timezone)\b/.test(text)) return { text: 'Muntaha is based in Pakistan and works on digital projects for clients.' };
-      return { text: 'I’m Muntaha’s portfolio assistant. I can answer questions about her projects, skills, services, experience, pricing, or contact details. What would you like to know?' };
+      if (/\b(location|country|based|timezone|remote|work remotely|international)\b/.test(text)) return { text: 'Muntaha is based in Pakistan. Remote project arrangements can be discussed based on your requirements and timeline.', links: [{ label: 'Open Contact page', href: '#/contact' }] };
+      if (/\b(brief|requirements|what do you need|what should i send|start|begin|idea)\b/.test(text)) {
+        return { text: 'To get started, share your goal, audience, key features, any example websites or designs, target launch date, and an approximate budget if you have one. Muntaha can then suggest the next step.', links: contactLinks };
+      }
+      return { text: 'I’m Muntaha’s portfolio assistant, so I can help with questions about her professional work only—her services, projects, experience, process, pricing, timelines, and contact details. Please ask me about Muntaha’s work and I’ll be glad to help.' };
     };
 
     const askAssistant = (question) => {

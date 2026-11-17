@@ -38,22 +38,22 @@ export default function Footer() {
       <a href="https://wa.me/923141163432" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="WhatsApp" title="WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       </a>
-      <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="Instagram" title="Instagram">
+      <a href="https://www.instagram.com/muntaha_shafique_/" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="Instagram" title="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       </a>
       <a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="LinkedIn" title="LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 8.5H3.5V20.5H6.5V8.5ZM5 3C3.9 3 3 3.9 3 5s.9 2 2 2 2-.9 2-2-.9-2-2-2ZM20.5 13.3c0-3.2-1.7-4.7-4-4.7-1.8 0-2.6 1-3.1 1.7V8.5H10.5c0 1.3 0 12 0 12H13.4v-6.7c0-.4 0-.7.1-1 .3-.7.9-1.4 2-1.4 1.4 0 2 1.1 2 2.6v6.5h2.9v-6.7Z"/></svg>
       </a>
-      <a href="https://medium.com/" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="Medium" title="Medium">
+      <a href="https://medium.com/@muntaha_shafique" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="Medium" title="Medium">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 7.2c0-.3-.1-.6-.4-.8L2.2 4.3v-.3h6.1l4.7 10.3 4.1-10.3h5.8v.3l-1.7 1.6c-.1.1-.2.3-.2.5v11.1c0 .2.1.4.2.5l1.7 1.6v.3h-8.2v-.3l1.8-1.7c.2-.2.2-.3.2-.5V8.6l-5 12.7h-.7L5.5 8.6v8.5c0 .4.1.8.4 1.1l2.3 2.8v.3H2v-.3l2.3-2.8c.3-.3.4-.7.4-1.1V7.2Z"/></svg>
       </a>
-      <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="Facebook" title="Facebook">
+      <a href="https://www.facebook.com/profile.php?id=61591833424394" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="Facebook" title="Facebook">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8.5h2.5V5H14c-2.5 0-4.5 2-4.5 4.5V12H7v3.5h2.5V22H13v-6.5h2.5L16 12h-3V9.5c0-.6.4-1 1-1Z"/></svg>
       </a>
-      <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="TikTok" title="TikTok">
+      <a href="https://www.tiktok.com/@muntaha_shafique?lang=en" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="TikTok" title="TikTok">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 4c.5 1.6 1.7 2.9 3.3 3.4V10c-1.2-.1-2.3-.5-3.3-1.2v5.5c0 3.2-2.6 5.7-5.8 5.7S5 17.5 5 14.3 7.5 8.6 10.7 8.6c.3 0 .6 0 .9.1v2.8c-.3-.1-.6-.2-.9-.2-1.6 0-2.9 1.3-2.9 3s1.3 3 2.9 3 2.9-1.3 2.9-3V4h2.9Z"/></svg>
       </a>
-      <a href="https://github.com/sheikhsiddique722-sketch" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="GitHub" title="GitHub">
+      <a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer" className="footer-icon" aria-label="GitHub" title="GitHub">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.9c-2.8.6-3.4-1.2-3.4-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1 .8-.2 1.6-.3 2.5-.3s1.7.1 2.5.3c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5C19.1 20.2 22 16.4 22 12c0-5.5-4.5-10-10-10Z"/></svg>
       </a>
     </div>
@@ -105,6 +105,11 @@ export default function Footer() {
       <div className="portfolio-chat-suggestions" id="portfolioChatSuggestions" aria-label="Suggested questions">
         <button type="button">What projects has she built?</button>
         <button type="button">What services does she offer?</button>
+        <button type="button">Can she make a WordPress website?</button>
+        <button type="button">How much does a project cost?</button>
+        <button type="button">How long does a project take?</button>
+        <button type="button">How does her process work?</button>
+        <button type="button">Does she offer maintenance?</button>
         <button type="button">How can I contact her?</button>
       </div>
       <form className="portfolio-chat-compose" id="portfolioChatForm">

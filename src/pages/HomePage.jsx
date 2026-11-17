@@ -136,7 +136,7 @@ export default function HomePage() {
         <p className="about-lead">I build thoughtful digital experiences, intelligent systems and modern web products.</p>
         <p>I’m an Agentic AI engineer and full-stack developer focused on turning complex ideas into reliable software. My work spans autonomous agents, intelligent workflows, and polished web platforms.</p>
         <p>I care about clarity, performance, and building products around the way people and businesses actually work.</p>
-        <a href="#contact" className="about-cta">Let’s talk about your project <span aria-hidden="true">↗</span></a>
+        <a href="#/contact" className="about-cta">Let’s talk about your project <span aria-hidden="true">↗</span></a>
       </div>
     </div>
     <div className="about-stats reveal" aria-label="Professional highlights">
@@ -581,7 +581,7 @@ export default function HomePage() {
         </div>
         <div className="contact-social-links">
           <a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-          <a href="https://github.com/sheikhsiddique722-sketch" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
         </div>
       </div>
     </div>
