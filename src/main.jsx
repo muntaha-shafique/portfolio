@@ -137,6 +137,9 @@ function App() {
     const activeTitle = isContact
       ? 'Contact Muntaha Shafique | Portfolio'
       : 'Muntaha Shafique | Agentic AI Engineer & Full-Stack Developer';
+    const activeDescription = isContact
+      ? 'Contact Muntaha Shafique to discuss an AI workflow, full-stack website, or digital product. Based in Pakistan and available worldwide.'
+      : 'Explore Muntaha Shafique’s portfolio of agentic AI workflows, full-stack web applications, and thoughtful digital products. Based in Pakistan and available worldwide.';
     const awayMessages = [
       { title: 'Your next idea is waiting', body: 'Websites, AI workflows, and digital products—let’s make yours happen.' },
       { title: 'Ready when you are, Muntaha', body: 'Tell me what you want to build, and we can shape the next step together.' },
@@ -167,7 +170,14 @@ function App() {
       currentPopup = popup;
       window.setTimeout(() => popup.close(), 6500);
     };
-    const syncTitle = () => { document.title = activeTitle; };
+    const syncTitle = () => {
+      document.title = activeTitle;
+      document.querySelector('meta[name="description"]')?.setAttribute('content', activeDescription);
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content', activeTitle);
+      document.querySelector('meta[property="og:description"]')?.setAttribute('content', activeDescription);
+      document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', activeTitle);
+      document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', activeDescription);
+    };
     const showAwayPopup = () => {
       syncTitle();
       if (!document.hidden) {

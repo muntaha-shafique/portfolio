@@ -392,6 +392,7 @@ button, input, textarea {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin: 0;
 }
 
 .hero-portfolio-text {

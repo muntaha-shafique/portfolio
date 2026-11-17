@@ -82,12 +82,12 @@ export default function HomePage({ awayMessage }) {
   </aside>}
 
   {/* Main role title stays centered, as before. */}
-  <div className="hero-portfolio-wrap" aria-hidden="true">
+  <h1 className="hero-portfolio-wrap">
     <span className="hero-portfolio-text">
       <span className="hero-title-line">FULL STACK</span>
       <span className="hero-title-line">DEVELOPER</span>
     </span>
-  </div>
+  </h1>
 
   <div className="hero-left-card">
     <p className="hero-left-kicker">CREATIVE · DIGITAL · AI</p>
