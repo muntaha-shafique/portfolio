@@ -1,6 +1,31 @@
+import { useState } from 'react';
 import Icon from './Icon.jsx';
 
 export default function Footer() {
+  const [popupEnabled, setPopupEnabled] = useState(() => {
+    try {
+      return 'Notification' in window && Notification.permission === 'granted' && localStorage.getItem('portfolio-away-popups') === 'yes';
+    } catch { return false; }
+  });
+  const [popupNote, setPopupNote] = useState('');
+  const enableAwayPopups = async () => {
+    if (!('Notification' in window)) {
+      setPopupNote('Desktop pop-ups are not supported by this browser.');
+      return;
+    }
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        localStorage.setItem('portfolio-away-popups', 'yes');
+        setPopupEnabled(true);
+        setPopupNote('A short message will change every 4 seconds while you’re away.');
+        return;
+      }
+      setPopupNote('Allow notifications in your browser to enable pop-ups.');
+    } catch {
+      setPopupNote('Could not enable desktop pop-ups in this browser.');
+    }
+  };
   return (
     <>
 <footer className="footer">
@@ -32,6 +57,11 @@ export default function Footer() {
         <h3>Let’s make it happen.</h3>
         <a href="mailto:muntahashafique6@gmail.com">muntahashafique6@gmail.com <Icon name="arrowUpRight" size={15} /></a>
         <a className="footer-connect-button" href="#/contact">Start a conversation</a>
+        <button className="footer-away-popup-button" type="button" onClick={enableAwayPopups} disabled={popupEnabled}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
+          {popupEnabled ? 'Desktop pop-ups enabled' : 'Enable desktop pop-ups'}
+        </button>
+        {popupNote && <p className="footer-away-popup-note" role="status">{popupNote}</p>}
       </div>
     </div>
 

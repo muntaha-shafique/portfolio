@@ -137,31 +137,69 @@ function App() {
       ? 'Contact Muntaha Shafique | Portfolio'
       : 'Muntaha Shafique | Agentic AI Engineer & Full-Stack Developer';
     const awayMessages = [
-      '✨ Your next idea is waiting…',
-      '👋 Ready when you are, Muntaha!',
-      '💡 Let’s make your next idea happen'
+      { title: 'Your next idea is waiting', body: 'Websites, AI workflows, and digital products—let’s make yours happen.' },
+      { title: 'Ready when you are, Muntaha', body: 'Tell me what you want to build, and we can shape the next step together.' },
+      { title: 'Let’s make your next idea real', body: 'Thoughtful design and dependable development, shaped around your goals.' }
     ];
     let awayIndex = 0;
+    let lastPopupAt = 0;
+    let currentPopup;
     let awayTimer;
-    const syncTitle = () => {
-      if (document.hidden) {
-        if (awayTimer) return;
-        document.title = awayMessages[awayIndex];
-        awayTimer = window.setInterval(() => {
-          awayIndex = (awayIndex + 1) % awayMessages.length;
-          document.title = awayMessages[awayIndex];
-        }, 4000);
-        return;
-      }
+    const clearAwayPopup = () => {
       window.clearInterval(awayTimer);
       awayTimer = undefined;
-      document.title = activeTitle;
+      currentPopup?.close();
+      currentPopup = undefined;
+    };
+    const displayAwayMessage = () => {
+      const message = awayMessages[awayIndex];
+      awayIndex = (awayIndex + 1) % awayMessages.length;
+      const popup = new Notification(message.title, {
+        body: message.body,
+        icon: new URL('assets/icons/favicon.svg', window.location.href).href,
+        tag: 'muntaha-portfolio-away',
+        renotify: true,
+        silent: true
+      });
+      currentPopup = popup;
+      window.setTimeout(() => popup.close(), 6500);
+    };
+    const syncTitle = () => { document.title = activeTitle; };
+    const showAwayPopup = () => {
+      syncTitle();
+      if (!document.hidden) {
+        clearAwayPopup();
+        return;
+      }
+      if (!document.hidden || !('Notification' in window) || Notification.permission !== 'granted') return;
+      try {
+        if (localStorage.getItem('portfolio-away-popups') !== 'yes') return;
+        const now = Date.now();
+        if (now - lastPopupAt < 12000) return;
+        lastPopupAt = now;
+        displayAwayMessage();
+        let remaining = awayMessages.length - 1;
+        awayTimer = window.setInterval(() => {
+          if (!document.hidden || remaining <= 0) {
+            clearAwayPopup();
+            return;
+          }
+          displayAwayMessage();
+          remaining -= 1;
+          if (remaining <= 0) {
+            window.clearInterval(awayTimer);
+            awayTimer = undefined;
+          }
+        }, 4000);
+      } catch {
+        // Browser notification APIs can be unavailable even after permission was granted.
+      }
     };
     syncTitle();
-    document.addEventListener('visibilitychange', syncTitle);
+    document.addEventListener('visibilitychange', showAwayPopup);
     return () => {
-      document.removeEventListener('visibilitychange', syncTitle);
-      window.clearInterval(awayTimer);
+      document.removeEventListener('visibilitychange', showAwayPopup);
+      clearAwayPopup();
     };
   }, [isContact]);
   useEffect(() => {
