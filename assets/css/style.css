@@ -2820,7 +2820,7 @@ textarea:focus-visible {
 @media (prefers-reduced-motion: reduce) { .hero-title-letter { color: var(--text-light); -webkit-text-fill-color: var(--text-light); -webkit-text-stroke: 0 transparent; opacity: 1; transform: none; filter: none; animation: none; } }
 @media (max-width: 768px) { .hero-portfolio-text { font-size: clamp(2.7rem, 10.5vw, 5.2rem); } }
 .hero-curves-svg { display: none; }
-.hero-curves-layer { background: radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 45%), rgba(173,192,139,.09), transparent 40%); }
+.hero-curves-layer { background: radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 45%), rgba(173,192,139,.045), transparent 20%); }
 .hero-curves-layer::before,
 .hero-curves-layer::after { content: ''; position: absolute; z-index: 0; border-radius: 48%; filter: blur(90px); pointer-events: none; mix-blend-mode: screen; animation: heroAmbientDrift 18s ease-in-out infinite alternate; }
 .hero-curves-layer::before { width: min(48vw, 650px); height: min(52vh, 460px); left: -19vw; bottom: -18%; background: radial-gradient(ellipse at center, rgba(153,170,119,.2), rgba(110,126,88,.07) 46%, transparent 74%); }
@@ -2933,8 +2933,8 @@ textarea:focus-visible {
 @media (prefers-reduced-motion: reduce) { .skill-tile,.skill-mark,.skill-mark img { transition: none; } }
 .hero-showcase { background: radial-gradient(ellipse at 50% 40%, #151711 0%, #090a08 48%, #050505 100%); }
 .hero-cursor-trail { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; pointer-events: none; }
-.hero-cursor-glow { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: radial-gradient(180px 130px at var(--pointer-x, 50%) var(--pointer-y, 45%), rgba(190,207,158,.16), rgba(150,170,124,.055) 42%, transparent 78%); mix-blend-mode: screen; }
-.hero-showcase .hero-cursor-glow { background: radial-gradient(260px 190px at var(--pointer-x, 50%) var(--pointer-y, 45%), rgba(205,220,177,.24), rgba(150,170,124,.09) 48%, transparent 82%); }
+.hero-cursor-glow { position: absolute; inset: 0; z-index: 3; pointer-events: none; background: radial-gradient(130px 96px at var(--pointer-x, 50%) var(--pointer-y, 45%), rgba(190,207,158,.11), rgba(150,170,124,.035) 42%, transparent 76%); mix-blend-mode: screen; }
+.hero-showcase .hero-cursor-glow { background: radial-gradient(140px 104px at var(--pointer-x, 50%) var(--pointer-y, 45%), rgba(205,220,177,.15), rgba(150,170,124,.045) 45%, transparent 76%); }
 .hero-showcase .hero-cursor-glow::before { width: 28px; height: 28px; }
 @media (min-width: 901px) {
   .services-stack-inner { grid-template-columns: minmax(280px, .85fr) minmax(0, 1.15fr); gap: clamp(40px, 6vw, 86px); }
