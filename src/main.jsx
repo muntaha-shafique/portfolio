@@ -86,7 +86,15 @@ function ContactPage() {
   }
   const closeSuccess = () => setStatus((current) => ({ ...current, success: false }));
   return <>
-    <div className="hero-top-bar contact-top-bar"><div className="hero-role-tag"><span>FULL-STACK DEVELOPER</span><span>&amp; AGENTIC AI ENGINEER</span></div><nav className="hero-top-nav" aria-label="Main Navigation"><a href="#/about" className="hero-nav-item">ABOUT</a><a href="#/services" className="hero-nav-item">SERVICES</a><a href="#/projects" className="hero-nav-item">PROJECTS</a><a href="#/contact" className="hero-nav-item">CONTACT</a></nav></div>
+    <div className="hero-top-bar contact-top-bar">
+      <a href="#/home" className="contact-reference-logo" aria-label="Muntaha Shafique home"><img src="assets/images/ms-monogram-logo.png" alt="" /></a>
+      <nav className="contact-reference-nav" aria-label="Main navigation">
+        <a href="#/about" className="hero-nav-item">ABOUT</a>
+        <a href="#/services" className="hero-nav-item">SERVICES</a>
+        <a href="#/projects" className="hero-nav-item">PROJECTS</a>
+        <a href="#/contact" className="hero-nav-item is-active" aria-current="page">CONTACT</a>
+      </nav>
+    </div>
     <main className="contact-page">
       <section className="contact-page-hero" aria-labelledby="contactPageTitle"><canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" /><div className="contact-page-hero-inner"><p>LET’S CONNECT</p><h1 id="contactPageTitle">Contact</h1></div></section>
       <section className="contact-page-main" id="contact-form" aria-labelledby="contactHelpTitle"><div className="contact-page-grid">

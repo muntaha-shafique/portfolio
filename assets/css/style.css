@@ -4319,3 +4319,66 @@ textarea:focus-visible {
 @media (max-width: 900px) {
   .services-mobile-more { display: inline-flex; }
 }
+/* Dedicated contact header inspired by the compact outline nav in the reference. */
+.contact-page-body .contact-top-bar {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  z-index: 1002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 0;
+  transform: translateX(-50%);
+}
+.contact-reference-logo {
+  display: grid;
+  flex: 0 0 66px;
+  width: 66px;
+  height: 66px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 18px;
+  background: #050505;
+}
+.contact-reference-logo img { display: block; width: 54px; height: 54px; object-fit: contain; }
+.contact-reference-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, .75vw, 12px);
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 18px;
+  background: #050505;
+}
+.contact-reference-nav .hero-nav-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 clamp(11px, 1.35vw, 20px);
+  border-radius: 12px;
+  color: #bcbcbc;
+  font-size: clamp(.64rem, .78vw, .76rem);
+  font-weight: 650;
+  letter-spacing: .015em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.contact-reference-nav .hero-nav-item:hover { color: #fff; transform: translateY(-1px); }
+.contact-reference-nav .hero-nav-item.is-active,
+.contact-reference-nav .hero-nav-item.is-active:hover { background: #f5f5f5; color: #111; }
+@media (max-width: 640px) {
+  .contact-page-body .contact-top-bar { top: 14px; width: calc(100% - 24px); max-width: 440px; gap: 7px; }
+  .contact-reference-logo { flex-basis: 48px; width: 48px; height: 48px; border-radius: 14px; }
+  .contact-reference-logo img { width: 40px; height: 40px; }
+  .contact-reference-nav { flex: 1; min-width: 0; gap: 0; padding: 5px; border-radius: 14px; }
+  .contact-reference-nav .hero-nav-item { flex: 1; min-height: 34px; padding: 0 5px; border-radius: 10px; font-size: clamp(.49rem, 2vw, .64rem); letter-spacing: 0; }
+}
