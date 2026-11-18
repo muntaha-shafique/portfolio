@@ -40,8 +40,8 @@ export default function AboutPage() {
           <a className="standalone-about-cta" href="#/contact">Let’s talk about your project <Icon name="arrowUpRight" size={18} /></a>
         </div>
         <figure className="standalone-about-portrait">
-          <img src="assets/images/about-hijabi-headphones.png" alt="Muntaha Shafique, full-stack developer and Agentic AI engineer" width="1111" height="1416" />
-          <figcaption><span>MUNTAHA SHAFIQUE</span></figcaption>
+          <img src="assets/images/contact-workspace-portrait.png" alt="Muntaha working at her laptop" width="1280" height="1280" />
+          <figcaption><span>MUNTAHA SHAFIQUE</span><span>FULL-STACK · AGENTIC AI</span></figcaption>
         </figure>
       </div>
       <div className="standalone-about-scroll" aria-hidden="true"><span />SCROLL TO EXPLORE</div>
@@ -62,19 +62,19 @@ export default function AboutPage() {
 
     <section className="about-journey-section" aria-labelledby="aboutJourneyTitle">
       <div className="about-journey-heading">
-        <div><p className="about-section-kicker">MY CREATIVE &amp; TECHNICAL JOURNEY</p><h2 id="aboutJourneyTitle">A thoughtful route from <em>idea to impact.</em></h2></div>
-        <p>Every project starts with understanding what matters. I bring design thinking, full-stack engineering, and useful AI together around that goal.</p>
+        <div><p className="about-section-kicker">ROADMAP</p><h2 id="aboutJourneyTitle">Our Creative <em>Journey</em></h2></div>
+        <p>From creative ideas to thoughtful digital products, my work spans graphic design, web development, and intelligent solutions that help businesses grow online.</p>
       </div>
       <div className="about-journey-steps">
-        <article><span className="about-journey-index">01 <i /></span><p>DISCOVER</p><h3>Understand the goal</h3><div>We get clear on the people, problem, and outcome before deciding what to build.</div></article>
-        <article><span className="about-journey-index">02 <i /></span><p>DESIGN &amp; BUILD</p><h3>Make it useful</h3><div>Bring full-stack development and agentic AI together in a considered, reliable product.</div></article>
-        <article><span className="about-journey-index">03 <i /></span><p>REFINE &amp; GROW</p><h3>Ready for what’s next</h3><div>Polish the details, launch with care, and leave room for the product to grow.</div></article>
+        <article><span className="about-journey-index">JAN 2022 <i /></span><p>STARTED CREATIVE JOURNEY</p><h3>Graphic Design &amp; Branding</h3><div>Creative visuals, brand identity, and social content made to help businesses show up with confidence.</div></article>
+        <article><span className="about-journey-index">MAY 2023 <i /></span><p>EXPANDED INTO WEB DESIGN</p><h3>WordPress &amp; Shopify</h3><div>Modern websites and online stores shaped around clear layouts and easy customer journeys.</div></article>
+        <article><span className="about-journey-index">FEB 2024 <i /></span><p>ADVANCED CREATIVE SOLUTIONS</p><h3>AI &amp; Digital Experiences</h3><div>Bringing agentic AI, automation, and full-stack development together for useful digital products.</div></article>
       </div>
     </section>
 
     <section className="about-values-section" aria-labelledby="aboutValuesTitle">
       <figure className="about-values-visual">
-        <img src="assets/images/about-hijabi-headphones.png" alt="Muntaha Shafique, Agentic AI engineer and full-stack developer" loading="lazy" />
+        <img src="assets/images/about-girl-v2.png" alt="Muntaha Shafique, Agentic AI engineer and full-stack developer" loading="lazy" />
         <figcaption><span>BUILT WITH CARE</span><span>PAKISTAN · WORLDWIDE</span></figcaption>
       </figure>
       <div className="about-values-content">
@@ -92,11 +92,6 @@ export default function AboutPage() {
       </div>
     </section>
 
-    <section className="standalone-about-end" aria-labelledby="standaloneAboutEndTitle">
-      <p>HAVE AN IDEA IN MIND?</p>
-      <h2 id="standaloneAboutEndTitle">Let’s make it <em>real.</em></h2>
-      <a href="#/contact">Get in touch <Icon name="arrowUpRight" size={18} /></a>
-    </section>
     <AboutRunnerGame />
   </main>;
 }

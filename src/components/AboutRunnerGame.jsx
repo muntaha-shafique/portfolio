@@ -37,7 +37,7 @@ function drawTree(ctx, x, baseY, scale, color) {
 function drawRunner(ctx, x, groundY, jumpY, time) {
   const stride = Math.sin(time * 14) * 6;
   ctx.save();
-  ctx.translate(x, groundY - jumpY);
+  ctx.translate(x, groundY + jumpY);
   ctx.fillStyle = `rgba(22,30,30,${Math.max(.08,.2 - jumpY / 800)})`;
   ctx.beginPath(); ctx.ellipse(0, 2, Math.max(10,18 - jumpY * .025), 4, 0, 0, Math.PI * 2); ctx.fill();
 
@@ -213,7 +213,7 @@ export default function AboutRunnerGame() {
         game.obstacles = game.obstacles.filter((obstacle) => obstacle.x + obstacle.width > -10);
         const playerX = Math.max(62, game.width * .22);
         const groundY = game.height - 42;
-        const playerBox = { left: playerX - 13, right: playerX + 14, top: groundY - game.player.y - 53, bottom: groundY - game.player.y - 3 };
+        const playerBox = { left: playerX - 13, right: playerX + 14, top: groundY + game.player.y - 73, bottom: groundY + game.player.y - 3 };
         const hit = game.obstacles.some((obstacle) => {
           const box = { left: obstacle.x + 2, right: obstacle.x + obstacle.width - 2, top: groundY - obstacle.height + 2, bottom: groundY };
           return playerBox.right > box.left && playerBox.left < box.right && playerBox.bottom > box.top && playerBox.top < box.bottom;
