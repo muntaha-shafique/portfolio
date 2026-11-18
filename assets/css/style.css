@@ -5280,3 +5280,47 @@ textarea:focus-visible {
   .client-review-card blockquote { margin: 18px 0; font-size: .88rem; line-height: 1.55; }
   .client-review-project { font-size: .57rem; }
 }
+
+/* Refine the testimonial section to match the editorial reference layout. */
+.client-experience { padding: clamp(34px, 4vw, 56px) 24px; }
+.client-experience-inner { grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: clamp(28px, 4.4vw, 64px); max-width: 1320px; }
+.client-experience-visual img { width: calc(100% + 24px); max-width: none; max-height: 500px; margin-left: -12px; aspect-ratio: auto; }
+.client-experience-caption { display: none; }
+.client-experience-copy h2 { font-size: clamp(2.55rem, 4.5vw, 4.2rem); }
+.client-experience-intro { margin: 12px 0 16px; font-size: .96rem; }
+.client-experience-window { height: 326px; }
+.client-review-card {
+  min-height: 310px;
+  padding: 18px 0 16px;
+  border: 0;
+  border-bottom: 1px solid rgba(23,23,21,.13);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.client-review-project { color: #777267; font-size: .61rem; }
+.client-review-card blockquote { margin: 22px 0; color: #69665f; font-size: clamp(.94rem, 1.12vw, 1.06rem); line-height: 1.62; }
+.client-review-author { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 14px; border: 0; padding-top: 0; }
+.client-review-author strong { font-size: .8rem; }
+.client-review-author span { font-size: .73rem; }
+@media (max-width: 800px) {
+  .client-experience-inner { grid-template-columns: 1fr; gap: 26px; }
+  .client-experience-visual { width: min(100%, 650px); }
+  .client-experience-visual img { width: 100%; max-height: 420px; margin: 0; }
+  .client-experience-copy h2 { font-size: clamp(2.55rem, 7vw, 4.1rem); }
+}
+@media (max-width: 520px) {
+  .client-experience { padding: 32px 16px 36px; }
+  .client-experience-inner { gap: 20px; }
+  .client-experience-visual { width: 100%; }
+  .client-experience-visual img { max-height: 300px; aspect-ratio: auto; }
+  .client-experience-eyebrow { margin-bottom: 10px; font-size: .59rem; }
+  .client-experience-copy h2 { font-size: clamp(2.35rem, 10.5vw, 3.3rem); }
+  .client-experience-intro { margin: 10px 0 12px; font-size: .86rem; line-height: 1.5; }
+  .client-experience-window { height: 300px; }
+  .client-review-card { min-height: 286px; padding: 16px 0 13px; }
+  .client-review-card blockquote { margin: 17px 0; font-size: .87rem; }
+  .client-review-author strong { font-size: .73rem; }
+  .client-review-author span { font-size: .67rem; }
+  .client-experience-proof { margin-top: 10px; }
+}
