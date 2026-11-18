@@ -694,11 +694,13 @@ const initializePortfolio = () => {
     if (!navbar) return;
     const hero = document.body.classList.contains('contact-page-body')
       ? document.querySelector('.contact-page-hero')
-      : document.getElementById('home');
+      : document.body.classList.contains('about-page-body')
+        ? document.querySelector('.standalone-about-hero')
+        : document.getElementById('home');
     if (!hero) return;
     const heroBottom = hero.getBoundingClientRect().bottom;
     // When hero bottom is above ~120px from top, we're on light content
-    if (heroBottom < 120) {
+    if (document.body.classList.contains('about-page-body') || heroBottom < 120) {
       navbar.classList.add('on-light');
     } else {
       navbar.classList.remove('on-light');
