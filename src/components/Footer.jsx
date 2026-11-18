@@ -131,6 +131,8 @@ export default function Footer() {
     <img className="portfolio-bot-arm portfolio-bot-arm-left" src="assets/images/portfolio-chat-robot-cutout.png" alt="" aria-hidden="true" />
     <img className="portfolio-bot-arm portfolio-bot-arm-right" src="assets/images/portfolio-chat-robot-cutout.png" alt="" aria-hidden="true" />
     <span className="portfolio-bot-face" aria-hidden="true">
+      <span className="portfolio-bot-pupil portfolio-bot-pupil-left"></span>
+      <span className="portfolio-bot-pupil portfolio-bot-pupil-right"></span>
       <span className="portfolio-bot-eyelid portfolio-bot-eyelid-left"></span>
       <span className="portfolio-bot-eyelid portfolio-bot-eyelid-right"></span>
       <span className="portfolio-bot-mouth"></span>

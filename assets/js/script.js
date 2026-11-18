@@ -1182,6 +1182,23 @@ const initializePortfolio = () => {
     }
   }
 
+  // Make the floating assistant look toward the pointer anywhere on the page.
+  const eyeTrackingBot = document.getElementById('portfolioChatToggle');
+  const eyeTrackingPupils = eyeTrackingBot?.querySelectorAll('.portfolio-bot-pupil');
+  if (eyeTrackingBot && eyeTrackingPupils?.length && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const trackBotEyes = (event) => {
+      const bounds = eyeTrackingBot.getBoundingClientRect();
+      const clamp = (value) => Math.max(-1, Math.min(1, value));
+      const gazeX = clamp((event.clientX - (bounds.left + bounds.width * 0.48)) / (window.innerWidth * 0.42)) * 2.1;
+      const gazeY = clamp((event.clientY - (bounds.top + bounds.height * 0.31)) / (window.innerHeight * 0.4)) * 1.6;
+      eyeTrackingPupils.forEach((pupil) => {
+        pupil.style.setProperty('--gaze-x', `${gazeX}px`);
+        pupil.style.setProperty('--gaze-y', `${gazeY}px`);
+      });
+    };
+    document.addEventListener('pointermove', trackBotEyes, { passive: true });
+  }
+
   // Let the portfolio robot follow the pointer while it is over a card or tile.
   const hoverRobot = document.getElementById('portfolioHoverRobot');
   const hoverRobotTargets = '.statement-card, .cover-card, .project-cover-card, .skill-tile, .skills-group, .process-panel, .process-steps li, .contact-photo-space, .contact-invite, .contact-form, .contact-direct-item, a[href], button';
