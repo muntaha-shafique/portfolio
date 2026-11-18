@@ -583,7 +583,16 @@ const initializePortfolio = () => {
     });
 
     portfolioChatToggle.addEventListener('click', () => {
-      setPortfolioChatOpen(portfolioChatPanel.hidden);
+      const opening = portfolioChatPanel.hidden;
+      if (opening && window.speechSynthesis && 'SpeechSynthesisUtterance' in window) {
+        window.speechSynthesis.cancel();
+        const greeting = new SpeechSynthesisUtterance("Hey buddy, let's connect!");
+        greeting.lang = 'en-US';
+        greeting.rate = 0.94;
+        greeting.pitch = 1.12;
+        window.speechSynthesis.speak(greeting);
+      }
+      setPortfolioChatOpen(opening);
     });
     if (portfolioChatClose) {
       portfolioChatClose.addEventListener('click', () => {

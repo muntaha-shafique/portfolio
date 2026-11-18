@@ -2999,9 +2999,10 @@ textarea:focus-visible {
 .form-submit:hover { background: #fff; }
 .fab-stack { display: none !important; }
 .quick-contact { position: fixed; left: 24px; bottom: 24px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-.quick-contact-whatsapp { display: grid; width: 46px; height: 46px; place-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: #25d366; color: #fff; box-shadow: 0 8px 22px rgba(0,0,0,.24); transition: transform .2s ease, box-shadow .2s ease; }
-.quick-contact-whatsapp:hover { transform: translateY(-3px); box-shadow: 0 11px 26px rgba(0,0,0,.3); }
+.quick-contact-whatsapp { display: grid; width: 46px; height: 46px; place-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: #25d366; color: #fff; box-shadow: 0 8px 22px rgba(0,0,0,.24); transform-origin: 50% 80%; animation: whatsappHello 4.4s ease-in-out infinite; transition: filter .2s ease, box-shadow .2s ease; }
+.quick-contact-whatsapp:hover { filter: brightness(1.08); box-shadow: 0 11px 26px rgba(0,0,0,.3); }
 .quick-contact-whatsapp svg { width: 25px; height: 25px; }
+@keyframes whatsappHello { 0%,72%,100% { transform: translate3d(0,0,0) rotateY(0) rotateZ(0) scale(1); } 76% { transform: translate3d(1px,-2px,4px) rotateY(12deg) rotateZ(-8deg) scale(1.05); } 80% { transform: translate3d(-1px,-1px,-3px) rotateY(-10deg) rotateZ(8deg) scale(1.03); } 84% { transform: translate3d(0,-2px,2px) rotateY(7deg) rotateZ(-4deg) scale(1.04); } 88% { transform: translate3d(0,0,0) rotateY(0) rotateZ(0) scale(1); } }
 .quick-contact-toggle { display: flex; align-items: center; gap: 6px; min-width: 112px; height: 38px; padding: 0 10px; border: 1px solid rgba(245,242,234,.12); border-radius: 999px; background: #111; color: #f5f2ea; box-shadow: 0 7px 20px rgba(0,0,0,.18); cursor: pointer; font-size: .5rem; font-weight: 750; letter-spacing: .08em; transition: transform .22s ease,background .22s ease,color .22s ease; }
 .quick-contact-toggle:hover { transform: translateY(-3px); background: #272820; }
 .quick-contact-toggle svg { width: 12px; height: 12px; margin-left: auto; transition: transform .25s ease; }
@@ -3107,7 +3108,7 @@ textarea:focus-visible {
 @keyframes portfolioChatPop { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes portfolioChatTyping { from { opacity: .35; transform: translateY(1px); } to { opacity: 1; transform: translateY(-2px); } }
 @media (max-width: 600px) { .portfolio-chat { right: 8px; bottom: 14px; } .portfolio-chat-toggle { left: 8px; top: 10px; width: 96px; height: 90px; } .portfolio-chat-toggle img { width: 90px; height: 90px; } }
-@media (prefers-reduced-motion: reduce) { .portfolio-chat-toggle,.portfolio-bot-spin,.portfolio-bot-core,.portfolio-bot-neck,.portfolio-bot-head,.portfolio-bot-arm,.portfolio-bot-face,.portfolio-bot-mouth,.portfolio-bot-eyelid,.portfolio-bot-typing,.portfolio-bot-typing i { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .quick-contact-whatsapp,.portfolio-chat-toggle,.portfolio-bot-spin,.portfolio-bot-core,.portfolio-bot-neck,.portfolio-bot-head,.portfolio-bot-arm,.portfolio-bot-face,.portfolio-bot-mouth,.portfolio-bot-eyelid,.portfolio-bot-typing,.portfolio-bot-typing i { animation: none; } }
 @media (max-width: 900px) { .project-cover-card { flex-basis: min(240px,calc((100vw - 64px)/3)); min-width: 180px; } }
 @media (max-width: 768px) { .contact { padding: 70px 16px 78px; } .contact-grid { grid-template-columns: 1fr; } .contact-details { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .projects { padding: 68px 16px 64px; } .project-slider-group { gap: 14px; padding-right: 14px; } .project-cover-card { flex-basis: min(330px,84vw); min-width: min(280px,80vw); height: 410px; } .skills { padding-top: 50px; } }
