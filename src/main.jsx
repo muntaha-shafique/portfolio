@@ -16,7 +16,7 @@ function FloatingNav() {
         <svg className="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
       </button>
     </div>
-    <div className="nav-desktop-links" aria-label="Main navigation links"><span className="nav-scroll-role" aria-hidden="true"><img src="assets/images/ms-monogram-logo.png" alt="" /></span>{links.map(([label, href]) => <a key={label} href={href} className="nav-link" aria-label={label}>{label}</a>)}</div>
+    <div className="nav-desktop-links" aria-label="Main navigation links"><a className="nav-scroll-role" href="#/home" aria-label="Muntaha Shafique home"><img src="assets/images/ms-monogram-logo.png" alt="" /></a>{links.map(([label, href]) => <a key={label} href={href} className="nav-link" aria-label={label}>{label}</a>)}</div>
     <div className="nav-dropdown" id="navDropdown" hidden={!open}>{links.map(([label, href]) => <a key={label} href={href} className="nav-link" onClick={() => setOpen(false)}>{label}</a>)}</div>
   </nav></div>;
 }
@@ -181,7 +181,7 @@ function ContactPage() {
     <div className="hero-top-bar contact-top-bar">
       <a href="#/home" className="contact-reference-logo" aria-label="Muntaha Shafique home"><img src="assets/images/ms-monogram-logo.png" alt="" /></a>
       <nav className="contact-reference-nav" aria-label="Main navigation">
-        <a href="#/about" className="hero-nav-item">ABOUT</a>
+        <a href="#/about" className="hero-nav-item">ABOUT ME</a>
         <a href="#/services" className="hero-nav-item">SERVICES</a>
         <a href="#/projects" className="hero-nav-item">PROJECTS</a>
         <a href="#/contact" className="hero-nav-item is-active" aria-current="page">CONTACT</a>

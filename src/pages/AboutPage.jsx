@@ -78,7 +78,7 @@ export default function AboutPage() {
       <div className="hero-top-bar about-reference-top-bar">
         <a href="#/home" className="contact-reference-logo" aria-label="Muntaha Shafique home"><img src="assets/images/ms-monogram-logo.png" alt="" /></a>
         <nav className="contact-reference-nav" aria-label="Main navigation">
-          <a href="#/about" className="hero-nav-item is-active" aria-current="page">ABOUT</a>
+          <a href="#/about" className="hero-nav-item is-active" aria-current="page">ABOUT ME</a>
           <a href="#/services" className="hero-nav-item">SERVICES</a>
           <a href="#/projects" className="hero-nav-item">PROJECTS</a>
           <a href="#/contact" className="hero-nav-item">CONTACT</a>

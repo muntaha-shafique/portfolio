@@ -5035,9 +5035,9 @@ textarea:focus-visible {
 
   .contact-page-hero.contact-signal-hero {
     display: flex;
-    min-height: 680px;
+    min-height: 620px;
     align-items: flex-start;
-    padding: clamp(430px, 92vw, 456px) 22px 20px;
+    padding: clamp(475px, 101vw, 490px) 22px 16px;
   }
   .contact-signal-inner {
     display: grid;
@@ -5080,8 +5080,8 @@ textarea:focus-visible {
   .about-values-visual { height: min(112vw, 390px); min-height: 330px; }
   .contact-page-body .contact-top-bar { top: 12px; }
   .contact-page-hero.contact-signal-hero {
-    min-height: 660px;
-    padding: clamp(408px, 98vw, 430px) 18px 18px;
+    min-height: 610px;
+    padding: clamp(450px, 108vw, 470px) 18px 16px;
   }
   .contact-signal-copy h1 { font-size: clamp(2.65rem, 12vw, 3.35rem); }
   .contact-signal-copy .contact-signal-description { font-size: clamp(.98rem, 4.5vw, 1.08rem); }
@@ -5095,4 +5095,92 @@ textarea:focus-visible {
     opacity: 1;
     animation: none;
   }
+}
+
+/* Keep the About hero navbar in the same light glass capsule used after scroll. */
+.about-page-body .about-reference-top-bar {
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid rgba(23, 23, 21, .1);
+  border-radius: 999px;
+  background: linear-gradient(125deg, rgba(255,255,255,.72), rgba(255,255,255,.48) 48%, rgba(255,255,255,.68));
+  box-shadow: 0 10px 32px rgba(23,23,21,.08), inset 0 1px rgba(255,255,255,.82);
+  backdrop-filter: blur(18px) saturate(165%);
+  -webkit-backdrop-filter: blur(18px) saturate(165%);
+}
+.about-page-body .contact-reference-logo {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 36px;
+  border: 0;
+  border-radius: 11px;
+  background: #0b0b0b;
+}
+.about-page-body .contact-reference-logo img { width: 100%; height: 100%; }
+.about-page-body .contact-reference-nav {
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.about-page-body .contact-reference-nav .hero-nav-item {
+  min-height: 36px;
+  padding: 0 clamp(9px, 1.1vw, 15px);
+  border-radius: 999px;
+  color: #4e4c47;
+  font-size: clamp(.58rem, .7vw, .69rem);
+  letter-spacing: .035em;
+}
+.about-page-body .contact-reference-nav .hero-nav-item:hover { background: rgba(23,23,21,.07); color: #171715; }
+.about-page-body .contact-reference-nav .hero-nav-item.is-active,
+.about-page-body .contact-reference-nav .hero-nav-item.is-active:hover { background: rgba(23,23,21,.09); color: #171715; }
+@media (max-width: 640px) {
+  .about-page-body .about-reference-top-bar { gap: 4px; padding: 5px; }
+  .about-page-body .contact-reference-logo { flex-basis: 38px; width: 38px; height: 34px; }
+  .about-page-body .contact-reference-nav .hero-nav-item { min-height: 32px; padding: 0 3px; font-size: clamp(.46rem, 1.95vw, .58rem); }
+}
+
+/* Match the Contact header to the compact glass navbar used after scroll. */
+.contact-page-body .contact-top-bar {
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid rgba(23, 23, 21, .1);
+  border-radius: 999px;
+  background: linear-gradient(125deg, rgba(255,255,255,.72), rgba(255,255,255,.48) 48%, rgba(255,255,255,.68));
+  box-shadow: 0 10px 32px rgba(23,23,21,.12), inset 0 1px rgba(255,255,255,.82);
+  backdrop-filter: blur(18px) saturate(165%);
+  -webkit-backdrop-filter: blur(18px) saturate(165%);
+}
+.contact-page-body .contact-reference-logo {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 36px;
+  border: 0;
+  border-radius: 11px;
+  background: #0b0b0b;
+}
+.contact-page-body .contact-reference-logo img { width: 100%; height: 100%; }
+.contact-page-body .contact-reference-nav {
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.contact-page-body .contact-reference-nav .hero-nav-item {
+  min-height: 36px;
+  padding: 0 clamp(9px, 1.1vw, 15px);
+  border-radius: 999px;
+  color: #4e4c47;
+  font-size: clamp(.58rem, .7vw, .69rem);
+  letter-spacing: .035em;
+}
+.contact-page-body .contact-reference-nav .hero-nav-item:hover { background: rgba(23,23,21,.07); color: #171715; }
+.contact-page-body .contact-reference-nav .hero-nav-item.is-active,
+.contact-page-body .contact-reference-nav .hero-nav-item.is-active:hover { background: rgba(23,23,21,.09); color: #171715; }
+@media (max-width: 640px) {
+  .contact-page-body .contact-top-bar { gap: 4px; padding: 5px; }
+  .contact-page-body .contact-reference-logo { flex-basis: 38px; width: 38px; height: 34px; }
+  .contact-page-body .contact-reference-nav .hero-nav-item { min-height: 32px; padding: 0 3px; font-size: clamp(.46rem, 1.95vw, .58rem); }
 }
