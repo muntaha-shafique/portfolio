@@ -3280,7 +3280,6 @@ textarea:focus-visible {
 /* Dedicated contact page, reusing the portfolio navigation and visual palette. */
 .contact-page { min-height: 100vh; background: var(--bg-cream); }
 .contact-page-body .contact-top-bar { position: absolute; top: 0; left: 0; z-index: 1002; }
-.contact-top-bar .contact-home-logo { position: absolute; top: 14px; left: max(24px, calc((100vw - 1180px) / 2)); z-index: 2; text-decoration: none; }
 .ui-icon { display: inline-block; flex: none; vertical-align: middle; }
 .contact-page-benefit > .benefit-icon svg { width: 23px; height: 23px; }
 .contact-page-hero {
@@ -4295,8 +4294,7 @@ textarea:focus-visible {
 }
 
 @media (max-width: 640px) {
-  .contact-top-bar .contact-home-logo { top: 14px; left: 12px; width: 36px; height: 34px; }
-  .contact-top-bar .hero-top-nav { padding-left: 38px; }
+  .contact-top-bar .hero-top-nav { padding-left: 0; }
 }
 @media (max-width: 900px) {
   .project-modal-card { overflow-y: auto; }

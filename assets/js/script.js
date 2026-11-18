@@ -102,7 +102,6 @@ const initializePortfolio = () => {
   });
 
   /* ===== Navbar color: cream on dark hero, black on light sections ===== */
-  const hero = document.getElementById('home') || document.querySelector('.contact-page-hero');
   const navWrap = document.getElementById('navWrap');
 
   // A soft cursor aura and drifting dust trail follow the pointer across both pages.
@@ -621,7 +620,11 @@ const initializePortfolio = () => {
         navWrap.classList.remove('is-scrolled');
       }
     }
-    if (!navbar || !hero) return;
+    if (!navbar) return;
+    const hero = document.body.classList.contains('contact-page-body')
+      ? document.querySelector('.contact-page-hero')
+      : document.getElementById('home');
+    if (!hero) return;
     const heroBottom = hero.getBoundingClientRect().bottom;
     // When hero bottom is above ~120px from top, we're on light content
     if (heroBottom < 120) {
