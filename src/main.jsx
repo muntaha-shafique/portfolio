@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import HomePage from './pages/HomePage.jsx';
 import Footer from './components/Footer.jsx';
@@ -23,6 +23,10 @@ function FloatingNav() {
 function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', portfolio_middle_name: '' });
   const [status, setStatus] = useState({ busy: false, error: '', notice: '', success: false });
+  const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
+  const [cardDragging, setCardDragging] = useState(false);
+  const cardStageRef = useRef(null);
+  const cardDragRef = useRef(null);
   const update = (event) => setForm({ ...form, [event.target.name]: event.target.value });
   useEffect(() => {
     const section = document.querySelector('.contact-page-benefits');
@@ -96,7 +100,21 @@ function ContactPage() {
       </nav>
     </div>
     <main className="contact-page">
-      <section className="contact-page-hero" aria-labelledby="contactPageTitle"><canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" /><div className="contact-page-hero-inner"><p>LET’S CONNECT</p><h1 id="contactPageTitle">Contact</h1></div></section>
+      <section className="contact-page-hero contact-signal-hero" aria-labelledby="contactPageTitle">
+        <canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" />
+        <div className="contact-page-hero-inner contact-signal-inner">
+          <div className="contact-signal-copy"><p className="contact-signal-kicker">A GOOD IDEA STARTS WITH A CONVERSATION</p><h1 id="contactPageTitle">Send a Signal</h1><p className="contact-signal-description">Have a project in mind? Tell me what you’re imagining, and let’s shape it into something thoughtful, useful, and real.</p><a className="contact-signal-link" href="#contact-form">Start a conversation <span aria-hidden="true">↗</span></a></div>
+          <div className="contact-card-stage" ref={cardStageRef}>
+            <article className={`contact-id-card${cardDragging ? ' is-dragging' : ''}`} style={{ '--card-x': `${cardPosition.x}px`, '--card-y': `${cardPosition.y}px` }} tabIndex="0" aria-label="Draggable Muntaha Shafique portfolio card. Use arrow keys to move it." onPointerDown={(event) => { if (event.button !== 0) return; event.currentTarget.setPointerCapture(event.pointerId); cardDragRef.current = { x: event.clientX, y: event.clientY, startX: cardPosition.x, startY: cardPosition.y }; setCardDragging(true); }} onPointerMove={(event) => { if (!cardDragRef.current || !cardStageRef.current) return; const stage = cardStageRef.current.getBoundingClientRect(); const card = event.currentTarget.getBoundingClientRect(); const maxX = Math.max(0, (stage.width - card.width) / 2); const maxY = Math.max(0, (stage.height - card.height) / 2); const dx = event.clientX - cardDragRef.current.x; const dy = event.clientY - cardDragRef.current.y; setCardPosition({ x: Math.max(-maxX, Math.min(maxX, cardDragRef.current.startX + dx)), y: Math.max(-maxY, Math.min(maxY, cardDragRef.current.startY + dy)) }); }} onPointerUp={(event) => { cardDragRef.current = null; setCardDragging(false); if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }} onPointerCancel={() => { cardDragRef.current = null; setCardDragging(false); }} onKeyDown={(event) => { const steps = { ArrowLeft: [-20, 0], ArrowRight: [20, 0], ArrowUp: [0, -20], ArrowDown: [0, 20] }; if (!steps[event.key]) return; event.preventDefault(); const [dx, dy] = steps[event.key]; const stage = cardStageRef.current?.getBoundingClientRect(); const card = event.currentTarget.getBoundingClientRect(); const maxX = stage ? Math.max(0, (stage.width - card.width) / 2) : 120; const maxY = stage ? Math.max(0, (stage.height - card.height) / 2) : 80; setCardPosition((current) => ({ x: Math.max(-maxX, Math.min(maxX, current.x + dx)), y: Math.max(-maxY, Math.min(maxY, current.y + dy)) })); }}>
+              <span className="contact-id-card-label">MUNTAHA SHAFIQUE <span>PORTFOLIO · 2026</span></span>
+              <span className="contact-id-card-mark" aria-hidden="true">MS</span>
+              <span className="contact-id-card-name">Muntaha<br />Shafique</span>
+              <span className="contact-id-card-role">FULL-STACK DEVELOPER<br />&amp; AGENTIC AI ENGINEER</span>
+              <span className="contact-id-card-footer"><span>DESIGN · DEVELOPMENT · AI</span><span>DRAG TO EXPLORE ↗</span></span>
+            </article>
+          </div>
+        </div>
+      </section>
       <section className="contact-page-main" id="contact-form" aria-labelledby="contactHelpTitle"><div className="contact-page-grid">
         <div className="contact-page-form-column"><p className="contact-page-eyebrow">HAVE A PROJECT IN MIND?</p><h2 id="contactHelpTitle">Do you need <span>help?</span></h2><p className="contact-page-intro">Share a little about what you’re building. I’ll get back to you to discuss the details and next steps.</p>
           <div className="contact-page-form-card"><form onSubmit={submit} noValidate>
