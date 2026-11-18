@@ -394,6 +394,8 @@ const initializePortfolio = () => {
       url: card.querySelector('.project-btn[href]')?.href || ''
     })).filter((project) => project.title);
     const skills = [...document.querySelectorAll('.skill-pill')].map((skill) => skill.textContent.trim()).filter(Boolean);
+    const assistantWelcome = 'Welcome! I’m Muntaha Shafique’s personal AI assistant. Ask me about her full-stack work, agentic AI systems, featured projects, or services. I can also help you get in touch.';
+    const conversationHistory = [{ role: 'model', text: assistantWelcome }];
 
     const setPortfolioChatOpen = (open) => {
       portfolioChatPanel.hidden = !open;
@@ -532,10 +534,24 @@ const initializePortfolio = () => {
       return { text: 'I’m Muntaha’s portfolio assistant, so I can help with questions about her professional work only—her services, projects, experience, process, pricing, timelines, and contact details. Please ask me about Muntaha’s work and I’ll be glad to help.' };
     };
 
-    const askAssistant = (question) => {
+    const getGeminiReplyLinks = (question, answer) => {
+      const text = `${question} ${answer}`.toLowerCase();
+      if (/\b(contact|email|whatsapp|phone|hire|availability|start a project|work together|quote|estimate|pricing)\b/.test(text)) {
+        return [
+          { label: 'Open Contact page', href: '#/contact' },
+          { label: 'Email Muntaha', href: 'mailto:muntahashafique6@gmail.com' },
+          { label: 'Message on WhatsApp', href: 'https://wa.me/923141163432', external: true },
+        ];
+      }
+      const project = projects.find((item) => text.includes(item.title.toLowerCase()));
+      return project?.url ? [{ label: `Open ${project.title}`, href: project.url, external: true }] : [];
+    };
+
+    const askAssistant = async (question) => {
       const cleanQuestion = question.trim();
       if (!cleanQuestion) return;
       appendChatMessage(cleanQuestion, 'user');
+      conversationHistory.push({ role: 'user', text: cleanQuestion });
       if (chatSuggestions) chatSuggestions.hidden = true;
       if (chatInput) chatInput.value = '';
       const typing = document.createElement('div');
@@ -550,11 +566,27 @@ const initializePortfolio = () => {
       typing.append(typingMeta, typingBubble);
       chatMessages?.append(typing);
       if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
-      window.setTimeout(() => {
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: conversationHistory.slice(-14) }),
+        });
+        const result = await response.json();
+        if (!response.ok || typeof result.reply !== 'string' || !result.reply.trim()) {
+          throw new Error(result.error || 'Gemini is unavailable.');
+        }
+        const replyText = result.reply.trim();
+        conversationHistory.push({ role: 'model', text: replyText });
         typing.remove();
-        const reply = getAssistantReply(cleanQuestion);
-        appendChatMessage(reply.text, 'assistant', reply.links || []);
-      }, 450);
+        appendChatMessage(replyText, 'assistant', getGeminiReplyLinks(cleanQuestion, replyText));
+      } catch {
+        const fallback = getAssistantReply(cleanQuestion);
+        const fallbackText = `I can’t reach Gemini right now, so here’s a quick answer from the portfolio: ${fallback.text}`;
+        conversationHistory.push({ role: 'model', text: fallbackText });
+        typing.remove();
+        appendChatMessage(fallbackText, 'assistant', fallback.links || []);
+      }
     };
 
     portfolioChatDelete?.addEventListener('click', () => {
@@ -578,6 +610,7 @@ const initializePortfolio = () => {
         chatMessages.append(welcomeRow);
         chatMessages.scrollTop = 0;
       }
+      conversationHistory.splice(0, conversationHistory.length, { role: 'model', text: assistantWelcome });
       if (chatSuggestions) chatSuggestions.hidden = false;
       if (portfolioChatDeleteConfirm) portfolioChatDeleteConfirm.hidden = true;
     });
