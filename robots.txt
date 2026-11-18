@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://muntaha-shafiq.vercel.app/sitemap.xml
+Sitemap: https://muntahacode.vercel.app/sitemap.xml

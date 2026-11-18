@@ -8,14 +8,14 @@ function FloatingNav() {
   const [open, setOpen] = useState(false);
   const links = [['About Me', '#about'], ['Services', '#services'], ['Projects', '#projects'], ['Contact', '#/contact']];
   return <div className="nav-wrap" id="navWrap"><nav className={`navbar${open ? ' is-open' : ''}`} id="navbar" aria-label="Main navigation">
-    <div className="nav-bar-row"><a href="#home" className="nav-logo" aria-label="Muntaha Shafique home">MS<span className="dot" /></a>
+    <div className="nav-bar-row"><a href="#home" className="nav-logo" aria-label="Muntaha Shafique home"><img src="assets/images/ms-monogram-logo.png" alt="" /></a>
       <div className="nav-brand-copy"><strong>Muntaha Shafique</strong><small>PERSONAL PORTFOLIO</small></div>
       <button className="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded={open} aria-controls="navDropdown" onClick={() => setOpen(!open)}>
         <svg className="icon-dots" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14" /></svg>
         <svg className="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
       </button>
     </div>
-    <div className="nav-desktop-links" aria-label="Main navigation links"><span className="nav-scroll-role" aria-hidden="true">MS<span className="nav-scroll-dot" /></span>{links.map(([label, href]) => <a key={label} href={href} className="nav-link" aria-label={label}>{label}</a>)}</div>
+    <div className="nav-desktop-links" aria-label="Main navigation links"><span className="nav-scroll-role" aria-hidden="true"><img src="assets/images/ms-monogram-logo.png" alt="" /></span>{links.map(([label, href]) => <a key={label} href={href} className="nav-link" aria-label={label}>{label}</a>)}</div>
     <div className="nav-dropdown" id="navDropdown" hidden={!open}>{links.map(([label, href]) => <a key={label} href={href} className="nav-link" onClick={() => setOpen(false)}>{label}</a>)}</div>
   </nav></div>;
 }
@@ -86,7 +86,7 @@ function ContactPage() {
   }
   const closeSuccess = () => setStatus((current) => ({ ...current, success: false }));
   return <>
-    <div className="hero-top-bar contact-top-bar"><a href="#/home" className="nav-logo contact-home-logo" aria-label="Go to homepage">MS<span className="dot" /></a><div className="hero-role-tag"><span>FULL-STACK DEVELOPER</span><span>&amp; AGENTIC AI ENGINEER</span></div><nav className="hero-top-nav" aria-label="Main Navigation"><a href="#/about" className="hero-nav-item">ABOUT</a><a href="#/services" className="hero-nav-item">SERVICES</a><a href="#/projects" className="hero-nav-item">PROJECTS</a><a href="#/contact" className="hero-nav-item">CONTACT</a></nav></div>
+    <div className="hero-top-bar contact-top-bar"><a href="#/home" className="nav-logo contact-home-logo" aria-label="Go to homepage"><img src="assets/images/ms-monogram-logo.png" alt="" /></a><div className="hero-role-tag"><span>FULL-STACK DEVELOPER</span><span>&amp; AGENTIC AI ENGINEER</span></div><nav className="hero-top-nav" aria-label="Main Navigation"><a href="#/about" className="hero-nav-item">ABOUT</a><a href="#/services" className="hero-nav-item">SERVICES</a><a href="#/projects" className="hero-nav-item">PROJECTS</a><a href="#/contact" className="hero-nav-item">CONTACT</a></nav></div>
     <main className="contact-page">
       <section className="contact-page-hero" aria-labelledby="contactPageTitle"><canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" /><div className="contact-page-hero-inner"><p>LET’S CONNECT</p><h1 id="contactPageTitle">Contact</h1></div></section>
       <section className="contact-page-main" id="contact-form" aria-labelledby="contactHelpTitle"><div className="contact-page-grid">

@@ -23,7 +23,7 @@ export default function Footer() {
   <div className="footer-inner">
     <div className="footer-main">
       <div className="footer-brand">
-        <span className="footer-logo">MS<span className="dot"></span></span>
+        <span className="footer-logo"><img src="assets/images/ms-monogram-logo.png" alt="Muntaha Shafique monogram" /></span>
         <p className="footer-role">Agentic AI Engineer &amp; Full-Stack Developer</p>
         <p className="footer-description">I build intelligent workflows and reliable digital products that help ideas move forward.</p>
       </div>

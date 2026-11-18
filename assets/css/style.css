@@ -2801,6 +2801,8 @@ textarea:focus-visible {
 .navbar.is-open { border-radius: 19px; background: rgba(17,17,17,.97); }
 .nav-bar-row { min-height: 40px; justify-content: flex-start; gap: 10px; }
 .nav-logo { display: flex; flex: 0 0 42px; width: 42px; height: 36px; justify-content: center; border-radius: 11px; background: var(--bg-cream); color: var(--bg-black); font-size: .77rem; }
+.nav-logo { overflow: hidden; background: #0b0b0b; line-height: 0; }
+.nav-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .nav-logo .dot { width: 5px; height: 5px; background: #8a8d7f; }
 .nav-brand-copy { display: grid; gap: 1px; min-width: 0; color: var(--text-light); line-height: 1.2; }
 .nav-brand-copy strong { font-size: .74rem; font-weight: 700; letter-spacing: -.01em; }
@@ -3486,6 +3488,8 @@ textarea:focus-visible {
 .footer-main { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(260px,.8fr); gap: 50px; align-items: start; }
 .footer-brand { text-align: left; }
 .footer-logo { color: #f5f2ea; font-size: 1.6rem; }
+.footer-logo { display: block; width: 118px; line-height: 0; }
+.footer-logo img { display: block; width: 100%; height: auto; }
 .footer-logo .dot { background: #9a9181; }
 .footer-brand .footer-role { margin: 8px 0 10px; color: #c6c1b6; font-size: .95rem; }
 .footer-brand .footer-description { max-width: 500px; margin: 0; color: #929087; font-size: .9rem; line-height: 1.65; }
@@ -3867,6 +3871,8 @@ textarea:focus-visible {
   letter-spacing: -.04em;
   line-height: 1;
 }
+.nav-wrap.is-scrolled .nav-scroll-role { overflow: hidden; background: #0b0b0b; line-height: 0; }
+.nav-scroll-role img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .nav-wrap.is-scrolled .nav-scroll-dot {
   align-self: flex-end;
   width: 4px;
