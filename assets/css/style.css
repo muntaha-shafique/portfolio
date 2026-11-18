@@ -2999,6 +2999,9 @@ textarea:focus-visible {
 .form-submit:hover { background: #fff; }
 .fab-stack { display: none !important; }
 .quick-contact { position: fixed; left: 24px; bottom: 24px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.quick-contact-whatsapp { display: grid; width: 46px; height: 46px; place-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: #25d366; color: #fff; box-shadow: 0 8px 22px rgba(0,0,0,.24); transition: transform .2s ease, box-shadow .2s ease; }
+.quick-contact-whatsapp:hover { transform: translateY(-3px); box-shadow: 0 11px 26px rgba(0,0,0,.3); }
+.quick-contact-whatsapp svg { width: 25px; height: 25px; }
 .quick-contact-toggle { display: flex; align-items: center; gap: 6px; min-width: 112px; height: 38px; padding: 0 10px; border: 1px solid rgba(245,242,234,.12); border-radius: 999px; background: #111; color: #f5f2ea; box-shadow: 0 7px 20px rgba(0,0,0,.18); cursor: pointer; font-size: .5rem; font-weight: 750; letter-spacing: .08em; transition: transform .22s ease,background .22s ease,color .22s ease; }
 .quick-contact-toggle:hover { transform: translateY(-3px); background: #272820; }
 .quick-contact-toggle svg { width: 12px; height: 12px; margin-left: auto; transition: transform .25s ease; }
