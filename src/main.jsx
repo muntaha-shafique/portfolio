@@ -23,10 +23,39 @@ function FloatingNav() {
 function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', portfolio_middle_name: '' });
   const [status, setStatus] = useState({ busy: false, error: '', notice: '', success: false });
-  const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
+  const [cardPosition, setCardPosition] = useState(null);
   const [cardDragging, setCardDragging] = useState(false);
+  const [headerBounds, setHeaderBounds] = useState({ width: 0, height: 0 });
+  const [cardSize, setCardSize] = useState({ width: 0, height: 0 });
+  const [ribbonEnd, setRibbonEnd] = useState({ x: 0, y: 0 });
   const cardStageRef = useRef(null);
+  const cardRef = useRef(null);
   const cardDragRef = useRef(null);
+  useEffect(() => {
+    const header = cardStageRef.current;
+    const card = cardRef.current;
+    if (!header || !card) return;
+    const measure = () => {
+      const headerRect = header.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      setHeaderBounds({ width: headerRect.width, height: headerRect.height });
+      setCardSize({ width: cardRect.width, height: cardRect.height });
+      if (!cardDragRef.current) setRibbonEnd({ x: card.offsetLeft + cardRect.width / 2, y: card.offsetTop });
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    observer.observe(card);
+    window.addEventListener('resize', measure);
+    return () => { observer.disconnect(); window.removeEventListener('resize', measure); };
+  }, []);
+  const placeCard = (x, y) => {
+    const maxX = Math.max(0, headerBounds.width - cardSize.width);
+    const maxY = Math.max(0, headerBounds.height - cardSize.height);
+    const next = { x: Math.max(0, Math.min(maxX, x)), y: Math.max(0, Math.min(maxY, y)) };
+    setCardPosition(next);
+    setRibbonEnd({ x: next.x + cardSize.width / 2, y: next.y });
+  };
   const update = (event) => setForm({ ...form, [event.target.name]: event.target.value });
   useEffect(() => {
     const section = document.querySelector('.contact-page-benefits');
@@ -89,6 +118,8 @@ function ContactPage() {
     }
   }
   const closeSuccess = () => setStatus((current) => ({ ...current, success: false }));
+  const ribbonAnchorX = headerBounds.width * 0.82;
+  const ribbonPath = `M ${ribbonAnchorX} 0 C ${ribbonAnchorX} ${Math.max(36, ribbonEnd.y * .38)} ${ribbonEnd.x} ${Math.max(56, ribbonEnd.y * .76)} ${ribbonEnd.x} ${ribbonEnd.y}`;
   return <>
     <div className="hero-top-bar contact-top-bar">
       <a href="#/home" className="contact-reference-logo" aria-label="Muntaha Shafique home"><img src="assets/images/ms-monogram-logo.png" alt="" /></a>
@@ -100,12 +131,14 @@ function ContactPage() {
       </nav>
     </div>
     <main className="contact-page">
-      <section className="contact-page-hero contact-signal-hero" aria-labelledby="contactPageTitle">
+      <section className="contact-page-hero contact-signal-hero" aria-labelledby="contactPageTitle" ref={cardStageRef}>
         <canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" />
         <div className="contact-page-hero-inner contact-signal-inner">
-          <div className="contact-signal-copy"><h1 id="contactPageTitle">Send a Signal</h1><p className="contact-signal-description">This page is the bridge between an idea and a plan. Drop your message — I’ll help turn it into a direction.</p></div>
-          <div className="contact-card-stage" ref={cardStageRef}>
-            <article className={`contact-id-card${cardDragging ? ' is-dragging' : ''}`} style={{ '--card-x': `${cardPosition.x}px`, '--card-y': `${cardPosition.y}px` }} tabIndex="0" aria-label="Draggable Muntaha Shafique portfolio card. Use arrow keys to move it." onPointerDown={(event) => { if (event.button !== 0) return; event.currentTarget.setPointerCapture(event.pointerId); cardDragRef.current = { x: event.clientX, y: event.clientY, startX: cardPosition.x, startY: cardPosition.y }; setCardDragging(true); }} onPointerMove={(event) => { if (!cardDragRef.current || !cardStageRef.current) return; const stage = cardStageRef.current.getBoundingClientRect(); const card = event.currentTarget.getBoundingClientRect(); const maxX = Math.max(0, (stage.width - card.width) / 2); const maxY = Math.max(0, (stage.height - card.height) / 2); const dx = event.clientX - cardDragRef.current.x; const dy = event.clientY - cardDragRef.current.y; setCardPosition({ x: Math.max(-maxX, Math.min(maxX, cardDragRef.current.startX + dx)), y: Math.max(-maxY, Math.min(maxY, cardDragRef.current.startY + dy)) }); }} onPointerUp={(event) => { cardDragRef.current = null; setCardDragging(false); if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }} onPointerCancel={() => { cardDragRef.current = null; setCardDragging(false); }} onKeyDown={(event) => { const steps = { ArrowLeft: [-20, 0], ArrowRight: [20, 0], ArrowUp: [0, -20], ArrowDown: [0, 20] }; if (!steps[event.key]) return; event.preventDefault(); const [dx, dy] = steps[event.key]; const stage = cardStageRef.current?.getBoundingClientRect(); const card = event.currentTarget.getBoundingClientRect(); const maxX = stage ? Math.max(0, (stage.width - card.width) / 2) : 120; const maxY = stage ? Math.max(0, (stage.height - card.height) / 2) : 80; setCardPosition((current) => ({ x: Math.max(-maxX, Math.min(maxX, current.x + dx)), y: Math.max(-maxY, Math.min(maxY, current.y + dy)) })); }}>
+          <div className="contact-signal-copy"><h1 id="contactPageTitle">Send a Signal</h1><p className="contact-signal-description">Building something meaningful? Share your idea, and let’s turn it into a thoughtful digital experience.</p></div>
+        </div>
+        <div className="contact-card-stage" aria-label="Interactive portfolio card">
+          {headerBounds.width > 0 && <svg className="contact-card-ribbon" viewBox={`0 0 ${headerBounds.width} ${headerBounds.height}`} preserveAspectRatio="none" aria-hidden="true"><path className="contact-card-ribbon-shadow" d={ribbonPath} pathLength="1" /><path className="contact-card-ribbon-main" d={ribbonPath} pathLength="1" /><path className="contact-card-ribbon-shine" d={ribbonPath} pathLength="1" /></svg>}
+            <article ref={cardRef} className={`contact-id-card${cardDragging ? ' is-dragging' : ''}${cardPosition ? ' is-positioned' : ''}`} style={cardPosition ? { left: `${cardPosition.x}px`, top: `${cardPosition.y}px` } : undefined} tabIndex="0" aria-label="Draggable Muntaha Shafique portfolio card. Drag it anywhere in this header, or use arrow keys." onPointerDown={(event) => { if (event.button !== 0) return; const header = cardStageRef.current.getBoundingClientRect(); const card = event.currentTarget.getBoundingClientRect(); const x = card.left - header.left; const y = card.top - header.top; event.currentTarget.setPointerCapture(event.pointerId); cardDragRef.current = { x: event.clientX, y: event.clientY, startX: x, startY: y }; placeCard(x, y); setCardDragging(true); }} onPointerMove={(event) => { if (!cardDragRef.current) return; placeCard(cardDragRef.current.startX + event.clientX - cardDragRef.current.x, cardDragRef.current.startY + event.clientY - cardDragRef.current.y); }} onPointerUp={(event) => { cardDragRef.current = null; setCardDragging(false); if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }} onPointerCancel={() => { cardDragRef.current = null; setCardDragging(false); }} onAnimationEnd={() => { const card = cardRef.current; if (card && !cardPosition) setRibbonEnd({ x: card.offsetLeft + card.offsetWidth / 2, y: card.offsetTop }); }} onKeyDown={(event) => { const steps = { ArrowLeft: [-20, 0], ArrowRight: [20, 0], ArrowUp: [0, -20], ArrowDown: [0, 20] }; if (!steps[event.key]) return; event.preventDefault(); const [dx, dy] = steps[event.key]; const header = cardStageRef.current.getBoundingClientRect(); const card = event.currentTarget.getBoundingClientRect(); const x = cardPosition?.x ?? card.left - header.left; const y = cardPosition?.y ?? card.top - header.top; placeCard(x + dx, y + dy); }}>
               <span className="contact-id-card-clip" aria-hidden="true" />
               <span className="contact-id-card-label">MUNTAHA SHAFIQUE <span>PORTFOLIO · 2026</span></span>
               <span className="contact-id-card-mark" aria-hidden="true">MS</span>
@@ -113,7 +146,6 @@ function ContactPage() {
               <span className="contact-id-card-role">FULL-STACK DEVELOPER<br />&amp; AGENTIC AI ENGINEER</span>
               <span className="contact-id-card-footer"><span>DESIGN · DEVELOPMENT · AI</span><span>DRAG TO EXPLORE ↗</span></span>
             </article>
-          </div>
         </div>
       </section>
       <section className="contact-page-main" id="contact-form" aria-labelledby="contactHelpTitle"><div className="contact-page-grid">
