@@ -35,7 +35,7 @@ function drawTree(ctx, x, baseY, scale, color) {
 }
 
 function drawRunner(ctx, x, groundY, jumpY, time) {
-  const stride = Math.sin(time * 14) * 6;
+  const stride = Math.sin(time * 2) * 1.4;
   ctx.save();
   ctx.translate(x, groundY + jumpY);
   ctx.fillStyle = `rgba(22,30,30,${Math.max(.08,.2 - jumpY / 800)})`;
@@ -87,7 +87,7 @@ function drawFactBubble(ctx, game, x, groundY) {
   const bubbleH = lines.length * lineH + 20;
   const runnerX = Math.max(62, w * .22);
   const bx = Math.max(12, Math.min(w - bubbleW - 12, runnerX + 32));
-  const by = Math.max(14, groundY - 156 + game.player.y);
+  const by = Math.max(14, groundY - 156 + (game.player?.y ?? 0));
   ctx.shadowColor = 'rgba(19,29,35,.22)'; ctx.shadowBlur = 18; ctx.shadowOffsetY = 8;
   ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.roundRect(bx, by, bubbleW, bubbleH, 14); ctx.fill();
   ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
@@ -97,34 +97,57 @@ function drawFactBubble(ctx, game, x, groundY) {
   ctx.restore();
 }
 
+function drawStoryStar(ctx, x, y, radius, active, time, index) {
+  const pulse = 1 + Math.sin(time * 2.8 + index * .9) * .09;
+  const size = radius * pulse;
+  ctx.save();
+  const glow = ctx.createRadialGradient(x, y, 1, x, y, size * (active ? 3 : 2));
+  glow.addColorStop(0, active ? 'rgba(255,240,190,.7)' : 'rgba(255,250,226,.32)');
+  glow.addColorStop(1, 'rgba(255,240,190,0)');
+  ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(x, y, size * 3, 0, Math.PI * 2); ctx.fill();
+  ctx.translate(x, y); ctx.rotate(time * .12 + index * .3); ctx.scale(pulse, pulse);
+  ctx.beginPath();
+  for (let point = 0; point < 10; point += 1) {
+    const angle = -Math.PI / 2 + point * Math.PI / 5;
+    const r = point % 2 ? size * .44 : size;
+    const px = Math.cos(angle) * r, py = Math.sin(angle) * r;
+    if (!point) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.fillStyle = active ? '#fff3cf' : 'rgba(255,246,218,.66)';
+  ctx.shadowColor = 'rgba(255,239,188,.75)'; ctx.shadowBlur = active ? 18 : 8; ctx.fill();
+  ctx.restore();
+}
+
 function drawScene(ctx, game) {
   const { width: w, height: h } = game;
   if (!w || !h) return;
   const groundY = h - 42;
   const sky = ctx.createLinearGradient(0, 0, 0, h);
-  sky.addColorStop(0, '#718c9b'); sky.addColorStop(.42, '#a7b8b5'); sky.addColorStop(.76, '#d5c3a4'); sky.addColorStop(1, '#9aa287');
+  sky.addColorStop(0, '#8daab4'); sky.addColorStop(.48, '#bdc9bf'); sky.addColorStop(.82, '#e6d4b4'); sky.addColorStop(1, '#b6b99c');
   ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
 
-  // moon glow and moon
-  const moonX = w * .79, moonY = h * .24, moonR = Math.min(55, h * .16);
-  const glow = ctx.createRadialGradient(moonX, moonY, 2, moonX, moonY, moonR * 2.25);
-  glow.addColorStop(0, 'rgba(255,241,203,.62)'); glow.addColorStop(1, 'rgba(255,241,203,0)');
-  ctx.fillStyle = glow; ctx.fillRect(moonX - moonR * 2.3, moonY - moonR * 2.3, moonR * 4.6, moonR * 4.6);
+  // A warm moon and soft distant lights set a gentler storybook scene.
+  const moonX = w * .82, moonY = h * .21, moonR = Math.min(49, h * .14);
+  const moonGlow = ctx.createRadialGradient(moonX, moonY, 2, moonX, moonY, moonR * 2.1);
+  moonGlow.addColorStop(0, 'rgba(255,241,203,.52)'); moonGlow.addColorStop(1, 'rgba(255,241,203,0)');
+  ctx.fillStyle = moonGlow; ctx.fillRect(moonX - moonR * 2.2, moonY - moonR * 2.2, moonR * 4.4, moonR * 4.4);
   ctx.fillStyle = '#fff1cf'; ctx.beginPath(); ctx.arc(moonX, moonY, moonR, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = 'rgba(177,145,101,.14)';
-  ctx.beginPath(); ctx.arc(moonX - moonR * .27, moonY - moonR * .15, moonR * .14, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath(); ctx.arc(moonX + moonR * .25, moonY + moonR * .29, moonR * .1, 0, Math.PI * 2); ctx.fill();
+  for (let i = 0; i < 8; i += 1) {
+    const sx = (w * (.12 + i * .105) + Math.sin(i * 9) * 18) % w;
+    const sy = h * (.18 + (i % 3) * .095) + Math.sin(game.time * 1.5 + i) * 4;
+    ctx.fillStyle = `rgba(255,248,222,${.45 + .25 * Math.sin(game.time * 2 + i)})`;
+    ctx.beginPath(); ctx.arc(sx, sy, i % 3 === 0 ? 2.2 : 1.4, 0, Math.PI * 2); ctx.fill();
+  }
 
   // distant tree line
-  const drift = game.world * .12;
   for (let i = -1; i < Math.ceil(w / 54) + 2; i++) {
-    const x = i * 54 - (drift % 54);
+    const x = i * 54;
     drawTree(ctx, x, groundY + 6, .68 + ((i + 8) % 3) * .12, '#718379');
   }
-  // foreground trunks and angular branches
-  const foreground = game.world * .42;
+  // soft tree silhouettes frame the path without blocking the story lights
   for (let i = -1; i < Math.ceil(w / 132) + 2; i++) {
-    const x = i * 132 - (foreground % 132) + 16;
+    const x = i * 132 + 16;
     const trunkH = 135 + ((i * 37 % 70) + 70);
     ctx.fillStyle = i % 2 ? '#536b63' : '#61756b';
     ctx.beginPath();
@@ -136,45 +159,48 @@ function drawScene(ctx, game) {
     ctx.beginPath(); ctx.moveTo(x + 2, groundY - trunkH * .38); ctx.lineTo(x + 30, groundY - trunkH * .59); ctx.stroke();
   }
 
-  // ground and grass
-  ctx.fillStyle = '#34443a'; ctx.fillRect(0, groundY, w, h - groundY);
-  ctx.strokeStyle = '#71876a'; ctx.lineWidth = 2;
-  for (let x = -8 - (game.world % 22); x < w + 20; x += 22) {
-    ctx.beginPath(); ctx.moveTo(x, groundY + 2); ctx.lineTo(x + 4, groundY - 4 - ((x * 7) % 8)); ctx.lineTo(x + 8, groundY + 3); ctx.stroke();
+  // A winding garden path and grass replace the obstacle track.
+  ctx.fillStyle = '#7d8b6e'; ctx.fillRect(0, groundY, w, h - groundY);
+  ctx.fillStyle = 'rgba(235,219,184,.8)';
+  ctx.beginPath(); ctx.moveTo(w * .12, h); ctx.quadraticCurveTo(w * .29, groundY - 22, w * .46, h); ctx.lineTo(w * .72, h); ctx.quadraticCurveTo(w * .46, groundY + 12, w * .3, h); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#a7b28f'; ctx.lineWidth = 2;
+  for (let x = 8; x < w; x += 25) {
+    ctx.beginPath(); ctx.moveTo(x, groundY + 3); ctx.lineTo(x + 3, groundY - 5 - ((x * 7) % 8)); ctx.lineTo(x + 7, groundY + 3); ctx.stroke();
   }
 
-  // obstacles
-  game.obstacles.forEach((obstacle) => {
-    ctx.fillStyle = '#805744';
-    ctx.beginPath();
-    ctx.roundRect(obstacle.x, groundY - obstacle.height, obstacle.width, obstacle.height, [5, 5, 2, 2]);
-    ctx.fill();
-    ctx.fillStyle = 'rgba(255,230,197,.38)';
-    ctx.fillRect(obstacle.x + 5, groundY - obstacle.height + 5, Math.max(3, obstacle.width - 10), 2);
+  drawRunner(ctx, Math.max(62, w * .2), groundY, 2 + Math.sin(game.time * 2) * 2, game.time);
+  const starPositions = [.36, .48, .60, .72, .84];
+  const activeStar = game.collected % starPositions.length;
+  starPositions.forEach((ratio, index) => {
+    const y = h * (.43 + (index % 2) * .095) + Math.sin(game.time * 1.7 + index * .8) * 5;
+    const alreadyCollected = index < activeStar;
+    drawStoryStar(ctx, w * ratio, y, index === activeStar ? 13 : 10, index === activeStar, game.time, index);
+    if (alreadyCollected) {
+      ctx.strokeStyle = 'rgba(255,246,218,.55)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(w * ratio, y, 19, 0, Math.PI * 2); ctx.stroke();
+    }
   });
-
-  drawRunner(ctx, Math.max(62, w * .22), groundY, game.player.y, game.time);
   const vignette = ctx.createRadialGradient(w / 2, h / 2, h * .2, w / 2, h / 2, w * .7);
   vignette.addColorStop(.35, 'rgba(20,30,31,0)'); vignette.addColorStop(1, 'rgba(20,30,31,.2)');
   ctx.fillStyle = vignette; ctx.fillRect(0, 0, w, h);
-  if (game.phase !== 'ready') drawFactBubble(ctx, game, Math.max(62, w * .22), groundY);
+  if (game.fact) drawFactBubble(ctx, game, Math.max(62, w * .2), groundY);
 
-  if (game.phase !== 'running') {
-    ctx.fillStyle = game.phase === 'ready' ? 'rgba(21,31,35,.05)' : 'rgba(21,31,35,.22)'; ctx.fillRect(0, 0, w, h);
+  if (game.phase === 'ready' || game.phase === 'complete') {
+    ctx.fillStyle = game.phase === 'ready' ? 'rgba(248,244,231,.08)' : 'rgba(248,244,231,.1)'; ctx.fillRect(0, 0, w, h);
     ctx.textAlign = 'center'; ctx.fillStyle = '#26353a';
     ctx.font = `700 ${Math.max(17, Math.min(25, w * .027))}px system-ui, sans-serif`;
-    ctx.fillText(game.phase === 'ready' ? 'A little run with Muntaha' : 'Nice run · ready for another?', w / 2, h * .48);
+    ctx.fillText(game.phase === 'ready' ? 'Collect a star · find my story' : 'You found my story', w / 2, h * .48);
     ctx.font = `500 ${Math.max(11, Math.min(14, w * .016))}px system-ui, sans-serif`;
-    ctx.fillStyle = 'rgba(38,53,58,.72)';
-    ctx.fillText(game.phase === 'ready' ? 'Each jump reveals a new line about me' : 'Tap the scene or press Run Again', w / 2, h * .48 + 27);
+    ctx.fillStyle = 'rgba(38,53,58,.78)';
+    ctx.fillText(game.phase === 'ready' ? 'Tap a sparkle or press Collect to reveal a line' : 'Tap to begin the story again', w / 2, h * .48 + 27);
   }
 }
 
 export default function AboutRunnerGame() {
   const canvasRef = useRef(null);
-  const gameRef = useRef({ width: 0, height: 0, phase: 'ready', jumpCount: 0, factIndex: -1, fact: '', world: 0, time: 0, speed: 260, player: { y: 0, vy: 0 }, obstacles: [], spawnIn: 4.1, lastFrame: 0 });
+  const gameRef = useRef({ width: 0, height: 0, phase: 'ready', collected: 0, factIndex: -1, fact: '', time: 0, lastFrame: 0 });
   const frameRef = useRef(0);
-  const [hud, setHud] = useState({ jumpCount: 0, factIndex: -1, phase: 'ready' });
+  const [hud, setHud] = useState({ collected: 0, factIndex: -1, phase: 'ready' });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -197,32 +223,6 @@ export default function AboutRunnerGame() {
       const dt = Math.min(.04, Math.max(0, (now - (game.lastFrame || now)) / 1000));
       game.lastFrame = now;
       game.time += dt;
-      if (game.phase === 'running') {
-        game.world += game.speed * dt;
-        game.speed = Math.min(390, 260 + game.jumpCount * 8);
-        game.player.vy += 1780 * dt;
-        game.player.y += game.player.vy * dt;
-        if (game.player.y > 0) { game.player.y = 0; game.player.vy = 0; }
-        game.spawnIn -= dt;
-        if (game.spawnIn <= 0) {
-          const height = 18 + Math.random() * 9;
-          game.obstacles.push({ x: game.width + 20, width: 18 + Math.random() * 10, height });
-          game.spawnIn = 3.8 + Math.random() * 2.1;
-        }
-        game.obstacles.forEach((obstacle) => { obstacle.x -= game.speed * dt; });
-        game.obstacles = game.obstacles.filter((obstacle) => obstacle.x + obstacle.width > -10);
-        const playerX = Math.max(62, game.width * .22);
-        const groundY = game.height - 42;
-        const playerBox = { left: playerX - 13, right: playerX + 14, top: groundY + game.player.y - 73, bottom: groundY + game.player.y - 3 };
-        const hit = game.obstacles.some((obstacle) => {
-          const box = { left: obstacle.x + 2, right: obstacle.x + obstacle.width - 2, top: groundY - obstacle.height + 2, bottom: groundY };
-          return playerBox.right > box.left && playerBox.left < box.right && playerBox.bottom > box.top && playerBox.top < box.bottom;
-        });
-        if (hit) {
-          game.phase = 'over';
-          setHud({ jumpCount: game.jumpCount, factIndex: game.factIndex, phase: 'over' });
-        }
-      }
       drawScene(ctx, game);
       frameRef.current = requestAnimationFrame(loop);
     };
@@ -230,32 +230,32 @@ export default function AboutRunnerGame() {
     return () => { observer.disconnect(); cancelAnimationFrame(frameRef.current); };
   }, []);
 
-  const startOrJump = () => {
+  const collectStoryStar = () => {
     const game = gameRef.current;
-    if (game.phase !== 'running') {
-      game.phase = 'running'; game.speed = 260; game.world = 0;
-      game.player = { y: 0, vy: 0 }; game.obstacles = []; game.spawnIn = 4.1;
+    if (game.phase === 'complete') {
+      game.collected = 0;
+      game.factIndex = -1;
+      game.fact = '';
     }
-    if (game.player.y === 0) {
-      game.player.vy = -660;
-      game.jumpCount += 1;
-      game.factIndex = (game.jumpCount - 1) % ABOUT_FACTS.length;
-      game.fact = ABOUT_FACTS[game.factIndex];
-    }
-    setHud({ jumpCount: game.jumpCount, factIndex: game.factIndex, phase: game.phase });
+    game.phase = 'collecting';
+    game.factIndex = game.collected % ABOUT_FACTS.length;
+    game.fact = ABOUT_FACTS[game.factIndex];
+    game.collected += 1;
+    if (game.collected >= ABOUT_FACTS.length) game.phase = 'complete';
+    setHud({ collected: game.collected, factIndex: game.factIndex, phase: game.phase });
     canvasRef.current?.focus({ preventScroll: true });
   };
 
-  const buttonLabel = hud.phase === 'ready' ? 'Start · reveal first line' : hud.phase === 'over' ? 'Run again' : 'Jump · next line';
+  const buttonLabel = hud.phase === 'complete' ? 'Play again' : 'Collect a star';
   return <section className="about-runner-section" aria-labelledby="aboutRunnerTitle">
     <div className="about-runner-heading">
-      <div><p>A LITTLE ABOUT ME, ONE JUMP AT A TIME</p><h2 id="aboutRunnerTitle">Meet Muntaha <em>in motion.</em></h2></div>
-      <p className="about-runner-description">Jump to reveal a new line about my work, how I collaborate, and what I build. Click or tap the scene, or press Space.</p>
+      <div><p>A LITTLE ABOUT ME, ONE STAR AT A TIME</p><h2 id="aboutRunnerTitle">Collect my <em>story stars.</em></h2></div>
+      <p className="about-runner-description">Find the glowing stars to uncover a new line about my work, how I collaborate, and what I build. Tap the scene or press Space.</p>
     </div>
     <div className="about-runner-panel">
-      <div className="about-runner-hud"><span><i className={hud.phase === 'running' ? 'is-live' : ''} />{hud.phase === 'running' ? 'YOUR STORY, IN MOTION' : hud.phase === 'over' ? 'READY FOR ANOTHER LINE' : 'TAP TO GET TO KNOW ME'}</span><span>FACT <b>{hud.factIndex < 0 ? '0' : hud.factIndex + 1}/{ABOUT_FACTS.length}</b><span className="about-runner-best">JUMPS <b>{hud.jumpCount}</b></span></span></div>
-      <canvas ref={canvasRef} className="about-runner-canvas" tabIndex="0" aria-label="About Muntaha interactive scene. Click, tap, or press space to jump and reveal a new fact." onPointerDown={(event) => { event.preventDefault(); startOrJump(); }} onKeyDown={(event) => { if (event.code === 'Space' || event.code === 'ArrowUp') { event.preventDefault(); startOrJump(); } }} />
-      <div className="about-runner-controls"><span>CLICK · TAP · SPACE TO JUMP</span><button type="button" onClick={startOrJump}>{buttonLabel}<span aria-hidden="true">↗</span></button></div>
+      <div className="about-runner-hud"><span><i className={hud.phase === 'collecting' ? 'is-live' : ''} />{hud.phase === 'collecting' ? 'STORY STARS FOUND' : hud.phase === 'complete' ? 'STORY COMPLETE' : 'YOUR STORY IS WAITING'}</span><span>FACT <b>{hud.factIndex < 0 ? '0' : hud.factIndex + 1}/{ABOUT_FACTS.length}</b><span className="about-runner-best">STARS <b>{hud.collected}</b></span></span></div>
+      <canvas ref={canvasRef} className="about-runner-canvas" tabIndex="0" aria-label="Muntaha’s Story Stars. Tap the scene, click, or press space to collect stars and reveal facts." onPointerDown={(event) => { event.preventDefault(); collectStoryStar(); }} onKeyDown={(event) => { if (event.code === 'Space' || event.code === 'ArrowUp' || event.code === 'Enter') { event.preventDefault(); collectStoryStar(); } }} />
+      <div className="about-runner-controls"><span>TAP A SPARKLE · CLICK · PRESS SPACE</span><button type="button" onClick={collectStoryStar}>{buttonLabel}<span aria-hidden="true">↗</span></button></div>
     </div>
   </section>;
 }
