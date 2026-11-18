@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Icon from '../components/Icon.jsx';
+import AboutRunnerGame from '../components/AboutRunnerGame.jsx';
 
 export default function AboutPage() {
   const [activeCell, setActiveCell] = useState(null);
@@ -62,5 +63,6 @@ export default function AboutPage() {
       <h2 id="standaloneAboutEndTitle">Let’s make it <em>real.</em></h2>
       <a href="#/contact">Get in touch <Icon name="arrowUpRight" size={18} /></a>
     </section>
+    <AboutRunnerGame />
   </main>;
 }
