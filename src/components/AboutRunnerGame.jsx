@@ -20,7 +20,7 @@ const ABOUT_FACTS = [
 
 function drawRunner(ctx, x, groundY, time) {
   const cycle = time * 12;
-  const stride = Math.sin(cycle) * 3;
+  const stride = Math.sin(cycle) * 10;
   const lift = Math.max(0, Math.cos(cycle * 2)) * 2;
   ctx.save();
   ctx.translate(x, groundY - lift);
@@ -29,45 +29,43 @@ function drawRunner(ctx, x, groundY, time) {
   ctx.beginPath(); ctx.ellipse(0, 2 + lift, 21, 5, 0, 0, Math.PI * 2); ctx.fill();
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
 
-  // Keep the runner upright and front-facing, with a small even jogging step.
-  const leg = ctx.createLinearGradient(0,-28,0,1);
+  // Rear-view running stride: the character is moving away along the track.
+  const leg = ctx.createLinearGradient(0,-27,0,2);
   leg.addColorStop(0,'#34495a'); leg.addColorStop(1,'#1e303f');
-  ctx.strokeStyle = leg; ctx.lineWidth = 8;
+  ctx.strokeStyle = leg; ctx.lineWidth = 8.5;
   ctx.beginPath();
-  ctx.moveTo(-4,-20); ctx.lineTo(-5 - stride*.35,-9); ctx.lineTo(-6 - stride,-1);
-  ctx.moveTo(4,-20); ctx.lineTo(5 + stride*.35,-9); ctx.lineTo(6 + stride,-1);
+  ctx.moveTo(-4,-22); ctx.lineTo(-6 - stride*.45,-11); ctx.lineTo(-8 - stride,-1);
+  ctx.moveTo(4,-22); ctx.lineTo(6 + stride*.45,-11); ctx.lineTo(8 + stride,-1);
   ctx.stroke();
-  ctx.fillStyle = '#eee8dc';
+  ctx.fillStyle = '#263744';
   ctx.beginPath();
-  ctx.ellipse(-9 - stride,-1,7,3.5,0,0,Math.PI*2);
-  ctx.ellipse(9 + stride,-1,7,3.5,0,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#cf7f52';
+  ctx.ellipse(-11 - stride,-1,7,3.6,-.08,0,Math.PI*2);
+  ctx.ellipse(11 + stride,-1,7,3.6,.08,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#e8e2d7';
   ctx.beginPath();
-  ctx.ellipse(-9 - stride,-2,5,2.5,0,0,Math.PI*2);
-  ctx.ellipse(9 + stride,-2,5,2.5,0,0,Math.PI*2); ctx.fill();
+  ctx.ellipse(-11 - stride,-2.8,6,1.2,-.08,0,Math.PI*2);
+  ctx.ellipse(11 + stride,-2.8,6,1.2,.08,0,Math.PI*2); ctx.fill();
 
-  // Long modest tunic with soft fabric shading and a moving hem.
-  const tunic = ctx.createLinearGradient(-13,-51,14,-17);
-  tunic.addColorStop(0,'#557c88'); tunic.addColorStop(.48,'#365d69'); tunic.addColorStop(1,'#254853');
+  // Modest running outfit with a little fabric movement at the hem.
+  const tunic = ctx.createLinearGradient(-15,-52,15,-16);
+  tunic.addColorStop(0,'#567d88'); tunic.addColorStop(.5,'#365d69'); tunic.addColorStop(1,'#294a56');
   ctx.fillStyle = tunic;
-  ctx.beginPath(); ctx.moveTo(-8,-52); ctx.quadraticCurveTo(0,-57,9,-51); ctx.lineTo(13,-24);
-  ctx.quadraticCurveTo(1,-17,-13,-23); ctx.closePath(); ctx.fill();
-  ctx.strokeStyle='rgba(216,233,224,.35)';ctx.lineWidth=1.2;
-  ctx.beginPath();ctx.moveTo(1,-48);ctx.lineTo(2,-23);ctx.stroke();
-  ctx.strokeStyle='#294b56';ctx.lineWidth=6;
-  ctx.beginPath();ctx.moveTo(-7,-46);ctx.lineTo(-12,-37);ctx.lineTo(-11-stride*.35,-30);ctx.moveTo(7,-46);ctx.lineTo(12,-37);ctx.lineTo(11+stride*.35,-30);ctx.stroke();
-  ctx.fillStyle='#e6b18a';ctx.beginPath();ctx.arc(-11-stride*.35,-29,2.8,0,Math.PI*2);ctx.arc(11+stride*.35,-29,2.8,0,Math.PI*2);ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-9,-51); ctx.quadraticCurveTo(0,-56,9,-51); ctx.lineTo(14,-23);
+  ctx.quadraticCurveTo(2,-17,-13,-22); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='rgba(216,233,224,.26)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,-47);ctx.quadraticCurveTo(2,-37,1,-23);ctx.moveTo(-8,-24);ctx.quadraticCurveTo(0,-21,10,-24);ctx.stroke();
+  ctx.strokeStyle='#294b56';ctx.lineWidth=7;
+  ctx.beginPath();ctx.moveTo(-8,-46);ctx.lineTo(-13,-37);ctx.lineTo(-13-stride*.42,-29);ctx.moveTo(8,-46);ctx.lineTo(13,-37);ctx.lineTo(13+stride*.42,-29);ctx.stroke();
+  ctx.fillStyle='#e6b18a';ctx.beginPath();ctx.arc(-13-stride*.42,-29,2.7,0,Math.PI*2);ctx.arc(13+stride*.42,-29,2.7,0,Math.PI*2);ctx.fill();
 
-  // Symmetrical hijab framing a forward gaze; the scarf tail moves gently with the run.
-  ctx.fillStyle='#1a2730';
-  ctx.beginPath();ctx.moveTo(-10,-56);ctx.quadraticCurveTo(-17,-72,0,-80);ctx.quadraticCurveTo(18,-79,20,-62);ctx.quadraticCurveTo(24,-47,12,-40);ctx.lineTo(9,-47);ctx.quadraticCurveTo(17,-58,11,-68);ctx.quadraticCurveTo(0,-74,-7,-63);ctx.lineTo(-6,-46);ctx.quadraticCurveTo(-16,-49,-10,-56);ctx.fill();
-  ctx.fillStyle='#e8bb98';ctx.beginPath();ctx.ellipse(2,-59,9,10,.02,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#172630';ctx.beginPath();ctx.moveTo(-7,-66);ctx.quadraticCurveTo(1,-76,11,-67);ctx.lineTo(10,-62);ctx.quadraticCurveTo(2,-69,-5,-61);ctx.closePath();ctx.fill();
-  ctx.fillStyle='#151c20';ctx.beginPath();ctx.ellipse(-2,-59,1.45,1,0,0,Math.PI*2);ctx.ellipse(5,-59,1.45,1,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#172630';ctx.beginPath();ctx.moveTo(-6,-55);ctx.quadraticCurveTo(2,-52,10,-55);ctx.lineTo(10,-47);ctx.quadraticCurveTo(3,-43,-5,-47);ctx.closePath();ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,.14)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(-10,-57);ctx.quadraticCurveTo(-13,-70,-2,-76);ctx.stroke();
-  ctx.fillStyle='#243d49';ctx.beginPath();ctx.moveTo(-8,-51);ctx.quadraticCurveTo(-20,-57,-25-stride*.25,-51);ctx.lineTo(-15,-43);ctx.quadraticCurveTo(-8,-45,-1,-50);ctx.fill();
+  // Back of the hijab and flowing scarf tails; no face is turned toward the camera.
+  ctx.fillStyle='#111a20';
+  ctx.beginPath();ctx.moveTo(-9,-54);ctx.quadraticCurveTo(-16,-70,-8,-78);ctx.quadraticCurveTo(0,-87,11,-80);ctx.quadraticCurveTo(21,-73,17,-58);ctx.quadraticCurveTo(15,-49,9,-43);ctx.lineTo(9,-33);ctx.quadraticCurveTo(2,-29,-7,-34);ctx.lineTo(-7,-44);ctx.quadraticCurveTo(-15,-47,-9,-54);ctx.fill();
+  const scarf=ctx.createLinearGradient(-23,-57,4,-35);
+  scarf.addColorStop(0,'#263d49');scarf.addColorStop(1,'#17252d');ctx.fillStyle=scarf;
+  ctx.beginPath();ctx.moveTo(-8,-52);ctx.quadraticCurveTo(-18,-58,-24-stride*.28,-53);ctx.lineTo(-17-stride*.18,-44);ctx.quadraticCurveTo(-11,-44,-5,-48);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(-7,-73);ctx.quadraticCurveTo(3,-81,12,-73);ctx.moveTo(-6,-41);ctx.quadraticCurveTo(1,-38,8,-41);ctx.stroke();
   ctx.restore();
 }
 
