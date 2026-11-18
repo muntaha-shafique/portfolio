@@ -12,7 +12,7 @@ export default function HomePage() {
       <span>&amp;Agentic AI ENGINEER</span>
     </div>
     <nav className="hero-top-nav" aria-label="Main Navigation">
-      <a href="#about" className="hero-nav-item">ABOUT</a>
+      <a href="#/about" className="hero-nav-item">ABOUT</a>
       <a href="#services" className="hero-nav-item">SERVICES</a>
       <a href="#projects" className="hero-nav-item">PROJECTS</a>
       <a href="#/contact" className="hero-nav-item">CONTACT</a>
