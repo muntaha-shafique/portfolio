@@ -32,6 +32,11 @@ export default function AboutPage() {
         <div className="standalone-about-copy">
           <h1 id="standaloneAboutTitle">I’m Muntaha.<br /><em>I build what’s next.</em></h1>
           <p className="standalone-about-intro">I’m an Agentic AI engineer and full-stack developer working with clients in Pakistan and internationally to turn complex ideas into clear, useful digital experiences.</p>
+          <div className="about-hero-facts" aria-label="About my work">
+            <div><strong>Pakistan</strong><span>Based here, working worldwide</span></div>
+            <div><strong>AI + Web</strong><span>From intelligent systems to full-stack products</span></div>
+            <div><strong>End to end</strong><span>From first idea through launch</span></div>
+          </div>
           <a className="standalone-about-cta" href="#/contact">Let’s talk about your project <Icon name="arrowUpRight" size={18} /></a>
         </div>
         <figure className="standalone-about-portrait">
@@ -57,26 +62,33 @@ export default function AboutPage() {
 
     <section className="about-journey-section" aria-labelledby="aboutJourneyTitle">
       <div className="about-journey-heading">
-        <div><p className="about-section-kicker">THE JOURNEY</p><h2 id="aboutJourneyTitle">From an idea to <em>what’s next.</em></h2></div>
-        <p>My work keeps evolving with the problems people need to solve—building a strong foundation, adding intelligent systems, and making the whole experience feel simple.</p>
+        <div><p className="about-section-kicker">MY CREATIVE &amp; TECHNICAL JOURNEY</p><h2 id="aboutJourneyTitle">A thoughtful route from <em>idea to impact.</em></h2></div>
+        <p>Every project starts with understanding what matters. I bring design thinking, full-stack engineering, and useful AI together around that goal.</p>
       </div>
       <div className="about-journey-steps">
-        <article><span className="about-journey-index">01 <i /></span><p>THE FOUNDATION</p><h3>Full-stack products</h3><div>Building responsive websites and web applications with reliable foundations and clear user experiences.</div></article>
-        <article><span className="about-journey-index">02 <i /></span><p>THE NEXT LAYER</p><h3>Agentic AI</h3><div>Designing agents and automations that connect tools, handle repeatable work, and help teams move faster.</div></article>
-        <article><span className="about-journey-index">03 <i /></span><p>WHERE I AM TODAY</p><h3>Global collaboration</h3><div>Partnering with local and international clients to shape practical digital ideas into real products.</div></article>
+        <article><span className="about-journey-index">01 <i /></span><p>DISCOVER</p><h3>Understand the goal</h3><div>We get clear on the people, problem, and outcome before deciding what to build.</div></article>
+        <article><span className="about-journey-index">02 <i /></span><p>DESIGN &amp; BUILD</p><h3>Make it useful</h3><div>Bring full-stack development and agentic AI together in a considered, reliable product.</div></article>
+        <article><span className="about-journey-index">03 <i /></span><p>REFINE &amp; GROW</p><h3>Ready for what’s next</h3><div>Polish the details, launch with care, and leave room for the product to grow.</div></article>
       </div>
     </section>
 
     <section className="about-values-section" aria-labelledby="aboutValuesTitle">
+      <figure className="about-values-visual">
+        <img src="assets/images/about-hijabi-headphones.png" alt="Muntaha Shafique, Agentic AI engineer and full-stack developer" loading="lazy" />
+        <figcaption><span>BUILT WITH CARE</span><span>PAKISTAN · WORLDWIDE</span></figcaption>
+      </figure>
+      <div className="about-values-content">
       <div className="about-values-heading">
         <p className="about-section-kicker">GOALS &amp; VALUES</p>
         <h2 id="aboutValuesTitle">Good work starts with <em>understanding.</em></h2>
         <p>Technology matters most when it fits the people using it. These principles guide how I approach every project.</p>
       </div>
       <div className="about-values-list">
-        <article><span>01</span><div><h3>Start with the real problem</h3><p>Understand the goal before choosing the tools or shaping the solution.</p></div></article>
-        <article><span>02</span><div><h3>Keep the experience clear</h3><p>Make every screen, workflow, and interaction easier to follow.</p></div></article>
-        <article><span>03</span><div><h3>Build for the long run</h3><p>Create dependable systems that can grow with the people and teams they serve.</p></div></article>
+        <article><span>✓</span><div><h3>Start with the real problem</h3><p>Understand the goal before choosing tools or shaping a solution.</p></div></article>
+        <article><span>✓</span><div><h3>Keep the experience clear</h3><p>Make every screen, workflow, and interaction easier to follow.</p></div></article>
+        <article><span>✓</span><div><h3>Build for the long run</h3><p>Create dependable systems that can grow with the people and teams they serve.</p></div></article>
+        <article><span>✓</span><div><h3>Collaborate across borders</h3><p>Work directly with local and international clients with clear communication at every step.</p></div></article>
+      </div>
       </div>
     </section>
 

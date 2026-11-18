@@ -4635,3 +4635,44 @@ textarea:focus-visible {
   .about-why-section, .about-journey-section, .about-values-section { width: calc(100% - 32px); }
   .about-why-copy h2, .about-journey-heading h2, .about-values-heading h2 { font-size: clamp(2.5rem,11vw,3.3rem); }
 }
+
+/* About page: reference-inspired story layout in Muntaha's cream, ink, and warm accent palette. */
+.about-hero-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; max-width: 650px; margin: 26px 0 0; }
+.about-hero-facts > div { display: flex; flex-direction: column; gap: 5px; padding: 13px 14px; border-left: 2px solid #b15f4c; background: rgba(255,255,255,.47); }
+.about-hero-facts strong { font-size: .91rem; letter-spacing: -.02em; }
+.about-hero-facts span { color: #77736b; font-size: .7rem; line-height: 1.45; }
+.about-journey-section { padding-top: 78px; }
+.about-journey-heading { text-align: center; grid-template-columns: 1fr; gap: 13px; justify-items: center; margin-bottom: 46px; }
+.about-journey-heading h2 { max-width: 800px; }
+.about-journey-heading > p { max-width: 800px; }
+.about-journey-steps { position: relative; padding-top: 26px; }
+.about-journey-steps::before { position: absolute; top: 7px; right: 8%; left: 8%; height: 2px; background: linear-gradient(90deg,#345fbe,#171715,#a8493f); content: ""; opacity: .62; }
+.about-journey-steps article { min-height: 260px; border-radius: 12px 12px 24px 12px; }
+.about-journey-steps article::before { position: absolute; top: -28px; left: 25px; width: 12px; height: 12px; border: 4px solid #f4f1e9; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 1px currentColor; content: ""; }
+.about-values-section { align-items: center; }
+.about-values-visual { position: relative; min-height: 490px; margin: 0; overflow: hidden; border-radius: 48% 48% 18px 18px; background: radial-gradient(ellipse at 50% 34%,#fff 0%,#e9e5dc 57%,#d7d0c3 100%); }
+.about-values-visual::before { position: absolute; inset: 8% 9%; border: 1px solid rgba(55,52,44,.24); border-radius: 48% 48% 16px 16px; content: ""; }
+.about-values-visual img { position: absolute; inset: auto 0 0; width: 100%; height: 108%; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 22px 24px rgba(25,23,20,.16)); animation: standaloneAboutFloat 6.5s ease-in-out infinite; }
+.about-values-visual figcaption { position: absolute; right: 20px; bottom: 17px; left: 20px; display: flex; justify-content: space-between; gap: 10px; color: #77736b; font-size: .53rem; font-weight: 750; letter-spacing: .12em; }
+.about-values-content { min-width: 0; }
+.about-values-heading { margin-bottom: 24px; }
+.about-values-list article > span { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: #a8493f; color: #fff8ed; font-size: .76rem; }
+.about-runner-panel { border-color: rgba(28,35,34,.15); background: #e4e2d8; color: #232925; box-shadow: 0 24px 55px rgba(44,45,39,.14); }
+.about-runner-hud { border-color: rgba(38,49,46,.13); color: #555c58; }
+.about-runner-hud i { background: #9b9585; box-shadow: 0 0 0 4px rgba(115,123,128,.12); }
+.about-runner-hud i.is-live { background: #5a805d; box-shadow: 0 0 0 4px rgba(90,128,93,.16); }
+.about-runner-hud b { color: #222925; }
+.about-runner-controls { border-color: rgba(38,49,46,.13); color: #606761; }
+.about-runner-controls button { background: #202320; color: #f5f1e8; }
+.about-runner-controls button:hover { background: #454a44; }
+@media (max-width: 900px) {
+  .about-hero-facts { grid-template-columns: 1fr; gap: 8px; max-width: 450px; }
+  .about-hero-facts > div { padding: 10px 12px; }
+  .about-values-visual { width: min(100%,560px); min-height: 400px; margin-inline: auto; }
+}
+@media (max-width: 640px) {
+  .about-journey-steps { padding-top: 0; }
+  .about-journey-steps::before, .about-journey-steps article::before { display: none; }
+  .about-values-visual { min-height: 340px; }
+  .about-values-visual figcaption { font-size: .46rem; }
+}
