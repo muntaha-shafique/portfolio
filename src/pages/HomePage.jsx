@@ -570,20 +570,20 @@ export default function HomePage() {
       <span className="client-experience-caption">PAKISTAN · WORKING WORLDWIDE</span>
     </div>
     <div className="client-experience-copy reveal">
-      <p className="client-experience-eyebrow">CLIENT EXPERIENCE</p>
+      <p className="client-experience-eyebrow">TESTIMONIALS · SAMPLE COPY</p>
       <h2 id="clientExperienceTitle">What Say <em>Clients</em></h2>
-      <p className="client-experience-intro">Clear communication, thoughtful development, and a dependable path from the first idea to launch.</p>
-      <div className="client-experience-window" aria-label="How I work with clients">
+      <p className="client-experience-intro">Draft review examples about the work. Confirm each review and country with the client before publishing.</p>
+      <div className="client-experience-window" aria-label="Sample client review drafts">
         <div className="client-experience-track">
           <div className="client-experience-list">
-            <div className="client-experience-card"><span>01</span><div><h3>Clear communication</h3><p>Stay in the loop from the first conversation through delivery.</p></div><b aria-hidden="true">↗</b></div>
-            <div className="client-experience-card"><span>02</span><div><h3>Built around your goals</h3><p>Shape the right AI and web solution around real business needs.</p></div><b aria-hidden="true">↗</b></div>
-            <div className="client-experience-card"><span>03</span><div><h3>Reliable delivery</h3><p>Move from a clear plan to a polished product ready to grow.</p></div><b aria-hidden="true">↗</b></div>
+            <article className="client-review-card"><div className="client-review-project">WEBSITE &amp; ONLINE STORE <span>SAMPLE</span></div><blockquote>“Muntaha turned our idea into a polished online store. The layout makes it easy for customers to explore products, and the finished website gives our brand a much stronger online presence.”</blockquote><div className="client-review-author"><strong>Client name to confirm</strong><span>Country to confirm</span></div></article>
+            <article className="client-review-card"><div className="client-review-project">AI WORKFLOW <span>SAMPLE</span></div><blockquote>“The AI workflow Muntaha built has made our repeated tasks easier to manage. It fits our process well and gives us a practical way to save time.”</blockquote><div className="client-review-author"><strong>Client name to confirm</strong><span>Country to confirm</span></div></article>
+            <article className="client-review-card"><div className="client-review-project">WEB APPLICATION <span>SAMPLE</span></div><blockquote>“Muntaha brought our web app idea to life with a clean, easy-to-use interface and a solid experience across the product.”</blockquote><div className="client-review-author"><strong>Client name to confirm</strong><span>Country to confirm</span></div></article>
           </div>
           <div className="client-experience-list" aria-hidden="true">
-            <div className="client-experience-card"><span>01</span><div><h3>Clear communication</h3><p>Stay in the loop from the first conversation through delivery.</p></div><b>↗</b></div>
-            <div className="client-experience-card"><span>02</span><div><h3>Built around your goals</h3><p>Shape the right AI and web solution around real business needs.</p></div><b>↗</b></div>
-            <div className="client-experience-card"><span>03</span><div><h3>Reliable delivery</h3><p>Move from a clear plan to a polished product ready to grow.</p></div><b>↗</b></div>
+            <article className="client-review-card"><div className="client-review-project">WEBSITE &amp; ONLINE STORE <span>SAMPLE</span></div><blockquote>“Muntaha turned our idea into a polished online store. The layout makes it easy for customers to explore products, and the finished website gives our brand a much stronger online presence.”</blockquote><div className="client-review-author"><strong>Client name to confirm</strong><span>Country to confirm</span></div></article>
+            <article className="client-review-card"><div className="client-review-project">AI WORKFLOW <span>SAMPLE</span></div><blockquote>“The AI workflow Muntaha built has made our repeated tasks easier to manage. It fits our process well and gives us a practical way to save time.”</blockquote><div className="client-review-author"><strong>Client name to confirm</strong><span>Country to confirm</span></div></article>
+            <article className="client-review-card"><div className="client-review-project">WEB APPLICATION <span>SAMPLE</span></div><blockquote>“Muntaha brought our web app idea to life with a clean, easy-to-use interface and a solid experience across the product.”</blockquote><div className="client-review-author"><strong>Client name to confirm</strong><span>Country to confirm</span></div></article>
           </div>
         </div>
       </div>

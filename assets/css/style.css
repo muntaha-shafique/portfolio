@@ -5253,3 +5253,30 @@ textarea:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .client-experience-track { animation: none; }
 }
+
+/* Testimonial-style cards use sample labels until each client approves their quote. */
+.client-experience-window { height: 330px; }
+.client-experience-list { gap: 16px; }
+.client-review-card {
+  display: flex;
+  min-height: 314px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border: 1px solid rgba(23,23,21,.09);
+  border-radius: 18px;
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 14px 34px rgba(23,23,21,.055);
+}
+.client-review-project { display: flex; align-items: center; justify-content: space-between; gap: 14px; color: #777267; font-size: .63rem; font-weight: 760; letter-spacing: .12em; }
+.client-review-project span { flex: 0 0 auto; padding: 5px 8px; border: 1px solid rgba(119,114,103,.22); border-radius: 999px; font-size: .54rem; letter-spacing: .1em; }
+.client-review-card blockquote { margin: 22px 0; color: #55534e; font-size: clamp(.94rem,1.15vw,1.08rem); line-height: 1.62; }
+.client-review-author { display: flex; flex-direction: column; gap: 4px; border-top: 1px solid rgba(23,23,21,.1); padding-top: 14px; }
+.client-review-author strong { color: #171715; font-size: .79rem; font-weight: 730; }
+.client-review-author span { color: #88847c; font-size: .72rem; }
+@media (max-width: 520px) {
+  .client-experience-window { height: 316px; }
+  .client-review-card { min-height: 300px; padding: 18px 16px; border-radius: 15px; }
+  .client-review-card blockquote { margin: 18px 0; font-size: .88rem; line-height: 1.55; }
+  .client-review-project { font-size: .57rem; }
+}
