@@ -4388,8 +4388,8 @@ textarea:focus-visible {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: clamp(590px, 54vw, 740px);
-  padding: 140px max(24px, calc((100vw - 1180px) / 2)) 82px;
+  min-height: clamp(570px, 100svh, 700px);
+  padding: 104px max(24px, calc((100vw - 1180px) / 2)) 36px;
   overflow: hidden;
   clip-path: none;
   background: #050505;
@@ -4405,7 +4405,7 @@ textarea:focus-visible {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(320px, .88fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
   align-items: center;
   gap: clamp(28px, 6vw, 88px);
   width: min(100%, 1180px);
@@ -4414,10 +4414,10 @@ textarea:focus-visible {
 .contact-signal-copy { max-width: 660px; }
 .contact-signal-copy .contact-signal-kicker { margin: 0 0 22px; color: #a6a6a6; font-size: .73rem; font-weight: 700; letter-spacing: .15em; line-height: 1.5; }
 .contact-signal-copy h1 { margin: 0 0 20px; color: #f5f3ed; font-size: clamp(3.35rem, 6.2vw, 5.55rem); letter-spacing: -.07em; line-height: .96; white-space: nowrap; }
-.contact-signal-copy .contact-signal-description { max-width: 610px; margin: 0; color: rgba(245,243,237,.82); font-size: clamp(1.18rem, 1.8vw, 1.48rem); font-weight: 520; letter-spacing: -.035em; line-height: 1.34; text-transform: none; }
+.contact-signal-copy .contact-signal-description { max-width: 610px; margin: 0; color: rgba(245,243,237,.88); font-size: clamp(1.3rem, 2.05vw, 1.78rem); font-weight: 520; letter-spacing: -.035em; line-height: 1.2; text-transform: none; }
 .contact-signal-link { display: inline-flex; align-items: center; gap: 20px; margin-top: 32px; padding-bottom: 9px; border-bottom: 1px solid rgba(255,255,255,.45); color: #f5f3ed; font-size: .86rem; font-weight: 650; text-decoration: none; transition: gap .2s ease, color .2s ease; }
 .contact-signal-link:hover { gap: 27px; color: #fff; }
-.contact-card-stage { position: relative; display: grid; min-height: 450px; place-items: center; isolation: isolate; }
+.contact-card-stage { position: relative; display: grid; min-height: clamp(390px, 72svh, 440px); place-items: center; isolation: isolate; translate: 30px 0; }
 .contact-card-stage::before { position: absolute; width: min(82%, 340px); aspect-ratio: 1; border: 1px solid rgba(255,255,255,.055); border-radius: 50%; box-shadow: 0 0 0 28px rgba(255,255,255,.018), 0 0 0 58px rgba(255,255,255,.012); content: ""; pointer-events: none; }
 .contact-id-card { position: relative; display: flex; flex-direction: column; width: clamp(230px, 18vw, 250px); aspect-ratio: .74; padding: 21px 21px 18px; overflow: visible; border: 1px solid rgba(255,255,255,.2); border-radius: 17px; outline: none; background: linear-gradient(145deg, rgba(255,255,255,.055), transparent 42%), repeating-linear-gradient(135deg, transparent 0 25px, rgba(255,255,255,.025) 26px 38px, transparent 39px 64px), #0b0b0b; box-shadow: 0 30px 90px rgba(0,0,0,.58), inset 0 0 35px rgba(255,255,255,.025); color: #f7f5ef; cursor: grab; touch-action: none; transform: translate3d(var(--card-x, 0px), var(--card-y, 0px), 0) rotate(-3deg); transition: box-shadow .22s ease, border-color .22s ease, transform .3s cubic-bezier(.2,.75,.25,1); user-select: none; }
 .contact-id-card::before { position: absolute; z-index: -1; top: -215px; left: 50%; width: 43px; height: 216px; border: 1px solid rgba(255,255,255,.12); border-bottom: 0; border-radius: 3px 3px 0 0; background: repeating-linear-gradient(90deg, #090909 0 6px, #151515 7px 9px, #080808 10px 15px); box-shadow: inset 7px 0 10px rgba(255,255,255,.035), inset -7px 0 10px rgba(0,0,0,.55); content: ""; transform: translateX(-50%) rotate(-1deg); transform-origin: bottom center; }
@@ -4445,8 +4445,8 @@ textarea:focus-visible {
   .contact-page-hero.contact-signal-hero { min-height: 0; padding: 125px 22px 54px; }
   .contact-signal-inner { grid-template-columns: 1fr; gap: 20px; }
   .contact-signal-copy h1 { font-size: clamp(3.35rem, 15vw, 5.4rem); white-space: normal; }
-  .contact-signal-description { max-width: 540px; font-size: 1.08rem; }
-  .contact-card-stage { min-height: 430px; }
+  .contact-signal-copy .contact-signal-description { max-width: 540px; font-size: 1.35rem; }
+  .contact-card-stage { min-height: 430px; translate: 0; }
   .contact-id-card { width: min(72vw, 250px); }
 }
 @media (max-width: 420px) {
