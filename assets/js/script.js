@@ -585,12 +585,22 @@ const initializePortfolio = () => {
     portfolioChatToggle.addEventListener('click', () => {
       const opening = portfolioChatPanel.hidden;
       if (opening && window.speechSynthesis && 'SpeechSynthesisUtterance' in window) {
-        window.speechSynthesis.cancel();
-        const greeting = new SpeechSynthesisUtterance("Hey buddy, let's connect!");
-        greeting.lang = 'en-US';
-        greeting.rate = 0.94;
-        greeting.pitch = 1.12;
-        window.speechSynthesis.speak(greeting);
+        const speech = window.speechSynthesis;
+        speech.cancel();
+        const voices = speech.getVoices();
+        const englishVoice = voices.find((voice) => /^(en-US|en-GB|en-CA|en-AU)/i.test(voice.lang));
+        const feminineVoice = voices.find((voice) => /^(en-US|en-GB|en-CA|en-AU)/i.test(voice.lang) && /aria|jenny|zira|samantha|ava|susan|michelle|sara|karen|moira|victoria|tessa|hazel|female/i.test(voice.name)) || englishVoice;
+        const speakLine = (text) => {
+          const line = new SpeechSynthesisUtterance(text);
+          line.voice = feminineVoice || null;
+          line.lang = feminineVoice?.lang || 'en-US';
+          line.rate = 0.96;
+          line.pitch = 1.18;
+          line.volume = 0.95;
+          speech.speak(line);
+        };
+        speakLine("Hi there! Let's connect.");
+        speakLine("Welcome! I'm Muntaha Shafique's personal AI assistant. Ask me about her full-stack work, agentic AI systems, featured projects, or services. I can also help you get in touch.");
       }
       setPortfolioChatOpen(opening);
     });
