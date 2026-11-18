@@ -3,10 +3,19 @@ import React, { useEffect, useRef, useState } from 'react';
 const ABOUT_FACTS = [
   'I’m Muntaha Shafique, an Agentic AI engineer and full-stack developer.',
   'I’m based in Pakistan and work with clients around the world.',
-  'I build full-stack websites and digital products from interface to backend.',
-  'I create agentic AI systems and useful automations for real work.',
-  'I turn complex ideas into clear, thoughtful digital experiences.',
-  'I enjoy collaborating with people who are ready to build what’s next.',
+  'I build digital products from the first screen through to the backend.',
+  'I create AI agents and automations for practical, everyday work.',
+  'I turn complex ideas into clear and useful digital experiences.',
+  'I enjoy working directly with clients to shape their ideas.',
+  'I bring thoughtful design and careful engineering together.',
+  'I focus on making websites easy to use on every screen.',
+  'I like solving the problem before choosing the technology.',
+  'I build with room for a product to grow over time.',
+  'I work across AI systems, workflows, and full-stack web.',
+  'I value clear communication throughout a project.',
+  'I collaborate with local and international businesses.',
+  'I care about the small details that make a product feel right.',
+  'I help turn a promising idea into something people can use.',
 ];
 
 function drawTree(ctx, x, baseY, scale, color) {
@@ -163,7 +172,7 @@ function drawScene(ctx, game) {
 
 export default function AboutRunnerGame() {
   const canvasRef = useRef(null);
-  const gameRef = useRef({ width: 0, height: 0, phase: 'ready', jumpCount: 0, factIndex: -1, fact: '', world: 0, time: 0, speed: 260, player: { y: 0, vy: 0 }, obstacles: [], spawnIn: 1.25, lastFrame: 0 });
+  const gameRef = useRef({ width: 0, height: 0, phase: 'ready', jumpCount: 0, factIndex: -1, fact: '', world: 0, time: 0, speed: 260, player: { y: 0, vy: 0 }, obstacles: [], spawnIn: 4.1, lastFrame: 0 });
   const frameRef = useRef(0);
   const [hud, setHud] = useState({ jumpCount: 0, factIndex: -1, phase: 'ready' });
 
@@ -196,9 +205,9 @@ export default function AboutRunnerGame() {
         if (game.player.y > 0) { game.player.y = 0; game.player.vy = 0; }
         game.spawnIn -= dt;
         if (game.spawnIn <= 0) {
-          const height = 20 + Math.random() * 15;
-          game.obstacles.push({ x: game.width + 20, width: 20 + Math.random() * 15, height });
-          game.spawnIn = 1.15 + Math.random() * .95;
+          const height = 18 + Math.random() * 9;
+          game.obstacles.push({ x: game.width + 20, width: 18 + Math.random() * 10, height });
+          game.spawnIn = 3.8 + Math.random() * 2.1;
         }
         game.obstacles.forEach((obstacle) => { obstacle.x -= game.speed * dt; });
         game.obstacles = game.obstacles.filter((obstacle) => obstacle.x + obstacle.width > -10);
@@ -225,7 +234,7 @@ export default function AboutRunnerGame() {
     const game = gameRef.current;
     if (game.phase !== 'running') {
       game.phase = 'running'; game.speed = 260; game.world = 0;
-      game.player = { y: 0, vy: 0 }; game.obstacles = []; game.spawnIn = 1.2;
+      game.player = { y: 0, vy: 0 }; game.obstacles = []; game.spawnIn = 4.1;
     }
     if (game.player.y === 0) {
       game.player.vy = -660;
