@@ -5035,9 +5035,9 @@ textarea:focus-visible {
 
   .contact-page-hero.contact-signal-hero {
     display: flex;
-    min-height: max(900px, 100svh);
+    min-height: 680px;
     align-items: flex-start;
-    padding: clamp(450px, 128vw, 520px) 22px 36px;
+    padding: clamp(430px, 92vw, 456px) 22px 20px;
   }
   .contact-signal-inner {
     display: grid;
@@ -5061,11 +5061,15 @@ textarea:focus-visible {
     line-height: 1.35;
   }
   .contact-id-card {
-    top: 112px;
+    top: 96px;
     left: calc(50% - min(32vw, 122px));
     right: auto;
     width: min(64vw, 244px);
     padding: 18px 18px 16px;
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+    animation: none;
   }
   .contact-id-card-name { font-size: clamp(2rem, 8vw, 2.7rem); }
   .contact-id-card-role { margin-top: 11px; font-size: .58rem; }
@@ -5076,15 +5080,19 @@ textarea:focus-visible {
   .about-values-visual { height: min(112vw, 390px); min-height: 330px; }
   .contact-page-body .contact-top-bar { top: 12px; }
   .contact-page-hero.contact-signal-hero {
-    min-height: max(860px, 100svh);
-    padding: clamp(430px, 124vw, 480px) 18px 30px;
+    min-height: 660px;
+    padding: clamp(408px, 98vw, 430px) 18px 18px;
   }
   .contact-signal-copy h1 { font-size: clamp(2.65rem, 12vw, 3.35rem); }
   .contact-signal-copy .contact-signal-description { font-size: clamp(.98rem, 4.5vw, 1.08rem); }
   .contact-id-card {
-    top: 98px;
+    top: 90px;
     left: calc(50% - min(35vw, 118px));
     width: min(70vw, 236px);
     padding: 17px 16px 14px;
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+    animation: none;
   }
 }
