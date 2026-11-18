@@ -590,15 +590,13 @@ const initializePortfolio = () => {
         const femaleVoicePattern = /zira|aria|jenny|samantha|ava|susan|michelle|sara|karen|moira|victoria|tessa|hazel|google us english|female/i;
         const findFemaleVoice = () => speech.getVoices().find((voice) => /^(en-US|en-GB|en-CA|en-AU)/i.test(voice.lang) && (femaleVoicePattern.test(voice.name) || voice.gender === 'female'));
         const speakWelcome = (voice) => {
-          ["Hi there! Let's connect.", "Welcome! I'm Muntaha Shafique's personal AI assistant. Ask me about her full-stack work, agentic AI systems, featured projects, or services. I can also help you get in touch."].forEach((text) => {
-            const line = new SpeechSynthesisUtterance(text);
-            if (voice) line.voice = voice;
-            line.lang = voice?.lang || 'en-US';
-            line.rate = 0.96;
-            line.pitch = voice ? 1.08 : 1.28;
-            line.volume = 0.95;
-            speech.speak(line);
-          });
+          const line = new SpeechSynthesisUtterance("Hi there! Let's connect, Muntaha. I'm Muntaha's personal AI assistant. Ask me about her full-stack work, agentic AI systems, featured projects, or services. I can also help you get in touch.");
+          if (voice) line.voice = voice;
+          line.lang = voice?.lang || 'en-US';
+          line.rate = 0.96;
+          line.pitch = voice ? 1.08 : 1.28;
+          line.volume = 0.95;
+          speech.speak(line);
         };
         const femaleVoice = findFemaleVoice();
         if (femaleVoice) {
