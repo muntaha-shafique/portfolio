@@ -19,9 +19,9 @@ const ABOUT_FACTS = [
 ];
 
 function drawRunner(ctx, x, groundY, time) {
-  const cycle = time * 13;
-  const stride = Math.sin(cycle) * 10;
-  const lift = Math.max(0, Math.cos(cycle * 2)) * 3;
+  const cycle = time * 12;
+  const stride = Math.sin(cycle) * 3;
+  const lift = Math.max(0, Math.cos(cycle * 2)) * 2;
   ctx.save();
   ctx.translate(x, groundY - lift);
   ctx.scale(1.2, 1.2);
@@ -29,22 +29,22 @@ function drawRunner(ctx, x, groundY, time) {
   ctx.beginPath(); ctx.ellipse(0, 2 + lift, 21, 5, 0, 0, Math.PI * 2); ctx.fill();
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
 
-  // Legs and sneakers, animated in an alternating running stride.
+  // Keep the runner upright and front-facing, with a small even jogging step.
   const leg = ctx.createLinearGradient(0,-28,0,1);
   leg.addColorStop(0,'#34495a'); leg.addColorStop(1,'#1e303f');
   ctx.strokeStyle = leg; ctx.lineWidth = 8;
   ctx.beginPath();
-  ctx.moveTo(-3,-21); ctx.lineTo(-8 + stride*.72,-10); ctx.lineTo(-15 + stride,-1);
-  ctx.moveTo(4,-21); ctx.lineTo(9 - stride*.72,-11); ctx.lineTo(16 - stride,-1);
+  ctx.moveTo(-4,-20); ctx.lineTo(-5 - stride*.35,-9); ctx.lineTo(-6 - stride,-1);
+  ctx.moveTo(4,-20); ctx.lineTo(5 + stride*.35,-9); ctx.lineTo(6 + stride,-1);
   ctx.stroke();
   ctx.fillStyle = '#eee8dc';
   ctx.beginPath();
-  ctx.ellipse(-18 + stride,-1,7,3.5,-.12,0,Math.PI*2);
-  ctx.ellipse(18 - stride,-1,7,3.5,.12,0,Math.PI*2); ctx.fill();
+  ctx.ellipse(-9 - stride,-1,7,3.5,0,0,Math.PI*2);
+  ctx.ellipse(9 + stride,-1,7,3.5,0,0,Math.PI*2); ctx.fill();
   ctx.fillStyle = '#cf7f52';
   ctx.beginPath();
-  ctx.ellipse(-18 + stride,-2,5,2.5,-.12,0,Math.PI*2);
-  ctx.ellipse(18 - stride,-2,5,2.5,.12,0,Math.PI*2); ctx.fill();
+  ctx.ellipse(-9 - stride,-2,5,2.5,0,0,Math.PI*2);
+  ctx.ellipse(9 + stride,-2,5,2.5,0,0,Math.PI*2); ctx.fill();
 
   // Long modest tunic with soft fabric shading and a moving hem.
   const tunic = ctx.createLinearGradient(-13,-51,14,-17);
@@ -55,18 +55,19 @@ function drawRunner(ctx, x, groundY, time) {
   ctx.strokeStyle='rgba(216,233,224,.35)';ctx.lineWidth=1.2;
   ctx.beginPath();ctx.moveTo(1,-48);ctx.lineTo(2,-23);ctx.stroke();
   ctx.strokeStyle='#294b56';ctx.lineWidth=6;
-  ctx.beginPath();ctx.moveTo(-7,-46);ctx.lineTo(-13,-36);ctx.lineTo(-16-stride*.35,-29);ctx.moveTo(7,-46);ctx.lineTo(13,-37);ctx.lineTo(15+stride*.35,-31);ctx.stroke();
-  ctx.fillStyle='#e6b18a';ctx.beginPath();ctx.arc(-16-stride*.35,-28,2.8,0,Math.PI*2);ctx.arc(15+stride*.35,-30,2.8,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-7,-46);ctx.lineTo(-12,-37);ctx.lineTo(-11-stride*.35,-30);ctx.moveTo(7,-46);ctx.lineTo(12,-37);ctx.lineTo(11+stride*.35,-30);ctx.stroke();
+  ctx.fillStyle='#e6b18a';ctx.beginPath();ctx.arc(-11-stride*.35,-29,2.8,0,Math.PI*2);ctx.arc(11+stride*.35,-29,2.8,0,Math.PI*2);ctx.fill();
 
-  // Hijab silhouette, face, eyes, and the trailing scarf edge.
+  // Symmetrical hijab framing a forward gaze; the scarf tail moves gently with the run.
   ctx.fillStyle='#1a2730';
-  ctx.beginPath();ctx.moveTo(-8,-57);ctx.quadraticCurveTo(-15,-71,0,-78);ctx.quadraticCurveTo(18,-79,21,-62);ctx.quadraticCurveTo(26,-50,16,-41);ctx.lineTo(8,-44);ctx.quadraticCurveTo(15,-53,10,-65);ctx.quadraticCurveTo(1,-71,-5,-60);ctx.lineTo(-6,-43);ctx.quadraticCurveTo(-17,-48,-8,-57);ctx.fill();
-  ctx.fillStyle='#e8bb98';ctx.beginPath();ctx.ellipse(8,-59,8.3,10.5,.08,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#172630';ctx.beginPath();ctx.moveTo(-3,-67);ctx.quadraticCurveTo(9,-79,19,-66);ctx.lineTo(15,-60);ctx.quadraticCurveTo(7,-68,0,-58);ctx.closePath();ctx.fill();
-  ctx.fillStyle='#151c20';ctx.beginPath();ctx.ellipse(6,-60,1.4,1,0,0,Math.PI*2);ctx.ellipse(12,-60,1.4,1,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-10,-56);ctx.quadraticCurveTo(-17,-72,0,-80);ctx.quadraticCurveTo(18,-79,20,-62);ctx.quadraticCurveTo(24,-47,12,-40);ctx.lineTo(9,-47);ctx.quadraticCurveTo(17,-58,11,-68);ctx.quadraticCurveTo(0,-74,-7,-63);ctx.lineTo(-6,-46);ctx.quadraticCurveTo(-16,-49,-10,-56);ctx.fill();
+  ctx.fillStyle='#e8bb98';ctx.beginPath();ctx.ellipse(2,-59,9,10,.02,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#172630';ctx.beginPath();ctx.moveTo(-7,-66);ctx.quadraticCurveTo(1,-76,11,-67);ctx.lineTo(10,-62);ctx.quadraticCurveTo(2,-69,-5,-61);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#151c20';ctx.beginPath();ctx.ellipse(-2,-59,1.45,1,0,0,Math.PI*2);ctx.ellipse(5,-59,1.45,1,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#172630';ctx.beginPath();ctx.moveTo(-6,-55);ctx.quadraticCurveTo(2,-52,10,-55);ctx.lineTo(10,-47);ctx.quadraticCurveTo(3,-43,-5,-47);ctx.closePath();ctx.fill();
   ctx.strokeStyle='rgba(255,255,255,.14)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(-10,-57);ctx.quadraticCurveTo(-13,-69,-2,-74);ctx.stroke();
-  ctx.fillStyle='#243d49';ctx.beginPath();ctx.moveTo(-8,-53);ctx.quadraticCurveTo(-20,-57,-26-stride*.22,-50);ctx.lineTo(-15,-43);ctx.quadraticCurveTo(-7,-45,0,-51);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-10,-57);ctx.quadraticCurveTo(-13,-70,-2,-76);ctx.stroke();
+  ctx.fillStyle='#243d49';ctx.beginPath();ctx.moveTo(-8,-51);ctx.quadraticCurveTo(-20,-57,-25-stride*.25,-51);ctx.lineTo(-15,-43);ctx.quadraticCurveTo(-8,-45,-1,-50);ctx.fill();
   ctx.restore();
 }
 
@@ -272,13 +273,24 @@ export default function AboutRunnerGame() {
     if(gameRef.current.phase!=='running'){startRun();return;}
     shiftLane(event.clientX<rect.left+rect.width/2?-1:1);
   };
+  const handleGamePointerMove=(event)=>{
+    const robot=document.getElementById('portfolioHoverRobot');
+    if(!robot)return;
+    const width=robot.offsetWidth||72, height=robot.offsetHeight||72, gap=16;
+    const left=event.clientX+gap+width>window.innerWidth?event.clientX-width-gap:event.clientX+gap;
+    const top=event.clientY+gap+height>window.innerHeight?event.clientY-height-gap:event.clientY+gap;
+    robot.style.left=`${Math.max(8,left)}px`;
+    robot.style.top=`${Math.max(8,top)}px`;
+    robot.classList.add('is-visible');
+  };
+  const handleGamePointerLeave=()=>document.getElementById('portfolioHoverRobot')?.classList.remove('is-visible');
   const buttonLabel=hud.phase==='ready'?'Start Coin Run':hud.phase==='complete'?'Play Again':'Run in progress';
   return <section className="about-runner-section about-coinrun-section" aria-labelledby="aboutRunnerTitle">
     <div className="about-runner-heading">
       <div><p>ABOUT ME · COIN RUN</p><h2 id="aboutRunnerTitle">Collect my <em>story.</em></h2></div>
       <p className="about-runner-description">Move between three lanes, collect the gold coins, and uncover a new line about my work with every coin.</p>
     </div>
-    <div className="about-runner-panel about-coinrun-panel">
+    <div className="about-runner-panel about-coinrun-panel" onPointerMove={handleGamePointerMove} onPointerLeave={handleGamePointerLeave}>
       <div className="about-runner-hud"><span><i className={hud.phase==='running'?'is-live':''}/>{hud.phase==='ready'?'READY TO RUN':hud.phase==='complete'?'RUN COMPLETE':'COIN RUN'}</span><span>COINS <b>{hud.collected}/{ABOUT_FACTS.length}</b><span className="about-runner-best">LANE <b>{hud.lane+1}/3</b></span></span></div>
       <canvas ref={canvasRef} className="about-runner-canvas about-coinrun-canvas" tabIndex="0" aria-label="Coin Run. Use left and right arrows or tap either side to change lanes and collect coins. Every coin reveals a fact about Muntaha." onPointerDown={handlePointerDown} onKeyDown={handleKeyDown}/>
       <div className="about-runner-controls"><span>← → OR A / D TO CHANGE LANES · TAP LEFT / RIGHT</span><button type="button" onClick={startRun}>{buttonLabel}<span aria-hidden="true">↗</span></button></div>
