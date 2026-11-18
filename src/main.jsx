@@ -190,7 +190,7 @@ function ContactPage() {
       <section className="contact-page-hero contact-signal-hero" aria-labelledby="contactPageTitle" ref={cardStageRef}>
         <canvas className="hero-cursor-trail" aria-hidden="true" /><div className="hero-cursor-glow" aria-hidden="true" />
         <div className="contact-page-hero-inner contact-signal-inner">
-          <div className="contact-signal-copy"><h1 id="contactPageTitle">Send a Signal</h1><p className="contact-signal-description">Building something meaningful? Share your idea, and let’s turn it into a thoughtful digital experience.</p></div>
+          <div className="contact-signal-copy"><h1 id="contactPageTitle">Let’s Connect</h1><p className="contact-signal-description">Building something meaningful? Share your idea, and let’s turn it into a thoughtful digital experience.</p></div>
         </div>
         <div className="contact-card-stage" aria-label="Interactive portfolio card">
           {headerBounds.width > 0 && <svg className="contact-card-ribbon" viewBox={`0 0 ${headerBounds.width} ${headerBounds.height}`} preserveAspectRatio="none" aria-hidden="true"><path className="contact-card-ribbon-shadow" d={ribbonPath} pathLength="1" /><path className="contact-card-ribbon-main" d={ribbonPath} pathLength="1" /><path className="contact-card-ribbon-shine" d={ribbonPath} pathLength="1" /></svg>}
