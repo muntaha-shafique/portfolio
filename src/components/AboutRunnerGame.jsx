@@ -19,32 +19,40 @@ const ABOUT_FACTS = [
 ];
 
 function drawRunner(ctx, x, groundY, time) {
-  const cycle = time * 12;
-  const stride = Math.sin(cycle) * 10;
-  const lift = Math.max(0, Math.cos(cycle * 2)) * 2;
+  const cycle = time * 9;
+  const bodyBob = Math.max(0, Math.cos(cycle * 2)) * 1.7;
   ctx.save();
-  ctx.translate(x, groundY - lift);
+  ctx.translate(x, groundY - bodyBob);
   ctx.scale(1.2, 1.2);
   ctx.fillStyle = 'rgba(37,44,40,.28)';
-  ctx.beginPath(); ctx.ellipse(0, 2 + lift, 21, 5, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0, 2 + bodyBob, 21, 5, 0, 0, Math.PI * 2); ctx.fill();
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
 
-  // Rear-view running stride: the character is moving away along the track.
+  // Rear-view walk cycle: each foot lifts in turn and the opposite arm swings.
   const leg = ctx.createLinearGradient(0,-27,0,2);
   leg.addColorStop(0,'#34495a'); leg.addColorStop(1,'#1e303f');
   ctx.strokeStyle = leg; ctx.lineWidth = 8.5;
-  ctx.beginPath();
-  ctx.moveTo(-4,-22); ctx.lineTo(-6 - stride*.45,-11); ctx.lineTo(-8 - stride,-1);
-  ctx.moveTo(4,-22); ctx.lineTo(6 + stride*.45,-11); ctx.lineTo(8 + stride,-1);
-  ctx.stroke();
-  ctx.fillStyle = '#263744';
-  ctx.beginPath();
-  ctx.ellipse(-11 - stride,-1,7,3.6,-.08,0,Math.PI*2);
-  ctx.ellipse(11 + stride,-1,7,3.6,.08,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#e8e2d7';
-  ctx.beginPath();
-  ctx.ellipse(-11 - stride,-2.8,6,1.2,-.08,0,Math.PI*2);
-  ctx.ellipse(11 + stride,-2.8,6,1.2,.08,0,Math.PI*2); ctx.fill();
+  const walk = [-1,1].map((side) => {
+    const phase=cycle+(side===1?Math.PI:0);
+    return { side, swing:Math.sin(phase), lift:Math.max(0,Math.cos(phase))*6 };
+  });
+  walk.forEach(({side,swing,lift})=>{
+    const hip=side*4, knee=hip+swing*3.2, ankle=hip+swing*6.8;
+    const kneeY=-11-lift*.42, ankleY=-1-lift;
+    ctx.beginPath();ctx.moveTo(hip,-22);ctx.lineTo(knee,kneeY);ctx.lineTo(ankle,ankleY);ctx.stroke();
+    // Sneakers are drawn pointing up-screen, in the direction she is walking.
+    ctx.fillStyle='#263744';ctx.beginPath();ctx.ellipse(ankle,ankleY-1,4.3,6.1,swing*.12,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#e8e2d7';ctx.beginPath();ctx.ellipse(ankle,ankleY+2,4.1,1.2,0,0,Math.PI*2);ctx.fill();
+  });
+
+  const sleeve=ctx.createLinearGradient(-17,-48,17,-28);
+  sleeve.addColorStop(0,'#426a76');sleeve.addColorStop(1,'#294b56');
+  ctx.strokeStyle=sleeve;ctx.lineWidth=7;
+  walk.forEach(({side,swing})=>{
+    const armSwing=-swing*7;
+    ctx.beginPath();ctx.moveTo(side*8,-46);ctx.lineTo(side*12+armSwing*.52,-38);ctx.lineTo(side*12+armSwing,-31);ctx.stroke();
+    ctx.fillStyle='#d7a17e';ctx.beginPath();ctx.arc(side*12+armSwing,-30,2.6,0,Math.PI*2);ctx.fill();
+  });
 
   // Modest running outfit with a little fabric movement at the hem.
   const tunic = ctx.createLinearGradient(-15,-52,15,-16);
@@ -54,16 +62,13 @@ function drawRunner(ctx, x, groundY, time) {
   ctx.quadraticCurveTo(2,-17,-13,-22); ctx.closePath(); ctx.fill();
   ctx.strokeStyle='rgba(216,233,224,.26)';ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(0,-47);ctx.quadraticCurveTo(2,-37,1,-23);ctx.moveTo(-8,-24);ctx.quadraticCurveTo(0,-21,10,-24);ctx.stroke();
-  ctx.strokeStyle='#294b56';ctx.lineWidth=7;
-  ctx.beginPath();ctx.moveTo(-8,-46);ctx.lineTo(-13,-37);ctx.lineTo(-13-stride*.42,-29);ctx.moveTo(8,-46);ctx.lineTo(13,-37);ctx.lineTo(13+stride*.42,-29);ctx.stroke();
-  ctx.fillStyle='#e6b18a';ctx.beginPath();ctx.arc(-13-stride*.42,-29,2.7,0,Math.PI*2);ctx.arc(13+stride*.42,-29,2.7,0,Math.PI*2);ctx.fill();
-
   // Back of the hijab and flowing scarf tails; no face is turned toward the camera.
   ctx.fillStyle='#111a20';
   ctx.beginPath();ctx.moveTo(-9,-54);ctx.quadraticCurveTo(-16,-70,-8,-78);ctx.quadraticCurveTo(0,-87,11,-80);ctx.quadraticCurveTo(21,-73,17,-58);ctx.quadraticCurveTo(15,-49,9,-43);ctx.lineTo(9,-33);ctx.quadraticCurveTo(2,-29,-7,-34);ctx.lineTo(-7,-44);ctx.quadraticCurveTo(-15,-47,-9,-54);ctx.fill();
   const scarf=ctx.createLinearGradient(-23,-57,4,-35);
   scarf.addColorStop(0,'#263d49');scarf.addColorStop(1,'#17252d');ctx.fillStyle=scarf;
-  ctx.beginPath();ctx.moveTo(-8,-52);ctx.quadraticCurveTo(-18,-58,-24-stride*.28,-53);ctx.lineTo(-17-stride*.18,-44);ctx.quadraticCurveTo(-11,-44,-5,-48);ctx.closePath();ctx.fill();
+  const scarfSway=Math.sin(cycle)*2.5;
+  ctx.beginPath();ctx.moveTo(-8,-52);ctx.quadraticCurveTo(-18,-58,-24-scarfSway,-53);ctx.lineTo(-17-scarfSway*.65,-44);ctx.quadraticCurveTo(-11,-44,-5,-48);ctx.closePath();ctx.fill();
   ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(-7,-73);ctx.quadraticCurveTo(3,-81,12,-73);ctx.moveTo(-6,-41);ctx.quadraticCurveTo(1,-38,8,-41);ctx.stroke();
   ctx.restore();
