@@ -1,17 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Icon from '../components/Icon.jsx';
 import AboutRunnerGame from '../components/AboutRunnerGame.jsx';
+
+const JOURNEY_MILESTONES = [
+  { year: 'JAN 2022', label: 'Started Creative Journey', phase: 'JAN 2022 · STARTED CREATIVE JOURNEY', title: 'Graphic Design & Branding', description: 'Creative visuals, brand identity, and social content made to help businesses show up with confidence.' },
+  { year: 'MAY 2023', label: 'Expanded Into Web Design', phase: 'MAY 2023 · EXPANDED INTO WEB DESIGN', title: 'WordPress & Shopify', description: 'Modern websites and online stores shaped around clear layouts and easy customer journeys.' },
+  { year: 'FEB 2024', label: 'Advanced Creative Solutions', phase: 'FEB 2024 · ADVANCED CREATIVE SOLUTIONS', title: 'AI & Digital Experiences', description: 'Bringing agentic AI, automation, and full-stack development together for useful digital products.' },
+  { year: '2025', label: 'Intelligent Workflows', phase: '2025 · INTELLIGENT WORKFLOWS', title: 'Agentic AI & Automation', description: 'Building practical agents and automated workflows that help simplify everyday work.' },
+  { year: '2026', label: 'Working Worldwide', phase: '2026 · WORKING WORLDWIDE', title: 'Global Digital Partnerships', description: 'Combining AI and full-stack development to help local and international clients build what’s next.' },
+];
+
+function AnimatedMetric({ value, suffix, label }) {
+  const [count, setCount] = useState(0);
+  const metricRef = useRef(null);
+  useEffect(() => {
+    const node = metricRef.current;
+    if (!node) return undefined;
+    let frame = 0;
+    let observer;
+    let started = false;
+    const startCount = () => {
+      if (started) return;
+      started = true;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setCount(value);
+        return;
+      }
+      const startAt = performance.now();
+      const duration = 1500;
+      const update = (now) => {
+        const progress = Math.min(1, (now - startAt) / duration);
+        setCount(Math.round(value * (1 - Math.pow(1 - progress, 3))));
+        if (progress < 1) frame = window.requestAnimationFrame(update);
+      };
+      frame = window.requestAnimationFrame(update);
+    };
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          startCount();
+          observer.disconnect();
+        }
+      }, { threshold: 0.35 });
+      observer.observe(node);
+    } else startCount();
+    return () => {
+      observer?.disconnect();
+      window.cancelAnimationFrame(frame);
+    };
+  }, [value]);
+  return <div ref={metricRef}><strong>{count}{suffix}</strong><span>{label}</span></div>;
+}
 
 export default function AboutPage() {
   const [activeCell, setActiveCell] = useState(null);
   const [activeJourney, setActiveJourney] = useState(0);
+  const goToJourney = (nextIndex) => {
+    const next = (nextIndex + JOURNEY_MILESTONES.length) % JOURNEY_MILESTONES.length;
+    setActiveJourney(next);
+    window.requestAnimationFrame(() => document.getElementById(`aboutJourneyCard${next}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }));
+  };
   const highlightGridCell = (event) => {
     if (event.pointerType !== 'mouse') return;
     const pageRect = event.currentTarget.getBoundingClientRect();
     const cellSize = 48;
     const x = Math.floor((event.clientX - pageRect.left) / cellSize) * cellSize;
     const y = Math.floor((event.clientY - pageRect.top) / cellSize) * cellSize;
-    const colors = ['#345fbe', '#171715', '#a8493f', '#8a6343'];
+    const colors = ['#101112', '#191a1b', '#22211f', '#2a2420'];
     const column = Math.floor(x / cellSize);
     const row = Math.floor(y / cellSize);
     const color = colors[(column + row) % colors.length];
@@ -34,9 +89,9 @@ export default function AboutPage() {
           <h1 id="standaloneAboutTitle">I’m Muntaha.<br /><em>I build what’s next.</em></h1>
           <p className="standalone-about-intro">I’m an Agentic AI engineer and full-stack developer working with clients in Pakistan and internationally to turn complex ideas into clear, useful digital experiences.</p>
           <div className="about-hero-facts" aria-label="Experience and results">
-            <div><strong>100%</strong><span>Client Satisfaction</span></div>
-            <div><strong>500+</strong><span>Projects Completed</span></div>
-            <div><strong>3+</strong><span>Years Freelance Experience</span></div>
+            <AnimatedMetric value={100} suffix="%" label="Client Satisfaction" />
+            <AnimatedMetric value={500} suffix="+" label="Projects Completed" />
+            <AnimatedMetric value={3} suffix="+" label="Years Freelance Experience" />
           </div>
           <a className="standalone-about-cta" href="#/contact">Let’s talk about your project <Icon name="arrowUpRight" size={18} /></a>
         </div>
@@ -54,29 +109,19 @@ export default function AboutPage() {
         <p>From creative ideas to thoughtful digital products, my work spans graphic design, web development, and intelligent solutions that help businesses grow online.</p>
       </div>
       <div className="about-journey-navigation" aria-label="Journey timeline">
-        <button type="button" aria-label="Previous journey milestone" onClick={() => setActiveJourney((current) => (current + 2) % 3)}>‹</button>
-        <div className="about-journey-progress" style={{ '--journey-progress': `${activeJourney * 50}%` }}>
-          {[
-            ['JAN 2022', 'Started Creative Journey'],
-            ['MAY 2023', 'Expanded Into Web Design'],
-            ['FEB 2024', 'Advanced Creative Solutions'],
-          ].map(([date, label], index) => <button type="button" key={date} className={activeJourney === index ? 'is-active' : ''} aria-current={activeJourney === index ? 'step' : undefined} onClick={() => setActiveJourney(index)}><strong>{date}</strong><span>{label}</span></button>)}
+        <button type="button" aria-label="Previous journey milestone" onClick={() => goToJourney(activeJourney - 1)}>‹</button>
+        <div className="about-journey-progress" style={{ '--journey-progress': `${activeJourney * 25}%` }}>
+          {JOURNEY_MILESTONES.map(({ year, label }, index) => <button type="button" key={year} className={activeJourney === index ? 'is-active' : ''} aria-current={activeJourney === index ? 'step' : undefined} onClick={() => goToJourney(index)}><strong>{year}</strong><span>{label}</span></button>)}
         </div>
-        <button type="button" aria-label="Next journey milestone" onClick={() => setActiveJourney((current) => (current + 1) % 3)}>›</button>
+        <button type="button" aria-label="Next journey milestone" onClick={() => goToJourney(activeJourney + 1)}>›</button>
       </div>
+      <div className="about-journey-viewport">
       <div className="about-journey-steps">
-        <article className={activeJourney === 0 ? 'is-active' : ''}>
+        {JOURNEY_MILESTONES.map(({ phase, title, description }, index) => <article id={`aboutJourneyCard${index}`} key={phase} className={activeJourney === index ? 'is-active' : ''}>
           <div className="about-journey-image-placeholder"><span>YOUR IMAGE</span></div>
-          <span className="about-journey-index">01 <i /></span><p>JAN 2022 · STARTED CREATIVE JOURNEY</p><h3>Graphic Design &amp; Branding</h3><div>Creative visuals, brand identity, and social content made to help businesses show up with confidence.</div>
-        </article>
-        <article className={activeJourney === 1 ? 'is-active' : ''}>
-          <div className="about-journey-image-placeholder"><span>YOUR IMAGE</span></div>
-          <span className="about-journey-index">02 <i /></span><p>MAY 2023 · EXPANDED INTO WEB DESIGN</p><h3>WordPress &amp; Shopify</h3><div>Modern websites and online stores shaped around clear layouts and easy customer journeys.</div>
-        </article>
-        <article className={activeJourney === 2 ? 'is-active' : ''}>
-          <div className="about-journey-image-placeholder"><span>YOUR IMAGE</span></div>
-          <span className="about-journey-index">03 <i /></span><p>FEB 2024 · ADVANCED CREATIVE SOLUTIONS</p><h3>AI &amp; Digital Experiences</h3><div>Bringing agentic AI, automation, and full-stack development together for useful digital products.</div>
-        </article>
+          <span className="about-journey-index">{String(index + 1).padStart(2, '0')} <i /></span><p>{phase}</p><h3>{title}</h3><div>{description}</div>
+        </article>)}
+      </div>
       </div>
     </section>
 

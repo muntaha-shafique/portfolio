@@ -1272,7 +1272,7 @@ const initializePortfolio = () => {
 
   // Let the portfolio robot follow the pointer while it is over a card or tile.
   const hoverRobot = document.getElementById('portfolioHoverRobot');
-  const hoverRobotTargets = '.statement-card, .cover-card, .project-cover-card, .skill-tile, .skills-group, .process-panel, .process-steps li, .contact-photo-space, .contact-invite, .contact-form, .contact-direct-item, a[href], button';
+  const hoverRobotTargets = '.statement-card, .cover-card, .project-cover-card, .skill-tile, .skills-group, .process-panel, .process-steps li, .contact-photo-space, .contact-invite, .contact-form, .contact-direct-item, .about-hero-facts > div, .standalone-about-portrait, .about-journey-progress > button, .about-journey-steps article, .about-why-highlights article, .about-values-visual, .about-values-list article, .about-runner-panel, a[href], button';
   const hoverRobotBlockedAreas = 'header, nav, footer, .nav-wrap, .navbar, .hero-nav, .hero, .quick-contact, .portfolio-chat';
   if (hoverRobot && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     const findHoverRobotTarget = (node) => {
