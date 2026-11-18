@@ -571,7 +571,7 @@ export default function HomePage() {
     </div>
     <div className="client-experience-copy reveal">
       <p className="client-experience-eyebrow">CLIENT EXPERIENCE</p>
-      <h2 id="clientExperienceTitle">Good work grows from <em>good collaboration.</em></h2>
+      <h2 id="clientExperienceTitle">What Say <em>Clients</em></h2>
       <p className="client-experience-intro">Clear communication, thoughtful development, and a dependable path from the first idea to launch.</p>
       <div className="client-experience-window" aria-label="How I work with clients">
         <div className="client-experience-track">
