@@ -18,114 +18,229 @@ const ABOUT_FACTS = [
   'I help turn a promising idea into something people can use.',
 ];
 
-const MATCH_PAIRS = [
-  { pair: 'ai', mark: '✦', label: 'AGENTIC AI', tone: 'blue' },
-  { pair: 'web', mark: '⌘', label: 'FULL STACK', tone: 'ink' },
-  { pair: 'design', mark: '◉', label: 'EXPERIENCE', tone: 'clay' },
-  { pair: 'global', mark: '↗', label: 'WORLDWIDE', tone: 'sand' },
-  { pair: 'workflow', mark: '⌁', label: 'AUTOMATION', tone: 'sage' },
-  { pair: 'product', mark: '▣', label: 'DIGITAL PRODUCT', tone: 'blue' },
-  { pair: 'creative', mark: '✳', label: 'CREATIVE THINKING', tone: 'clay' },
-  { pair: 'care', mark: '＋', label: 'BUILT WITH CARE', tone: 'sage' },
-];
+function drawRunner(ctx, x, groundY, time) {
+  const stride = Math.sin(time * 14) * 5;
+  ctx.save();
+  ctx.translate(x, groundY);
+  ctx.fillStyle = 'rgba(12,18,19,.18)';
+  ctx.beginPath(); ctx.ellipse(0, 2, 17, 4, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#273c48'; ctx.lineWidth = 7;
+  ctx.beginPath();
+  ctx.moveTo(-2,-16); ctx.lineTo(-8 + stride,-2); ctx.lineTo(-17 + stride,1);
+  ctx.moveTo(3,-16); ctx.lineTo(9 - stride,-4); ctx.lineTo(17 - stride,-1);
+  ctx.stroke();
+  ctx.strokeStyle = '#d8c8ac'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(-16 + stride,1); ctx.lineTo(-21 + stride,1); ctx.moveTo(16 - stride,-1); ctx.lineTo(21 - stride,-1); ctx.stroke();
+  ctx.fillStyle = '#b86e59';
+  ctx.beginPath(); ctx.moveTo(-10,-39); ctx.quadraticCurveTo(1,-47,11,-38); ctx.lineTo(12,-19); ctx.quadraticCurveTo(0,-13,-12,-19); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#dfac83'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.moveTo(-7,-36); ctx.lineTo(-15,-28 + stride*.2); ctx.moveTo(7,-37); ctx.lineTo(16,-45 + stride*.2); ctx.stroke();
+  ctx.fillStyle = '#dfac83'; ctx.beginPath(); ctx.arc(-15,-28 + stride*.2,2.5,0,Math.PI*2); ctx.arc(16,-45 + stride*.2,2.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#244c5a';
+  ctx.beginPath(); ctx.moveTo(-8,-56); ctx.quadraticCurveTo(-8,-73,8,-72); ctx.quadraticCurveTo(23,-69,20,-50); ctx.quadraticCurveTo(18,-42,10,-39); ctx.lineTo(3,-43); ctx.quadraticCurveTo(14,-51,9,-62); ctx.quadraticCurveTo(0,-64,-3,-54); ctx.lineTo(-4,-43); ctx.quadraticCurveTo(-16,-49,-8,-56); ctx.fill();
+  ctx.fillStyle = '#e6b491'; ctx.beginPath(); ctx.ellipse(8,-54,8,10,.08,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#253b4b'; ctx.beginPath(); ctx.moveTo(-2,-59); ctx.quadraticCurveTo(8,-71,18,-60); ctx.lineTo(14,-55); ctx.quadraticCurveTo(6,-61,0,-53); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#24323a'; ctx.fillRect(10,-55,2,2); ctx.fillRect(5,-55,2,2);
+  ctx.fillStyle = '#244c5a'; ctx.beginPath(); ctx.moveTo(-5,-47); ctx.quadraticCurveTo(-20,-52,-25-stride*.4,-42); ctx.lineTo(-11,-36); ctx.quadraticCurveTo(-2,-39,2,-45); ctx.fill();
+  ctx.restore();
+}
 
-function shuffleCards() {
-  const cards = MATCH_PAIRS.flatMap((item) => [
-    { ...item, id: `${item.pair}-a` },
-    { ...item, id: `${item.pair}-b` },
-  ]);
-  for (let i = cards.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [cards[i], cards[j]] = [cards[j], cards[i]];
+function projectLaneX(width, lane, depth) {
+  const center = width / 2;
+  const trackHalf = width * (.045 + depth * .39);
+  return center + (lane - 1) * trackHalf * .62;
+}
+
+function drawCoin(ctx, x, y, radius, time) {
+  const wobble = .64 + Math.abs(Math.sin(time * 5 + y * .03)) * .36;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(wobble, 1);
+  ctx.shadowColor = 'rgba(255,197,69,.62)'; ctx.shadowBlur = radius * 1.8;
+  ctx.fillStyle = '#d89227'; ctx.beginPath(); ctx.arc(0, 1, radius, 0, Math.PI * 2); ctx.fill();
+  ctx.shadowBlur = 0;
+  const face = ctx.createLinearGradient(-radius, -radius, radius, radius);
+  face.addColorStop(0, '#fff0a8'); face.addColorStop(.55, '#f7c950'); face.addColorStop(1, '#db982c');
+  ctx.fillStyle = face; ctx.beginPath(); ctx.arc(0, 0, radius * .79, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = 'rgba(160,99,24,.65)'; ctx.lineWidth = Math.max(1, radius * .08); ctx.beginPath(); ctx.arc(0, 0, radius * .58, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = '#aa6b20'; ctx.font = `700 ${Math.max(8, radius)}px Georgia,serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('M', 0, 1);
+  ctx.restore();
+}
+
+function drawFactBubble(ctx, game, x, groundY) {
+  if (!game.fact) return;
+  const maxWidth = Math.min(340, game.width * .52), pad = 15, lineHeight = 19;
+  ctx.save();
+  ctx.font = `650 ${Math.max(12,Math.min(15,game.width*.016))}px system-ui,sans-serif`;
+  const lines = [];
+  let line = '';
+  game.fact.split(' ').forEach((word) => {
+    const next = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(next).width > maxWidth - pad * 2) { lines.push(line); line = word; }
+    else line = next;
+  });
+  if (line) lines.push(line);
+  const bubbleWidth = Math.min(maxWidth, Math.max(...lines.map((part) => ctx.measureText(part).width)) + pad * 2);
+  const bubbleHeight = lines.length * lineHeight + 20;
+  const bx = Math.max(12, Math.min(game.width - bubbleWidth - 12, x - bubbleWidth / 2));
+  const by = Math.max(12, groundY - 158);
+  ctx.shadowColor = 'rgba(13,18,20,.22)'; ctx.shadowBlur = 18; ctx.shadowOffsetY = 7;
+  ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.roundRect(bx, by, bubbleWidth, bubbleHeight, 14); ctx.fill();
+  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+  ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.moveTo(x-7,by+bubbleHeight-1); ctx.lineTo(x+7,by+bubbleHeight-1); ctx.lineTo(x,by+bubbleHeight+11); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#27353b'; ctx.textAlign = 'left';
+  lines.forEach((part,index) => ctx.fillText(part,bx+pad,by+22+index*lineHeight));
+  ctx.restore();
+}
+
+function drawScene(ctx, game) {
+  const { width: w, height: h } = game;
+  if (!w || !h) return;
+  const horizon = h * .24;
+  const groundY = h - 34;
+  const sky = ctx.createLinearGradient(0, 0, 0, horizon);
+  sky.addColorStop(0, '#36b8ef'); sky.addColorStop(1, '#b5ecf0');
+  ctx.fillStyle = sky; ctx.fillRect(0,0,w,h);
+  const water = ctx.createLinearGradient(0,horizon,0,h);
+  water.addColorStop(0,'#28b9ef'); water.addColorStop(.48,'#159fe4'); water.addColorStop(1,'#087bc7');
+  ctx.fillStyle=water;ctx.fillRect(0,horizon,w,h-horizon);
+  // Small moving sea glints keep the horizon lively without distracting from play.
+  ctx.save();
+  for(let i=0;i<38;i+=1){
+    const row=i%10, col=Math.floor(i/10), y=horizon+18+row*13+col*7;
+    const x=((i*83-game.time*28)%(w+50)+w+50)%(w+50)-25;
+    ctx.strokeStyle=`rgba(225,249,255,${.12+(i%4)*.035})`;ctx.lineWidth=1+(i%3)*.35;
+    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+8+(i%5)*3,y);ctx.stroke();
   }
-  return cards;
+  ctx.restore();
+
+  // Perspective track.
+  ctx.beginPath();
+  ctx.moveTo(w*.445,horizon); ctx.lineTo(w*.555,horizon); ctx.lineTo(w*.94,h); ctx.lineTo(w*.06,h); ctx.closePath();
+  const road = ctx.createLinearGradient(0,horizon,0,h);
+  road.addColorStop(0,'#f3c57b'); road.addColorStop(.48,'#e9a657'); road.addColorStop(1,'#c7773e');
+  ctx.fillStyle=road; ctx.fill();
+  ctx.lineCap='round';ctx.strokeStyle='#a85c35'; ctx.lineWidth=Math.max(5,w*.016);
+  ctx.beginPath(); ctx.moveTo(w*.445,horizon); ctx.lineTo(w*.06,h); ctx.moveTo(w*.555,horizon); ctx.lineTo(w*.94,h); ctx.stroke();
+  ctx.lineCap='butt';ctx.strokeStyle='rgba(255,238,195,.72)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(w*.445,horizon);ctx.lineTo(w*.06,h);ctx.moveTo(w*.555,horizon);ctx.lineTo(w*.94,h);ctx.stroke();
+  for (let lane=1;lane<=2;lane+=1) {
+    const topX=w*(.445+lane*.0367), bottomX=w*(.06+lane*.2933);
+    ctx.strokeStyle='rgba(145,82,47,.42)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(topX,horizon); ctx.lineTo(bottomX,h); ctx.stroke();
+  }
+  for(let n=0;n<9;n+=1) {
+    const depth=(n/9+game.time*.22)%1;
+    const y=horizon+Math.pow(depth,1.7)*(h-horizon);
+    const half=w*(.055+depth*.39);
+    ctx.strokeStyle=`rgba(126,72,42,${.2+depth*.28})`; ctx.lineWidth=1+depth*2;
+    ctx.beginPath();ctx.moveTo(w/2-half*.93,y);ctx.lineTo(w/2+half*.93,y);ctx.stroke();
+  }
+
+  // Coins flow from the horizon down the three lanes.
+  game.coins.forEach((coin) => {
+    const depth=coin.depth;
+    const x=projectLaneX(w,coin.lane,depth);
+    const y=horizon+Math.pow(depth,1.55)*(groundY-horizon);
+    const radius=4+depth*16;
+    drawCoin(ctx,x,y,radius,game.time);
+  });
+
+  const playerX=projectLaneX(w,game.playerLane,.94);
+  drawRunner(ctx,playerX,groundY,game.time);
+  if(game.fact) drawFactBubble(ctx,game,playerX,groundY);
+  if(game.phase==='ready'||game.phase==='complete') {
+    ctx.fillStyle='rgba(13,20,24,.3)';ctx.fillRect(0,0,w,h);
+    ctx.textAlign='center';ctx.fillStyle='#fff8e9';ctx.font=`750 ${Math.max(18,Math.min(27,w*.03))}px system-ui,sans-serif`;
+    ctx.fillText(game.phase==='ready'?'Collect coins · discover my story':'Run complete · you found my story',w/2,h*.43);
+    ctx.fillStyle='rgba(255,248,233,.78)';ctx.font=`550 ${Math.max(11,Math.min(15,w*.016))}px system-ui,sans-serif`;
+    ctx.fillText(game.phase==='ready'?'Choose a lane and collect a coin to reveal a line':'Tap Play Again to run it back',w/2,h*.43+28);
+  }
 }
 
 export default function AboutRunnerGame() {
-  const [deck, setDeck] = useState(shuffleCards);
-  const [flipped, setFlipped] = useState([]);
-  const [matched, setMatched] = useState([]);
-  const [moves, setMoves] = useState(0);
-  const [factCount, setFactCount] = useState(0);
-  const [currentFact, setCurrentFact] = useState('');
-  const lockRef = useRef(false);
-  const timeoutRef = useRef(null);
+  const canvasRef=useRef(null);
+  const gameRef=useRef({width:0,height:0,phase:'ready',time:0,lastFrame:0,playerLane:1,coins:[],spawnIn:.65,collected:0,factIndex:-1,fact:'',speed:.44});
+  const frameRef=useRef(0);
+  const [hud,setHud]=useState({phase:'ready',collected:0,factIndex:-1,lane:1});
 
-  useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
+  useEffect(()=>{
+    const canvas=canvasRef.current;
+    const ctx=canvas?.getContext('2d');
+    if(!canvas||!ctx)return undefined;
+    const game=gameRef.current;
+    const resize=()=>{
+      const rect=canvas.getBoundingClientRect();
+      const dpr=Math.min(window.devicePixelRatio||1,2);
+      game.width=rect.width;game.height=rect.height;
+      canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));
+      ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,game);
+    };
+    const observer=new ResizeObserver(resize);observer.observe(canvas);resize();
+    const loop=(now)=>{
+      const dt=Math.min(.04,Math.max(0,(now-(game.lastFrame||now))/1000));game.lastFrame=now;game.time+=dt;
+      if(game.phase==='running'){
+        game.spawnIn-=dt;
+        if(game.spawnIn<=0){
+          game.coins.push({lane:Math.floor(Math.random()*3),depth:0});
+          game.spawnIn=1.05+Math.random()*.42;
+        }
+        game.coins.forEach((coin)=>{coin.depth+=game.speed*dt;});
+        const collectedCoin=game.coins.find((coin)=>coin.depth>=.91&&coin.lane===game.playerLane);
+        if(collectedCoin){
+          game.coins=game.coins.filter((coin)=>coin!==collectedCoin);
+          game.factIndex=game.collected%ABOUT_FACTS.length;game.fact=ABOUT_FACTS[game.factIndex];game.collected+=1;
+          game.speed=Math.min(.58,game.speed+.004);
+          if(game.collected>=ABOUT_FACTS.length)game.phase='complete';
+          setHud({phase:game.phase,collected:game.collected,factIndex:game.factIndex,lane:game.playerLane});
+        }
+        game.coins=game.coins.filter((coin)=>coin.depth<1.08);
+      }
+      drawScene(ctx,game);frameRef.current=requestAnimationFrame(loop);
+    };
+    frameRef.current=requestAnimationFrame(loop);
+    return()=>{observer.disconnect();cancelAnimationFrame(frameRef.current);};
+  },[]);
 
-  const chooseCard = (index) => {
-    if (lockRef.current || matched.includes(index) || flipped.includes(index)) return;
-    if (flipped.length === 0) {
-      setFlipped([index]);
-      return;
+  const startRun=()=>{
+    const game=gameRef.current;
+    if(game.phase==='complete'){
+      game.collected=0;game.factIndex=-1;game.fact='';game.playerLane=1;game.coins=[];game.spawnIn=.65;game.speed=.44;
     }
-
-    const firstIndex = flipped[0];
-    const isMatch = deck[firstIndex].pair === deck[index].pair;
-    setMoves((count) => count + 1);
-    setFlipped([firstIndex, index]);
-    lockRef.current = true;
-
-    if (isMatch) {
-      setMatched((cards) => [...cards, firstIndex, index]);
-      setCurrentFact(ABOUT_FACTS[factCount % ABOUT_FACTS.length]);
-      setFactCount((count) => count + 1);
-      timeoutRef.current = window.setTimeout(() => {
-        setFlipped([]);
-        lockRef.current = false;
-      }, 420);
-    } else {
-      timeoutRef.current = window.setTimeout(() => {
-        setFlipped([]);
-        lockRef.current = false;
-      }, 850);
-    }
+    game.phase='running';
+    setHud({phase:game.phase,collected:game.collected,factIndex:game.factIndex,lane:game.playerLane});
+    canvasRef.current?.focus({preventScroll:true});
   };
-
-  const restartRound = () => {
-    window.clearTimeout(timeoutRef.current);
-    lockRef.current = false;
-    setDeck(shuffleCards());
-    setFlipped([]);
-    setMatched([]);
-    setMoves(0);
-    setCurrentFact('');
+  const shiftLane=(direction)=>{
+    const game=gameRef.current;
+    if(game.phase==='ready'){startRun();return;}
+    if(game.phase!=='running')return;
+    game.playerLane=Math.max(0,Math.min(2,game.playerLane+direction));
+    setHud((current)=>({...current,lane:game.playerLane}));
   };
-
-  const matchedPairs = matched.length / 2;
-  const gameComplete = matchedPairs === MATCH_PAIRS.length;
-  return <section className="about-runner-section about-memory-section" aria-labelledby="aboutRunnerTitle">
-    <div className="about-runner-heading about-memory-heading">
-      <div><p>A LITTLE ABOUT ME · A QUICK MEMORY GAME</p><h2 id="aboutRunnerTitle">Match my <em>work.</em></h2></div>
-      <p className="about-runner-description">Find the matching pairs. Each match reveals one more line about what I do and how I work.</p>
+  const handleKeyDown=(event)=>{
+    if(event.code==='ArrowLeft'||event.code==='KeyA'){event.preventDefault();shiftLane(-1);}
+    else if(event.code==='ArrowRight'||event.code==='KeyD'){event.preventDefault();shiftLane(1);}
+    else if(event.code==='Space'||event.code==='Enter'){event.preventDefault();if(gameRef.current.phase!=='running')startRun();}
+  };
+  const handlePointerDown=(event)=>{
+    event.preventDefault();
+    const rect=canvasRef.current?.getBoundingClientRect();
+    if(!rect)return;
+    if(gameRef.current.phase!=='running'){startRun();return;}
+    shiftLane(event.clientX<rect.left+rect.width/2?-1:1);
+  };
+  const buttonLabel=hud.phase==='ready'?'Start Coin Run':hud.phase==='complete'?'Play Again':'Run in progress';
+  return <section className="about-runner-section about-coinrun-section" aria-labelledby="aboutRunnerTitle">
+    <div className="about-runner-heading">
+      <div><p>ABOUT ME · COIN RUN</p><h2 id="aboutRunnerTitle">Collect my <em>story.</em></h2></div>
+      <p className="about-runner-description">Move between three lanes, collect the gold coins, and uncover a new line about my work with every coin.</p>
     </div>
-    <div className="about-memory-layout">
-      <div className="about-memory-board-wrap">
-        <div className="about-memory-hud">
-          <span><i className={matchedPairs > 0 ? 'is-live' : ''} />{gameComplete ? 'ALL PAIRS FOUND' : 'FIND THE MATCHES'}</span>
-          <span>PAIRS <b>{matchedPairs}/{MATCH_PAIRS.length}</b><span className="about-memory-moves">MOVES <b>{moves}</b></span></span>
-        </div>
-        <div className="about-memory-board" role="group" aria-label="Memory matching game cards">
-          {deck.map((card, index) => {
-            const isMatched = matched.includes(index);
-            const isFlipped = flipped.includes(index) || isMatched;
-            return <button type="button" key={card.id} className={`about-memory-card tone-${card.tone}${isFlipped ? ' is-flipped' : ''}${isMatched ? ' is-matched' : ''}`} onClick={() => chooseCard(index)} disabled={isMatched} aria-label={isFlipped ? `${card.label}${isMatched ? ', matched' : ''}` : `Face-down card ${index + 1}`} aria-pressed={isFlipped}>
-              <span className="about-memory-card-inner">
-                <span className="about-memory-card-back" aria-hidden="true"><img src="assets/images/ms-monogram-logo.png" alt="" /><small>FLIP TO FIND</small></span>
-                <span className="about-memory-card-front"><b>{card.mark}</b><small>{card.label}</small></span>
-              </span>
-            </button>;
-          })}
-        </div>
-        <div className="about-memory-board-footer"><span>CHOOSE TWO CARDS TO FIND A PAIR</span><button type="button" onClick={restartRound}>{gameComplete ? 'Play again' : 'Shuffle cards'} <span aria-hidden="true">↻</span></button></div>
-      </div>
-      <aside className={`about-memory-fact${currentFact ? ' has-fact' : ''}`} aria-live="polite">
-        <span className="about-memory-fact-kicker">{gameComplete ? 'YOU KNOW MY STORY' : 'A LINE ABOUT MUNTAHA'}</span>
-        <div className="about-memory-fact-mark" aria-hidden="true">{currentFact ? '✦' : 'MS'}</div>
-        <p>{currentFact || 'Every matching pair uncovers another detail about my work, experience, and approach.'}</p>
-        <div className="about-memory-fact-progress"><span style={{ width: `${Math.min(100, (factCount / MATCH_PAIRS.length) * 100)}%` }} /></div>
-        <small>{factCount} {factCount === 1 ? 'line' : 'lines'} revealed</small>
-      </aside>
+    <div className="about-runner-panel about-coinrun-panel">
+      <div className="about-runner-hud"><span><i className={hud.phase==='running'?'is-live':''}/>{hud.phase==='ready'?'READY TO RUN':hud.phase==='complete'?'RUN COMPLETE':'COIN RUN'}</span><span>COINS <b>{hud.collected}/{ABOUT_FACTS.length}</b><span className="about-runner-best">LANE <b>{hud.lane+1}/3</b></span></span></div>
+      <canvas ref={canvasRef} className="about-runner-canvas about-coinrun-canvas" tabIndex="0" aria-label="Coin Run. Use left and right arrows or tap either side to change lanes and collect coins. Every coin reveals a fact about Muntaha." onPointerDown={handlePointerDown} onKeyDown={handleKeyDown}/>
+      <div className="about-runner-controls"><span>← → OR A / D TO CHANGE LANES · TAP LEFT / RIGHT</span><button type="button" onClick={startRun}>{buttonLabel}<span aria-hidden="true">↗</span></button></div>
     </div>
   </section>;
 }

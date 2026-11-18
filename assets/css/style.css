@@ -4781,6 +4781,29 @@ textarea:focus-visible {
   .about-hero-facts span { font-size: .49rem; }
 }
 
+/* About page original three-lane coin runner. */
+.about-coinrun-section { margin-top: 12px; }
+.about-coinrun-panel { border-color: rgba(27,39,43,.16); background: #17232b; box-shadow: 0 25px 60px rgba(35,39,39,.18); }
+.about-coinrun-panel .about-runner-hud,
+.about-coinrun-panel .about-runner-controls { border-color: rgba(244,241,233,.12); background: #1d2a31; color: #c2c9c6; }
+.about-coinrun-panel .about-runner-hud b { color: #fff8e9; }
+.about-coinrun-panel .about-runner-controls button { background: #e7c36f; color: #25231d; }
+.about-coinrun-panel .about-runner-controls button:hover { background: #f4d98e; }
+.about-coinrun-canvas { cursor: crosshair; touch-action: none; }
+@media (max-width: 760px) {
+  .about-coinrun-section { margin-top: 0; }
+  .about-coinrun-heading { margin-bottom: 18px; }
+  .about-coinrun-canvas { height: clamp(230px,58vw,310px); }
+}
+@media (max-width: 420px) {
+  .about-coinrun-panel { border-radius: 17px; }
+  .about-coinrun-panel .about-runner-hud { min-height: 47px; gap: 6px; padding-inline: 10px; font-size: .48rem; }
+  .about-coinrun-panel .about-runner-best { margin-left: 7px; }
+  .about-coinrun-canvas { height: 225px; }
+  .about-coinrun-panel .about-runner-controls { align-items: center; flex-direction: row; gap: 6px; padding: 10px; font-size: .48rem; letter-spacing: .04em; }
+  .about-coinrun-panel .about-runner-controls button { min-height: 36px; gap: 7px; padding-inline: 10px; font-size: .59rem; }
+}
+
 /* About page mini game: a calm, tactile memory board in the portfolio palette. */
 .about-memory-section { margin-bottom: 88px; }
 .about-memory-heading { margin-bottom: 25px; }
