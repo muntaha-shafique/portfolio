@@ -562,6 +562,36 @@ export default function HomePage() {
   </div>
 </section>
 
+{/* ========== CLIENT EXPERIENCE ========== */}
+<section className="client-experience" id="reviews" aria-labelledby="clientExperienceTitle">
+  <div className="client-experience-inner container">
+    <div className="client-experience-visual reveal">
+      <img src="assets/images/reviews-office-meeting.png" alt="A client and developer discussing a project together" loading="lazy" />
+      <span className="client-experience-caption">PAKISTAN · WORKING WORLDWIDE</span>
+    </div>
+    <div className="client-experience-copy reveal">
+      <p className="client-experience-eyebrow">CLIENT EXPERIENCE</p>
+      <h2 id="clientExperienceTitle">Good work grows from <em>good collaboration.</em></h2>
+      <p className="client-experience-intro">Clear communication, thoughtful development, and a dependable path from the first idea to launch.</p>
+      <div className="client-experience-window" aria-label="How I work with clients">
+        <div className="client-experience-track">
+          <div className="client-experience-list">
+            <div className="client-experience-card"><span>01</span><div><h3>Clear communication</h3><p>Stay in the loop from the first conversation through delivery.</p></div><b aria-hidden="true">↗</b></div>
+            <div className="client-experience-card"><span>02</span><div><h3>Built around your goals</h3><p>Shape the right AI and web solution around real business needs.</p></div><b aria-hidden="true">↗</b></div>
+            <div className="client-experience-card"><span>03</span><div><h3>Reliable delivery</h3><p>Move from a clear plan to a polished product ready to grow.</p></div><b aria-hidden="true">↗</b></div>
+          </div>
+          <div className="client-experience-list" aria-hidden="true">
+            <div className="client-experience-card"><span>01</span><div><h3>Clear communication</h3><p>Stay in the loop from the first conversation through delivery.</p></div><b>↗</b></div>
+            <div className="client-experience-card"><span>02</span><div><h3>Built around your goals</h3><p>Shape the right AI and web solution around real business needs.</p></div><b>↗</b></div>
+            <div className="client-experience-card"><span>03</span><div><h3>Reliable delivery</h3><p>Move from a clear plan to a polished product ready to grow.</p></div><b>↗</b></div>
+          </div>
+        </div>
+      </div>
+      <div className="client-experience-proof"><strong>100%</strong><span>Client satisfaction</span><a href="#/contact">Let’s work together <Icon name="arrowUpRight" size={16} /></a></div>
+    </div>
+  </div>
+</section>
+
 {/* ========== CONTACT ========== */}
 <section className="contact" id="contact">
   <div className="container">
