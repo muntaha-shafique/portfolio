@@ -25,12 +25,17 @@ function ContactPage() {
   const [status, setStatus] = useState({ busy: false, error: '', notice: '', success: false });
   const [cardPosition, setCardPosition] = useState(null);
   const [cardDragging, setCardDragging] = useState(false);
+  const [cardReturning, setCardReturning] = useState(false);
+  const [cardRotation, setCardRotation] = useState(-3);
   const [headerBounds, setHeaderBounds] = useState({ width: 0, height: 0 });
   const [cardSize, setCardSize] = useState({ width: 0, height: 0 });
   const [ribbonEnd, setRibbonEnd] = useState({ x: 0, y: 0 });
   const cardStageRef = useRef(null);
   const cardRef = useRef(null);
   const cardDragRef = useRef(null);
+  const homePositionRef = useRef(null);
+  const cardPositionRef = useRef(null);
+  const returnFrameRef = useRef(0);
   useEffect(() => {
     const header = cardStageRef.current;
     const card = cardRef.current;
@@ -40,21 +45,72 @@ function ContactPage() {
       const cardRect = card.getBoundingClientRect();
       setHeaderBounds({ width: headerRect.width, height: headerRect.height });
       setCardSize({ width: cardRect.width, height: cardRect.height });
-      if (!cardDragRef.current) setRibbonEnd({ x: card.offsetLeft + cardRect.width / 2, y: card.offsetTop });
+      if (!cardDragRef.current) {
+        const position = cardPositionRef.current || { x: card.offsetLeft, y: card.offsetTop };
+        if (!homePositionRef.current) homePositionRef.current = { x: card.offsetLeft, y: card.offsetTop };
+        setRibbonEnd({ x: position.x + cardRect.width / 2, y: position.y });
+      }
     };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(header);
     observer.observe(card);
     window.addEventListener('resize', measure);
-    return () => { observer.disconnect(); window.removeEventListener('resize', measure); };
+    return () => { observer.disconnect(); window.removeEventListener('resize', measure); cancelAnimationFrame(returnFrameRef.current); };
   }, []);
   const placeCard = (x, y) => {
     const maxX = Math.max(0, headerBounds.width - cardSize.width);
     const maxY = Math.max(0, headerBounds.height - cardSize.height);
     const next = { x: Math.max(0, Math.min(maxX, x)), y: Math.max(0, Math.min(maxY, y)) };
+    cardPositionRef.current = next;
     setCardPosition(next);
     setRibbonEnd({ x: next.x + cardSize.width / 2, y: next.y });
+  };
+  const returnCardHome = (from, velocity = { x: 0, y: 0 }) => {
+    const home = homePositionRef.current;
+    if (!home) return;
+    cancelAnimationFrame(returnFrameRef.current);
+    setCardReturning(true);
+    const dx = from.x - home.x;
+    const dy = from.y - home.y;
+    const distance = Math.hypot(dx, dy);
+    if (distance < 2 && Math.hypot(velocity.x, velocity.y) < 20) {
+      placeCard(home.x, home.y);
+      setCardRotation(-3);
+      setCardReturning(false);
+      return;
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      placeCard(home.x, home.y);
+      setCardRotation(-3);
+      setCardReturning(false);
+      return;
+    }
+    const direction = Math.sign(dx || -dy || 1);
+    const spin = Math.min(1080, Math.max(0, distance * .92)) * direction;
+    const startedAt = performance.now();
+    const damping = 5.4;
+    const frequency = 12.5;
+    const frame = (now) => {
+      const t = Math.min((now - startedAt) / 1000, 1.35);
+      const decay = Math.exp(-damping * t);
+      const c = Math.cos(frequency * t);
+      const s = Math.sin(frequency * t);
+      const bx = (velocity.x + damping * dx) / frequency;
+      const by = (velocity.y + damping * dy) / frequency;
+      const x = home.x + decay * (dx * c + bx * s);
+      const y = home.y + decay * (dy * c + by * s);
+      placeCard(x, y);
+      setCardRotation(spin * decay * Math.sin(frequency * t));
+      if (t < 1.35) returnFrameRef.current = requestAnimationFrame(frame);
+      else {
+        placeCard(home.x, home.y);
+        setCardRotation(-3);
+        setCardReturning(false);
+        returnFrameRef.current = 0;
+      }
+    };
+    returnFrameRef.current = requestAnimationFrame(frame);
   };
   const update = (event) => setForm({ ...form, [event.target.name]: event.target.value });
   useEffect(() => {
@@ -138,7 +194,71 @@ function ContactPage() {
         </div>
         <div className="contact-card-stage" aria-label="Interactive portfolio card">
           {headerBounds.width > 0 && <svg className="contact-card-ribbon" viewBox={`0 0 ${headerBounds.width} ${headerBounds.height}`} preserveAspectRatio="none" aria-hidden="true"><path className="contact-card-ribbon-shadow" d={ribbonPath} pathLength="1" /><path className="contact-card-ribbon-main" d={ribbonPath} pathLength="1" /><path className="contact-card-ribbon-shine" d={ribbonPath} pathLength="1" /></svg>}
-            <article ref={cardRef} className={`contact-id-card${cardDragging ? ' is-dragging' : ''}${cardPosition ? ' is-positioned' : ''}`} style={cardPosition ? { left: `${cardPosition.x}px`, top: `${cardPosition.y}px` } : undefined} tabIndex="0" aria-label="Draggable Muntaha Shafique portfolio card. Drag it anywhere in this header, or use arrow keys." onPointerDown={(event) => { if (event.button !== 0) return; const header = cardStageRef.current.getBoundingClientRect(); const card = event.currentTarget.getBoundingClientRect(); const x = card.left - header.left; const y = card.top - header.top; event.currentTarget.setPointerCapture(event.pointerId); cardDragRef.current = { x: event.clientX, y: event.clientY, startX: x, startY: y }; placeCard(x, y); setCardDragging(true); }} onPointerMove={(event) => { if (!cardDragRef.current) return; placeCard(cardDragRef.current.startX + event.clientX - cardDragRef.current.x, cardDragRef.current.startY + event.clientY - cardDragRef.current.y); }} onPointerUp={(event) => { cardDragRef.current = null; setCardDragging(false); if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }} onPointerCancel={() => { cardDragRef.current = null; setCardDragging(false); }} onAnimationEnd={() => { const card = cardRef.current; if (card && !cardPosition) setRibbonEnd({ x: card.offsetLeft + card.offsetWidth / 2, y: card.offsetTop }); }} onKeyDown={(event) => { const steps = { ArrowLeft: [-20, 0], ArrowRight: [20, 0], ArrowUp: [0, -20], ArrowDown: [0, 20] }; if (!steps[event.key]) return; event.preventDefault(); const [dx, dy] = steps[event.key]; const header = cardStageRef.current.getBoundingClientRect(); const card = event.currentTarget.getBoundingClientRect(); const x = cardPosition?.x ?? card.left - header.left; const y = cardPosition?.y ?? card.top - header.top; placeCard(x + dx, y + dy); }}>
+            <article
+              ref={cardRef}
+              className={`contact-id-card${cardDragging ? ' is-dragging' : ''}${cardReturning ? ' is-returning' : ''}${cardPosition ? ' is-positioned' : ''}`}
+              style={cardPosition ? { left: `${cardPosition.x}px`, top: `${cardPosition.y}px`, transform: `rotate(${cardRotation}deg) scale(${cardDragging ? 1.025 : 1})` } : undefined}
+              tabIndex="0"
+              aria-label="Draggable Muntaha Shafique portfolio card. Drag it anywhere in this header, or use arrow keys."
+              onPointerDown={(event) => {
+                if (event.button !== 0) return;
+                cancelAnimationFrame(returnFrameRef.current);
+                returnFrameRef.current = 0;
+                const card = cardRef.current;
+                const x = card.offsetLeft;
+                const y = card.offsetTop;
+                const now = performance.now();
+                homePositionRef.current ||= { x, y };
+                event.currentTarget.setPointerCapture(event.pointerId);
+                cardDragRef.current = { x: event.clientX, y: event.clientY, startX: x, startY: y, lastX: event.clientX, lastY: event.clientY, lastTime: now, velocityX: 0, velocityY: 0 };
+                placeCard(x, y);
+                setCardRotation(-3);
+                setCardReturning(false);
+                setCardDragging(true);
+              }}
+              onPointerMove={(event) => {
+                const drag = cardDragRef.current;
+                if (!drag) return;
+                const now = performance.now();
+                const elapsed = Math.max(1, now - drag.lastTime);
+                drag.velocityX = Math.max(-1800, Math.min(1800, ((event.clientX - drag.lastX) / elapsed) * 1000));
+                drag.velocityY = Math.max(-1800, Math.min(1800, ((event.clientY - drag.lastY) / elapsed) * 1000));
+                drag.lastX = event.clientX;
+                drag.lastY = event.clientY;
+                drag.lastTime = now;
+                const deltaX = event.clientX - drag.x;
+                const deltaY = event.clientY - drag.y;
+                placeCard(drag.startX + deltaX, drag.startY + deltaY);
+                setCardRotation(Math.max(-18, Math.min(18, deltaX * .045)));
+              }}
+              onPointerUp={(event) => {
+                const drag = cardDragRef.current;
+                cardDragRef.current = null;
+                setCardDragging(false);
+                if (drag) returnCardHome(cardPositionRef.current || { x: drag.startX, y: drag.startY }, { x: drag.velocityX, y: drag.velocityY });
+                if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+              }}
+              onPointerCancel={() => {
+                const drag = cardDragRef.current;
+                cardDragRef.current = null;
+                setCardDragging(false);
+                if (drag) returnCardHome(cardPositionRef.current || { x: drag.startX, y: drag.startY }, { x: drag.velocityX, y: drag.velocityY });
+              }}
+              onAnimationEnd={() => {
+                const card = cardRef.current;
+                if (card && !cardPositionRef.current) setRibbonEnd({ x: card.offsetLeft + card.offsetWidth / 2, y: card.offsetTop });
+              }}
+              onKeyDown={(event) => {
+                const steps = { ArrowLeft: [-20, 0], ArrowRight: [20, 0], ArrowUp: [0, -20], ArrowDown: [0, 20] };
+                if (!steps[event.key]) return;
+                event.preventDefault();
+                const [dx, dy] = steps[event.key];
+                const card = cardRef.current;
+                const x = cardPositionRef.current?.x ?? card.offsetLeft;
+                const y = cardPositionRef.current?.y ?? card.offsetTop;
+                placeCard(x + dx, y + dy);
+              }}
+            >
               <span className="contact-id-card-clip" aria-hidden="true" />
               <span className="contact-id-card-label">MUNTAHA SHAFIQUE <span>PORTFOLIO · 2026</span></span>
               <span className="contact-id-card-mark" aria-hidden="true">MS</span>

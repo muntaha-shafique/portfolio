@@ -4438,6 +4438,7 @@ textarea:focus-visible {
 }
 .contact-id-card:hover, .contact-id-card:focus-visible { border-color: rgba(255,255,255,.42); box-shadow: 0 36px 100px rgba(0,0,0,.65), inset 0 0 35px rgba(255,255,255,.035); }
 .contact-id-card.is-dragging { z-index: 3; cursor: grabbing; animation: none; transform: rotate(1deg) scale(1.025); transition: box-shadow .18s ease, border-color .18s ease; }
+.contact-id-card.is-returning { transition: none; }
 .contact-id-card:focus-visible { outline: 2px solid #f5f3ed; outline-offset: 5px; }
 .contact-id-card-label, .contact-id-card-footer { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 10px; color: rgba(255,255,255,.6); font-size: .55rem; font-weight: 700; letter-spacing: .1em; line-height: 1.5; }
 .contact-id-card-label span { color: rgba(255,255,255,.4); font-size: .5rem; }
@@ -4452,13 +4453,13 @@ textarea:focus-visible {
   .contact-signal-inner { grid-template-columns: 1fr; gap: 20px; }
   .contact-signal-copy h1 { font-size: clamp(3.35rem, 15vw, 5.4rem); white-space: normal; }
   .contact-signal-copy .contact-signal-description { max-width: 540px; font-size: 1.35rem; }
-  .contact-id-card { --card-rest-transform: translateX(50%) rotate(-3deg); top: calc(60% - 169px); right: 50%; width: min(72vw, 250px); transform: var(--card-rest-transform); }
+  .contact-id-card { --card-rest-transform: rotate(-3deg); top: calc(60% - 169px); left: calc(50% - min(36vw, 125px)); right: auto; width: min(72vw, 250px); transform: var(--card-rest-transform); }
   .contact-id-card.is-positioned { transform: rotate(-3deg); }
   .contact-id-card.is-dragging { transform: rotate(1deg) scale(1.025); }
 }
 @media (max-width: 420px) {
   .contact-page-hero.contact-signal-hero { min-height: 720px; padding-top: 112px; }
-  .contact-id-card { width: min(74vw, 260px); padding: 19px; }
+  .contact-id-card { left: calc(50% - min(37vw, 130px)); width: min(74vw, 260px); padding: 19px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .contact-id-card, .contact-signal-link { transition: none; }
