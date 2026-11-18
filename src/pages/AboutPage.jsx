@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from '../components/Icon.jsx';
 
 export default function AboutPage() {
-  return <main className="standalone-about-page">
+  const [activeCell, setActiveCell] = useState(null);
+  const highlightGridCell = (event) => {
+    if (event.pointerType !== 'mouse') return;
+    const pageRect = event.currentTarget.getBoundingClientRect();
+    const cellSize = 48;
+    const x = Math.floor((event.clientX - pageRect.left) / cellSize) * cellSize;
+    const y = Math.floor((event.clientY - pageRect.top) / cellSize) * cellSize;
+    setActiveCell((current) => current?.x === x && current?.y === y ? current : { x, y });
+  };
+  return <main className="standalone-about-page" onPointerMove={highlightGridCell} onPointerLeave={() => setActiveCell(null)}>
+    {activeCell && <span className="standalone-about-grid-active" style={{ left: `${activeCell.x}px`, top: `${activeCell.y}px` }} aria-hidden="true" />}
     <section className="standalone-about-hero" aria-labelledby="standaloneAboutTitle">
-      <div className="standalone-about-grid" aria-hidden="true" />
+      <div className="hero-top-bar about-reference-top-bar">
+        <a href="#/home" className="contact-reference-logo" aria-label="Muntaha Shafique home"><img src="assets/images/ms-monogram-logo.png" alt="" /></a>
+        <nav className="contact-reference-nav" aria-label="Main navigation">
+          <a href="#/about" className="hero-nav-item is-active" aria-current="page">ABOUT</a>
+          <a href="#/services" className="hero-nav-item">SERVICES</a>
+          <a href="#/projects" className="hero-nav-item">PROJECTS</a>
+          <a href="#/contact" className="hero-nav-item">CONTACT</a>
+        </nav>
+      </div>
       <div className="standalone-about-hero-inner">
         <div className="standalone-about-copy">
           <p className="standalone-about-kicker"><span>ABOUT ME</span><span>01 / MUNTAHA SHAFIQUE</span></p>
@@ -15,7 +33,7 @@ export default function AboutPage() {
         <figure className="standalone-about-portrait">
           <span className="standalone-about-orbit" aria-hidden="true" />
           <img src="assets/images/about-hijabi-headphones.png" alt="Muntaha Shafique, full-stack developer and Agentic AI engineer" width="1111" height="1416" />
-          <figcaption><span>MUNTAHA SHAFIQUE</span><span>BUILDING WITH PURPOSE · PK</span></figcaption>
+          <figcaption><span>MUNTAHA SHAFIQUE</span></figcaption>
         </figure>
       </div>
       <div className="standalone-about-scroll" aria-hidden="true"><span />SCROLL TO EXPLORE</div>
