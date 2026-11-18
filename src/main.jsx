@@ -6,7 +6,7 @@ import Icon from './components/Icon.jsx';
 
 function FloatingNav() {
   const [open, setOpen] = useState(false);
-  const links = [['About Me', '#about'], ['Services', '#services'], ['Projects', '#projects'], ['Contact', '#/contact']];
+  const links = [['About Me', '#/about'], ['Services', '#/services'], ['Projects', '#/projects'], ['Contact', '#/contact']];
   return <div className="nav-wrap" id="navWrap"><nav className={`navbar${open ? ' is-open' : ''}`} id="navbar" aria-label="Main navigation">
     <div className="nav-bar-row"><a href="#home" className="nav-logo" aria-label="Muntaha Shafique home"><img src="assets/images/ms-monogram-logo.png" alt="" /></a>
       <div className="nav-brand-copy"><strong>Muntaha Shafique</strong><small>PERSONAL PORTFOLIO</small></div>
@@ -281,7 +281,7 @@ function ContactPage() {
             <button className="contact-page-submit" type="submit" disabled={status.busy}>{status.busy ? 'Sending…' : 'Send message'} <Icon name="arrowUpRight" size={17} /></button>
           </form></div>
         </div>
-        <aside className="contact-page-info-card" aria-label="Contact information"><p className="contact-page-eyebrow">CONTACT INFORMATION</p><h3>Let’s talk about your idea.</h3><p>Reach out directly if you’d prefer. I’m happy to discuss new projects and how I can help.</p><a href="tel:+923141163432"><Icon name="phone" size={19} />+92 314 1163432</a><a href="mailto:muntahashafique6@gmail.com"><Icon name="mail" size={19} />muntahashafique6@gmail.com</a><div className="contact-page-socials"><a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn <Icon name="arrowUpRight" size={15} /></a><a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrowUpRight" size={15} /></a></div></aside>
+        <aside className="contact-page-info-card" aria-label="Contact information"><p className="contact-page-eyebrow">CONTACT INFORMATION</p><h3>Let’s talk about your idea.</h3><p>Reach out directly if you’d prefer. I’m happy to discuss new projects and how I can help.</p><a href="https://wa.me/923141163432" target="_blank" rel="noopener noreferrer" aria-label="Message Muntaha on WhatsApp at +92 314 1163432"><Icon name="phone" size={19} />+92 314 1163432</a><a href="mailto:muntahashafique6@gmail.com"><Icon name="mail" size={19} />muntahashafique6@gmail.com</a><div className="contact-page-socials"><a href="https://www.linkedin.com/in/muntahashafiq/" target="_blank" rel="noopener noreferrer">LinkedIn <Icon name="arrowUpRight" size={15} /></a><a href="https://github.com/muntaha-shafique" target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrowUpRight" size={15} /></a></div></aside>
       </div></section>
       <section className="contact-page-benefits" aria-label="What to expect">
         <span className="contact-orbit-shape contact-orbit-amber" aria-hidden="true"><Icon name="sparkles" size={21} /></span>
