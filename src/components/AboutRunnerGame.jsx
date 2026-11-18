@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 const ABOUT_FACTS = [
   'I’m Muntaha Shafique, an Agentic AI engineer and full-stack developer.',
@@ -18,285 +18,89 @@ const ABOUT_FACTS = [
   'I help turn a promising idea into something people can use.',
 ];
 
-function drawRunner(ctx, x, groundY, time) {
-  const cycle = time * 9;
-  const bodyBob = Math.max(0, Math.cos(cycle * 2)) * 1.7;
-  ctx.save();
-  ctx.translate(x, groundY - bodyBob);
-  ctx.scale(1.2, 1.2);
-  ctx.fillStyle = 'rgba(37,44,40,.28)';
-  ctx.beginPath(); ctx.ellipse(0, 2 + bodyBob, 21, 5, 0, 0, Math.PI * 2); ctx.fill();
-  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-
-  // Rear-view walk cycle: each foot lifts in turn and the opposite arm swings.
-  const leg = ctx.createLinearGradient(0,-27,0,2);
-  leg.addColorStop(0,'#34495a'); leg.addColorStop(1,'#1e303f');
-  ctx.strokeStyle = leg; ctx.lineWidth = 8.5;
-  const walk = [-1,1].map((side) => {
-    const phase=cycle+(side===1?Math.PI:0);
-    return { side, swing:Math.sin(phase), lift:Math.max(0,Math.cos(phase))*6 };
-  });
-  walk.forEach(({side,swing,lift})=>{
-    const hip=side*4, knee=hip+swing*3.2, ankle=hip+swing*6.8;
-    const kneeY=-11-lift*.42, ankleY=-1-lift;
-    ctx.beginPath();ctx.moveTo(hip,-22);ctx.lineTo(knee,kneeY);ctx.lineTo(ankle,ankleY);ctx.stroke();
-    // Sneakers are drawn pointing up-screen, in the direction she is walking.
-    ctx.fillStyle='#263744';ctx.beginPath();ctx.ellipse(ankle,ankleY-1,4.3,6.1,swing*.12,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#e8e2d7';ctx.beginPath();ctx.ellipse(ankle,ankleY+2,4.1,1.2,0,0,Math.PI*2);ctx.fill();
-  });
-
-  const sleeve=ctx.createLinearGradient(-17,-48,17,-28);
-  sleeve.addColorStop(0,'#426a76');sleeve.addColorStop(1,'#294b56');
-  ctx.strokeStyle=sleeve;ctx.lineWidth=7;
-  walk.forEach(({side,swing})=>{
-    const armSwing=-swing*7;
-    ctx.beginPath();ctx.moveTo(side*8,-46);ctx.lineTo(side*12+armSwing*.52,-38);ctx.lineTo(side*12+armSwing,-31);ctx.stroke();
-    ctx.fillStyle='#d7a17e';ctx.beginPath();ctx.arc(side*12+armSwing,-30,2.6,0,Math.PI*2);ctx.fill();
-  });
-
-  // Modest running outfit with a little fabric movement at the hem.
-  const tunic = ctx.createLinearGradient(-15,-52,15,-16);
-  tunic.addColorStop(0,'#567d88'); tunic.addColorStop(.5,'#365d69'); tunic.addColorStop(1,'#294a56');
-  ctx.fillStyle = tunic;
-  ctx.beginPath(); ctx.moveTo(-9,-51); ctx.quadraticCurveTo(0,-56,9,-51); ctx.lineTo(14,-23);
-  ctx.quadraticCurveTo(2,-17,-13,-22); ctx.closePath(); ctx.fill();
-  ctx.strokeStyle='rgba(216,233,224,.26)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(0,-47);ctx.quadraticCurveTo(2,-37,1,-23);ctx.moveTo(-8,-24);ctx.quadraticCurveTo(0,-21,10,-24);ctx.stroke();
-  // Back of the hijab and flowing scarf tails; no face is turned toward the camera.
-  ctx.fillStyle='#111a20';
-  ctx.beginPath();ctx.moveTo(-9,-54);ctx.quadraticCurveTo(-16,-70,-8,-78);ctx.quadraticCurveTo(0,-87,11,-80);ctx.quadraticCurveTo(21,-73,17,-58);ctx.quadraticCurveTo(15,-49,9,-43);ctx.lineTo(9,-33);ctx.quadraticCurveTo(2,-29,-7,-34);ctx.lineTo(-7,-44);ctx.quadraticCurveTo(-15,-47,-9,-54);ctx.fill();
-  const scarf=ctx.createLinearGradient(-23,-57,4,-35);
-  scarf.addColorStop(0,'#263d49');scarf.addColorStop(1,'#17252d');ctx.fillStyle=scarf;
-  const scarfSway=Math.sin(cycle)*2.5;
-  ctx.beginPath();ctx.moveTo(-8,-52);ctx.quadraticCurveTo(-18,-58,-24-scarfSway,-53);ctx.lineTo(-17-scarfSway*.65,-44);ctx.quadraticCurveTo(-11,-44,-5,-48);ctx.closePath();ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(-7,-73);ctx.quadraticCurveTo(3,-81,12,-73);ctx.moveTo(-6,-41);ctx.quadraticCurveTo(1,-38,8,-41);ctx.stroke();
-  ctx.restore();
-}
-
-function projectLaneX(width, lane, depth) {
-  const center = width / 2;
-  const trackHalf = width * (.045 + depth * .39);
-  return center + (lane - 1) * trackHalf * .62;
-}
-
-function drawCoin(ctx, x, y, radius, time) {
-  const wobble = .64 + Math.abs(Math.sin(time * 5 + y * .03)) * .36;
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(wobble, 1);
-  ctx.shadowColor = 'rgba(255,197,69,.62)'; ctx.shadowBlur = radius * 1.8;
-  ctx.fillStyle = '#d89227'; ctx.beginPath(); ctx.arc(0, 1, radius, 0, Math.PI * 2); ctx.fill();
-  ctx.shadowBlur = 0;
-  const face = ctx.createLinearGradient(-radius, -radius, radius, radius);
-  face.addColorStop(0, '#fff0a8'); face.addColorStop(.55, '#f7c950'); face.addColorStop(1, '#db982c');
-  ctx.fillStyle = face; ctx.beginPath(); ctx.arc(0, 0, radius * .79, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = 'rgba(160,99,24,.65)'; ctx.lineWidth = Math.max(1, radius * .08); ctx.beginPath(); ctx.arc(0, 0, radius * .58, 0, Math.PI * 2); ctx.stroke();
-  ctx.fillStyle = '#aa6b20'; ctx.font = `700 ${Math.max(8, radius)}px Georgia,serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('M', 0, 1);
-  ctx.restore();
-}
-
-function drawFactBubble(ctx, game, x, groundY) {
-  if (!game.fact) return;
-  const maxWidth = Math.min(340, game.width * .52), pad = 15, lineHeight = 19;
-  ctx.save();
-  ctx.font = `650 ${Math.max(12,Math.min(15,game.width*.016))}px system-ui,sans-serif`;
-  const lines = [];
-  let line = '';
-  game.fact.split(' ').forEach((word) => {
-    const next = line ? `${line} ${word}` : word;
-    if (line && ctx.measureText(next).width > maxWidth - pad * 2) { lines.push(line); line = word; }
-    else line = next;
-  });
-  if (line) lines.push(line);
-  const bubbleWidth = Math.min(maxWidth, Math.max(...lines.map((part) => ctx.measureText(part).width)) + pad * 2);
-  const bubbleHeight = lines.length * lineHeight + 20;
-  const bx = Math.max(12, Math.min(game.width - bubbleWidth - 12, x - bubbleWidth / 2));
-  const by = Math.max(12, groundY - 158);
-  ctx.shadowColor = 'rgba(13,18,20,.22)'; ctx.shadowBlur = 18; ctx.shadowOffsetY = 7;
-  ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.roundRect(bx, by, bubbleWidth, bubbleHeight, 14); ctx.fill();
-  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-  ctx.fillStyle = '#fffaf0'; ctx.beginPath(); ctx.moveTo(x-7,by+bubbleHeight-1); ctx.lineTo(x+7,by+bubbleHeight-1); ctx.lineTo(x,by+bubbleHeight+11); ctx.closePath(); ctx.fill();
-  ctx.fillStyle = '#27353b'; ctx.textAlign = 'left';
-  lines.forEach((part,index) => ctx.fillText(part,bx+pad,by+22+index*lineHeight));
-  ctx.restore();
-}
-
-function drawScene(ctx, game) {
-  const { width: w, height: h } = game;
-  if (!w || !h) return;
-  const horizon = h * .24;
-  const groundY = h - 34;
-  const sky = ctx.createLinearGradient(0, 0, 0, horizon);
-  sky.addColorStop(0, '#36b8ef'); sky.addColorStop(1, '#b5ecf0');
-  ctx.fillStyle = sky; ctx.fillRect(0,0,w,h);
-  const water = ctx.createLinearGradient(0,horizon,0,h);
-  water.addColorStop(0,'#28b9ef'); water.addColorStop(.48,'#159fe4'); water.addColorStop(1,'#087bc7');
-  ctx.fillStyle=water;ctx.fillRect(0,horizon,w,h-horizon);
-  const sunGlow=ctx.createRadialGradient(w*.78,horizon*.62,3,w*.78,horizon*.62,h*.28);
-  sunGlow.addColorStop(0,'rgba(255,248,218,.8)');sunGlow.addColorStop(.18,'rgba(255,240,186,.36)');sunGlow.addColorStop(1,'rgba(255,240,186,0)');
-  ctx.fillStyle=sunGlow;ctx.fillRect(w*.5,0,w*.5,horizon+h*.12);
-  ctx.fillStyle='rgba(255,250,224,.84)';ctx.beginPath();ctx.arc(w*.78,horizon*.6,Math.max(15,h*.075),0,Math.PI*2);ctx.fill();
-  // Small moving sea glints keep the horizon lively without distracting from play.
-  ctx.save();
-  for(let i=0;i<38;i+=1){
-    const row=i%10, col=Math.floor(i/10), y=horizon+18+row*13+col*7;
-    const x=((i*83-game.time*28)%(w+50)+w+50)%(w+50)-25;
-    ctx.strokeStyle=`rgba(225,249,255,${.12+(i%4)*.035})`;ctx.lineWidth=1+(i%3)*.35;
-    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+8+(i%5)*3,y);ctx.stroke();
-  }
-  ctx.restore();
-
-  // Perspective track.
-  ctx.beginPath();
-  ctx.moveTo(w*.445,horizon); ctx.lineTo(w*.555,horizon); ctx.lineTo(w*.94,h); ctx.lineTo(w*.06,h); ctx.closePath();
-  const road = ctx.createLinearGradient(0,horizon,0,h);
-  road.addColorStop(0,'#f3c57b'); road.addColorStop(.48,'#e9a657'); road.addColorStop(1,'#c7773e');
-  ctx.fillStyle=road; ctx.fill();
-  ctx.lineCap='round';ctx.strokeStyle='#a85c35'; ctx.lineWidth=Math.max(5,w*.016);
-  ctx.beginPath(); ctx.moveTo(w*.445,horizon); ctx.lineTo(w*.06,h); ctx.moveTo(w*.555,horizon); ctx.lineTo(w*.94,h); ctx.stroke();
-  ctx.lineCap='butt';ctx.strokeStyle='rgba(255,238,195,.72)';ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(w*.445,horizon);ctx.lineTo(w*.06,h);ctx.moveTo(w*.555,horizon);ctx.lineTo(w*.94,h);ctx.stroke();
-  for (let lane=1;lane<=2;lane+=1) {
-    const topX=w*(.445+lane*.0367), bottomX=w*(.06+lane*.2933);
-    ctx.strokeStyle='rgba(145,82,47,.42)'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(topX,horizon); ctx.lineTo(bottomX,h); ctx.stroke();
-  }
-  for(let n=0;n<9;n+=1) {
-    const depth=(n/9+game.time*.22)%1;
-    const y=horizon+Math.pow(depth,1.7)*(h-horizon);
-    const half=w*(.055+depth*.39);
-    ctx.strokeStyle=`rgba(126,72,42,${.2+depth*.28})`; ctx.lineWidth=1+depth*2;
-    ctx.beginPath();ctx.moveTo(w/2-half*.93,y);ctx.lineTo(w/2+half*.93,y);ctx.stroke();
-  }
-  // Repeating timber supports make the bridge read as a raised game track.
-  for(let n=0;n<7;n+=1){
-    const depth=(n/7+game.time*.2)%1;
-    const y=horizon+Math.pow(depth,1.7)*(h-horizon);
-    const half=w*(.055+depth*.39), postW=3+depth*8, postH=5+depth*14;
-    [-1,1].forEach((side)=>{
-      const px=w/2+side*half*.93;
-      ctx.fillStyle='rgba(56,62,55,.2)';ctx.beginPath();ctx.ellipse(px,y+postH*.68,postW*1.05,postH*.25,0,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#9f5b36';ctx.beginPath();ctx.roundRect(px-postW/2,y-postH,postW,postH+2,postW/2);ctx.fill();
-      ctx.fillStyle='#d08a55';ctx.beginPath();ctx.ellipse(px,y-postH,postW*.68,postW*.31,0,0,Math.PI*2);ctx.fill();
-      ctx.strokeStyle='rgba(255,220,174,.48)';ctx.lineWidth=Math.max(1,depth*1.2);ctx.beginPath();ctx.moveTo(px-postW*.16,y-postH*.7);ctx.lineTo(px-postW*.16,y-postH*.2);ctx.stroke();
-    });
-  }
-
-  // Coins flow from the horizon down the three lanes.
-  game.coins.forEach((coin) => {
-    const depth=coin.depth;
-    const x=projectLaneX(w,coin.lane,depth);
-    const y=horizon+Math.pow(depth,1.55)*(groundY-horizon);
-    const radius=4+depth*16;
-    drawCoin(ctx,x,y,radius,game.time);
-  });
-
-  const playerX=projectLaneX(w,game.playerLane,.94);
-  drawRunner(ctx,playerX,groundY,game.time);
-  if(game.fact) drawFactBubble(ctx,game,playerX,groundY);
-  if(game.phase==='ready'||game.phase==='complete') {
-    ctx.fillStyle='rgba(13,20,24,.3)';ctx.fillRect(0,0,w,h);
-    ctx.textAlign='center';ctx.fillStyle='#fff8e9';ctx.font=`750 ${Math.max(18,Math.min(27,w*.03))}px system-ui,sans-serif`;
-    ctx.fillText(game.phase==='ready'?'Collect coins · discover my story':'Run complete · you found my story',w/2,h*.43);
-    ctx.fillStyle='rgba(255,248,233,.78)';ctx.font=`550 ${Math.max(11,Math.min(15,w*.016))}px system-ui,sans-serif`;
-    ctx.fillText(game.phase==='ready'?'Choose a lane and collect a coin to reveal a line':'Tap Play Again to run it back',w/2,h*.43+28);
-  }
-}
+const STAR_PATH = [
+  [72, 222], [128, 128], [194, 258], [254, 170], [314, 88],
+  [376, 250], [438, 166], [500, 268], [562, 185], [624, 96],
+  [686, 250], [748, 158], [810, 262], [872, 194], [930, 108],
+];
+const STAR_D = STAR_PATH.map(([x, y], index) => `${index ? 'L' : 'M'} ${x} ${y}`).join(' ');
+const SKY_STARS = [[45,60],[110,345],[177,55],[238,350],[348,330],[403,54],[472,88],[533,63],[590,346],[656,344],[708,53],[785,68],[842,350],[912,58],[965,330]];
 
 export default function AboutRunnerGame() {
-  const canvasRef=useRef(null);
-  const gameRef=useRef({width:0,height:0,phase:'ready',time:0,lastFrame:0,playerLane:1,coins:[],spawnIn:.65,collected:0,factIndex:-1,fact:'',speed:.44});
-  const frameRef=useRef(0);
-  const [hud,setHud]=useState({phase:'ready',collected:0,factIndex:-1,lane:1});
+  const [found, setFound] = useState(0);
+  const complete = found >= ABOUT_FACTS.length;
+  const activeFact = found ? ABOUT_FACTS[found - 1] : '';
 
-  useEffect(()=>{
-    const canvas=canvasRef.current;
-    const ctx=canvas?.getContext('2d');
-    if(!canvas||!ctx)return undefined;
-    const game=gameRef.current;
-    const resize=()=>{
-      const rect=canvas.getBoundingClientRect();
-      const dpr=Math.min(window.devicePixelRatio||1,2);
-      game.width=rect.width;game.height=rect.height;
-      canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));
-      ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,game);
-    };
-    const observer=new ResizeObserver(resize);observer.observe(canvas);resize();
-    const loop=(now)=>{
-      const dt=Math.min(.04,Math.max(0,(now-(game.lastFrame||now))/1000));game.lastFrame=now;game.time+=dt;
-      if(game.phase==='running'){
-        game.spawnIn-=dt;
-        if(game.spawnIn<=0){
-          game.coins.push({lane:Math.floor(Math.random()*3),depth:0});
-          game.spawnIn=1.05+Math.random()*.42;
-        }
-        game.coins.forEach((coin)=>{coin.depth+=game.speed*dt;});
-        const collectedCoin=game.coins.find((coin)=>coin.depth>=.91&&coin.lane===game.playerLane);
-        if(collectedCoin){
-          game.coins=game.coins.filter((coin)=>coin!==collectedCoin);
-          game.factIndex=game.collected%ABOUT_FACTS.length;game.fact=ABOUT_FACTS[game.factIndex];game.collected+=1;
-          game.speed=Math.min(.58,game.speed+.004);
-          if(game.collected>=ABOUT_FACTS.length)game.phase='complete';
-          setHud({phase:game.phase,collected:game.collected,factIndex:game.factIndex,lane:game.playerLane});
-        }
-        game.coins=game.coins.filter((coin)=>coin.depth<1.08);
-      }
-      drawScene(ctx,game);frameRef.current=requestAnimationFrame(loop);
-    };
-    frameRef.current=requestAnimationFrame(loop);
-    return()=>{observer.disconnect();cancelAnimationFrame(frameRef.current);};
-  },[]);
-
-  const startRun=()=>{
-    const game=gameRef.current;
-    if(game.phase==='complete'){
-      game.collected=0;game.factIndex=-1;game.fact='';game.playerLane=1;game.coins=[];game.spawnIn=.65;game.speed=.44;
-    }
-    game.phase='running';
-    setHud({phase:game.phase,collected:game.collected,factIndex:game.factIndex,lane:game.playerLane});
-    canvasRef.current?.focus({preventScroll:true});
-  };
-  const shiftLane=(direction)=>{
-    const game=gameRef.current;
-    if(game.phase==='ready'){startRun();return;}
-    if(game.phase!=='running')return;
-    game.playerLane=Math.max(0,Math.min(2,game.playerLane+direction));
-    setHud((current)=>({...current,lane:game.playerLane}));
-  };
-  const handleKeyDown=(event)=>{
-    if(event.code==='ArrowLeft'||event.code==='KeyA'){event.preventDefault();shiftLane(-1);}
-    else if(event.code==='ArrowRight'||event.code==='KeyD'){event.preventDefault();shiftLane(1);}
-    else if(event.code==='Space'||event.code==='Enter'){event.preventDefault();if(gameRef.current.phase!=='running')startRun();}
-  };
-  const handlePointerDown=(event)=>{
-    event.preventDefault();
-    const rect=canvasRef.current?.getBoundingClientRect();
-    if(!rect)return;
-    if(gameRef.current.phase!=='running'){startRun();return;}
-    shiftLane(event.clientX<rect.left+rect.width/2?-1:1);
-  };
-  const handleGamePointerMove=(event)=>{
-    const robot=document.getElementById('portfolioHoverRobot');
-    if(!robot)return;
-    const width=robot.offsetWidth||72, height=robot.offsetHeight||72, gap=16;
-    const left=event.clientX+gap+width>window.innerWidth?event.clientX-width-gap:event.clientX+gap;
-    const top=event.clientY+gap+height>window.innerHeight?event.clientY-height-gap:event.clientY+gap;
-    robot.style.left=`${Math.max(8,left)}px`;
-    robot.style.top=`${Math.max(8,top)}px`;
+  const handlePointerMove = (event) => {
+    const robot = document.getElementById('portfolioHoverRobot');
+    if (!robot) return;
+    const width = robot.offsetWidth || 72;
+    const height = robot.offsetHeight || 72;
+    const gap = 16;
+    const left = event.clientX + gap + width > window.innerWidth ? event.clientX - width - gap : event.clientX + gap;
+    const top = event.clientY + gap + height > window.innerHeight ? event.clientY - height - gap : event.clientY + gap;
+    robot.style.left = `${Math.max(8, left)}px`;
+    robot.style.top = `${Math.max(8, top)}px`;
     robot.classList.add('is-visible');
   };
-  const handleGamePointerLeave=()=>document.getElementById('portfolioHoverRobot')?.classList.remove('is-visible');
-  const buttonLabel=hud.phase==='ready'?'Start Coin Run':hud.phase==='complete'?'Play Again':'Run in progress';
-  return <section className="about-runner-section about-coinrun-section" aria-labelledby="aboutRunnerTitle">
-    <div className="about-runner-heading">
-      <div><p>ABOUT ME · COIN RUN</p><h2 id="aboutRunnerTitle">Collect my <em>story.</em></h2></div>
-      <p className="about-runner-description">Move between three lanes, collect the gold coins, and uncover a new line about my work with every coin.</p>
-    </div>
-    <div className="about-runner-panel about-coinrun-panel" onPointerMove={handleGamePointerMove} onPointerLeave={handleGamePointerLeave}>
-      <div className="about-runner-hud"><span><i className={hud.phase==='running'?'is-live':''}/>{hud.phase==='ready'?'READY TO RUN':hud.phase==='complete'?'RUN COMPLETE':'COIN RUN'}</span><span>COINS <b>{hud.collected}/{ABOUT_FACTS.length}</b><span className="about-runner-best">LANE <b>{hud.lane+1}/3</b></span></span></div>
-      <canvas ref={canvasRef} className="about-runner-canvas about-coinrun-canvas" tabIndex="0" aria-label="Coin Run. Use left and right arrows or tap either side to change lanes and collect coins. Every coin reveals a fact about Muntaha." onPointerDown={handlePointerDown} onKeyDown={handleKeyDown}/>
-      <div className="about-runner-controls"><span>← → OR A / D TO CHANGE LANES · TAP LEFT / RIGHT</span><button type="button" onClick={startRun}>{buttonLabel}<span aria-hidden="true">↗</span></button></div>
-    </div>
-  </section>;
+  const handlePointerLeave = () => document.getElementById('portfolioHoverRobot')?.classList.remove('is-visible');
+
+  const activateNextStar = () => {
+    if (!complete) setFound((current) => Math.min(ABOUT_FACTS.length, current + 1));
+  };
+  const reset = () => setFound(0);
+
+  return (
+    <section className="about-runner-section about-story-game" aria-labelledby="aboutRunnerTitle">
+      <div className="about-runner-heading about-story-game-heading">
+        <div><p>ABOUT ME · ONE STAR AT A TIME</p><h2 id="aboutRunnerTitle">Trace my <em>story.</em></h2></div>
+        <p className="about-runner-description">Follow the glowing trail. Every star opens a new line about my work and the way I build.</p>
+      </div>
+      <div className="about-runner-panel about-story-game-panel" onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave}>
+        <div className="about-runner-hud">
+          <span><i className={found ? 'is-live' : ''} />{complete ? 'STORY TRAIL COMPLETE' : found ? 'TRAIL IN PROGRESS' : 'READY TO EXPLORE'}</span>
+          <span>STARS <b>{String(found).padStart(2, '0')}/{ABOUT_FACTS.length}</b></span>
+        </div>
+        <div className="about-story-map" aria-label="Interactive star trail">
+          <svg className="about-story-sky" viewBox="0 0 1000 450" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <radialGradient id="storyGlow"><stop offset="0" stopColor="#f4d993" stopOpacity=".22"/><stop offset="1" stopColor="#f4d993" stopOpacity="0"/></radialGradient>
+              <linearGradient id="storyLine" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#f1d48b"/><stop offset=".5" stopColor="#91c8c0"/><stop offset="1" stopColor="#c9a6df"/></linearGradient>
+            </defs>
+            <rect width="1000" height="450" fill="url(#storyGlow)" />
+            <path className="about-story-trail-base" d={STAR_D} />
+            <path className="about-story-trail-lit" d={STAR_D} pathLength="100" style={{ strokeDasharray: `${(found / ABOUT_FACTS.length) * 100} 100` }} />
+            {SKY_STARS.map(([x, y], index) => <circle key={index} className={`about-story-sky-dot dot-${index % 3}`} cx={x} cy={y} r={index % 4 === 0 ? 2.8 : 1.8} />)}
+          </svg>
+          {STAR_PATH.map(([x, y], index) => {
+            const isFound = index < found;
+            const isNext = index === found && !complete;
+            return (
+              <button
+                className={`about-story-star${isFound ? ' is-found' : ''}${isNext ? ' is-next' : ''}`}
+                key={index}
+                type="button"
+                style={{ left: `${x / 10}%`, top: `${y / 4.5}%` }}
+                disabled={!isNext}
+                onClick={activateNextStar}
+                aria-label={isFound ? `Star ${index + 1}, discovered` : isNext ? `Discover star ${index + 1}` : `Star ${index + 1}, waiting`}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.5 2.7 6.1 6.6.6-5 4.4 1.5 6.4-5.8-3.4-5.8 3.4 1.5-6.4-5-4.4 6.6-.6L12 2.5Z" /></svg>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+              </button>
+            );
+          })}
+          <div className={`about-story-fact${activeFact ? ' has-fact' : ''}`} aria-live="polite" aria-atomic="true">
+            <span>{activeFact ? `SIGNAL ${String(found).padStart(2, '0')}` : 'YOUR STORY TRAIL'}</span>
+            <p>{complete ? 'Every star is lit. Thanks for exploring my story.' : activeFact || 'Tap the glowing star to uncover the first line.'}</p>
+            <small>{complete ? 'ALL STARS DISCOVERED' : `${ABOUT_FACTS.length - found} ${ABOUT_FACTS.length - found === 1 ? 'star' : 'stars'} left to find`}</small>
+          </div>
+        </div>
+        <div className="about-runner-controls about-story-game-controls">
+          <span>{complete ? 'YOU FOUND THE WHOLE TRAIL' : 'TAP THE GLOWING STAR TO CONTINUE'}</span>
+          {complete && <button type="button" onClick={reset}>Explore again <span aria-hidden="true">↻</span></button>}
+        </div>
+      </div>
+    </section>
+  );
 }
