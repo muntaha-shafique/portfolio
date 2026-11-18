@@ -42,19 +42,41 @@ export default function AboutPage() {
       <div className="standalone-about-scroll" aria-hidden="true"><span />SCROLL TO EXPLORE</div>
     </section>
 
-    <section className="standalone-about-story" aria-labelledby="standaloneAboutStoryTitle">
-      <div className="standalone-about-story-label"><span>WHAT I BRING TO YOUR PROJECTS</span><span>AI · WEB · DIGITAL</span></div>
-      <div className="standalone-about-story-grid">
-        <h2 id="standaloneAboutStoryTitle">Good technology should feel <em>thoughtful.</em></h2>
-        <div className="standalone-about-story-copy">
-          <p>I work across AI agents, intelligent workflows, and full-stack web platforms. I collaborate with clients in Pakistan and internationally, shaping complex ideas into products people can understand and use.</p>
-          <p>My process brings together careful engineering, clear communication, and attention to the small details that make a digital experience feel right.</p>
-        </div>
+    <section className="about-why-section" aria-labelledby="aboutWhyTitle">
+      <div className="about-why-copy">
+        <p className="about-section-kicker">ABOUT MUNTAHA · PAKISTAN &amp; WORLDWIDE</p>
+        <h2 id="aboutWhyTitle">Why teams choose <em>to work with me.</em></h2>
+        <p>I bring AI engineering and full-stack development together to turn an idea into a useful, polished digital product. I work directly with clients in Pakistan and internationally, keeping the process clear from first conversation to delivery.</p>
       </div>
-      <div className="standalone-about-focus" aria-label="Areas of focus">
-        <article><span>01</span><h3>Agentic AI</h3><p>Useful agents and automations that make work simpler.</p></article>
-        <article><span>02</span><h3>Full-stack development</h3><p>Reliable web products, from the first screen to the backend.</p></article>
-        <article><span>03</span><h3>Digital experiences</h3><p>Clear, considered interfaces built around real people.</p></article>
+      <div className="about-why-highlights">
+        <article><span>01</span><strong>AI + FULL STACK</strong><p>One connected approach, from intelligent workflows to the product interface.</p></article>
+        <article><span>02</span><strong>IDEA TO DELIVERY</strong><p>Thoughtful planning, careful engineering, and a dependable launch.</p></article>
+        <article><span>03</span><strong>WORKING WORLDWIDE</strong><p>Pakistan based, collaborating with clients across borders and time zones.</p></article>
+      </div>
+    </section>
+
+    <section className="about-journey-section" aria-labelledby="aboutJourneyTitle">
+      <div className="about-journey-heading">
+        <div><p className="about-section-kicker">THE JOURNEY</p><h2 id="aboutJourneyTitle">From an idea to <em>what’s next.</em></h2></div>
+        <p>My work keeps evolving with the problems people need to solve—building a strong foundation, adding intelligent systems, and making the whole experience feel simple.</p>
+      </div>
+      <div className="about-journey-steps">
+        <article><span className="about-journey-index">01 <i /></span><p>THE FOUNDATION</p><h3>Full-stack products</h3><div>Building responsive websites and web applications with reliable foundations and clear user experiences.</div></article>
+        <article><span className="about-journey-index">02 <i /></span><p>THE NEXT LAYER</p><h3>Agentic AI</h3><div>Designing agents and automations that connect tools, handle repeatable work, and help teams move faster.</div></article>
+        <article><span className="about-journey-index">03 <i /></span><p>WHERE I AM TODAY</p><h3>Global collaboration</h3><div>Partnering with local and international clients to shape practical digital ideas into real products.</div></article>
+      </div>
+    </section>
+
+    <section className="about-values-section" aria-labelledby="aboutValuesTitle">
+      <div className="about-values-heading">
+        <p className="about-section-kicker">GOALS &amp; VALUES</p>
+        <h2 id="aboutValuesTitle">Good work starts with <em>understanding.</em></h2>
+        <p>Technology matters most when it fits the people using it. These principles guide how I approach every project.</p>
+      </div>
+      <div className="about-values-list">
+        <article><span>01</span><div><h3>Start with the real problem</h3><p>Understand the goal before choosing the tools or shaping the solution.</p></div></article>
+        <article><span>02</span><div><h3>Keep the experience clear</h3><p>Make every screen, workflow, and interaction easier to follow.</p></div></article>
+        <article><span>03</span><div><h3>Build for the long run</h3><p>Create dependable systems that can grow with the people and teams they serve.</p></div></article>
       </div>
     </section>
 
