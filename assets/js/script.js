@@ -587,20 +587,41 @@ const initializePortfolio = () => {
       if (opening && window.speechSynthesis && 'SpeechSynthesisUtterance' in window) {
         const speech = window.speechSynthesis;
         speech.cancel();
-        const voices = speech.getVoices();
-        const englishVoice = voices.find((voice) => /^(en-US|en-GB|en-CA|en-AU)/i.test(voice.lang));
-        const feminineVoice = voices.find((voice) => /^(en-US|en-GB|en-CA|en-AU)/i.test(voice.lang) && /aria|jenny|zira|samantha|ava|susan|michelle|sara|karen|moira|victoria|tessa|hazel|female/i.test(voice.name)) || englishVoice;
-        const speakLine = (text) => {
-          const line = new SpeechSynthesisUtterance(text);
-          line.voice = feminineVoice || null;
-          line.lang = feminineVoice?.lang || 'en-US';
-          line.rate = 0.96;
-          line.pitch = 1.18;
-          line.volume = 0.95;
-          speech.speak(line);
+        const femaleVoicePattern = /zira|aria|jenny|samantha|ava|susan|michelle|sara|karen|moira|victoria|tessa|hazel|google us english|female/i;
+        const findFemaleVoice = () => speech.getVoices().find((voice) => /^(en-US|en-GB|en-CA|en-AU)/i.test(voice.lang) && (femaleVoicePattern.test(voice.name) || voice.gender === 'female'));
+        const speakWelcome = (voice) => {
+          ["Hi there! Let's connect.", "Welcome! I'm Muntaha Shafique's personal AI assistant. Ask me about her full-stack work, agentic AI systems, featured projects, or services. I can also help you get in touch."].forEach((text) => {
+            const line = new SpeechSynthesisUtterance(text);
+            if (voice) line.voice = voice;
+            line.lang = voice?.lang || 'en-US';
+            line.rate = 0.96;
+            line.pitch = voice ? 1.08 : 1.28;
+            line.volume = 0.95;
+            speech.speak(line);
+          });
         };
-        speakLine("Hi there! Let's connect.");
-        speakLine("Welcome! I'm Muntaha Shafique's personal AI assistant. Ask me about her full-stack work, agentic AI systems, featured projects, or services. I can also help you get in touch.");
+        const femaleVoice = findFemaleVoice();
+        if (femaleVoice) {
+          speakWelcome(femaleVoice);
+        } else if (!speech.getVoices().length) {
+          let voicesReady = false;
+          const useAvailableFemaleVoice = () => {
+            const availableFemaleVoice = findFemaleVoice();
+            if (!availableFemaleVoice || voicesReady) return;
+            voicesReady = true;
+            speech.removeEventListener('voiceschanged', useAvailableFemaleVoice);
+            speakWelcome(availableFemaleVoice);
+          };
+          speech.addEventListener('voiceschanged', useAvailableFemaleVoice);
+          window.setTimeout(() => {
+            if (voicesReady) return;
+            voicesReady = true;
+            speech.removeEventListener('voiceschanged', useAvailableFemaleVoice);
+            speakWelcome(findFemaleVoice());
+          }, 700);
+        } else {
+          speakWelcome(null);
+        }
       }
       setPortfolioChatOpen(opening);
     });
