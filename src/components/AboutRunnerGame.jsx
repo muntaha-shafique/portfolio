@@ -19,30 +19,54 @@ const ABOUT_FACTS = [
 ];
 
 function drawRunner(ctx, x, groundY, time) {
-  const stride = Math.sin(time * 14) * 5;
+  const cycle = time * 13;
+  const stride = Math.sin(cycle) * 10;
+  const lift = Math.max(0, Math.cos(cycle * 2)) * 3;
   ctx.save();
-  ctx.translate(x, groundY);
-  ctx.fillStyle = 'rgba(12,18,19,.18)';
-  ctx.beginPath(); ctx.ellipse(0, 2, 17, 4, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.translate(x, groundY - lift);
+  ctx.scale(1.2, 1.2);
+  ctx.fillStyle = 'rgba(37,44,40,.28)';
+  ctx.beginPath(); ctx.ellipse(0, 2 + lift, 21, 5, 0, 0, Math.PI * 2); ctx.fill();
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.strokeStyle = '#273c48'; ctx.lineWidth = 7;
+
+  // Legs and sneakers, animated in an alternating running stride.
+  const leg = ctx.createLinearGradient(0,-28,0,1);
+  leg.addColorStop(0,'#34495a'); leg.addColorStop(1,'#1e303f');
+  ctx.strokeStyle = leg; ctx.lineWidth = 8;
   ctx.beginPath();
-  ctx.moveTo(-2,-16); ctx.lineTo(-8 + stride,-2); ctx.lineTo(-17 + stride,1);
-  ctx.moveTo(3,-16); ctx.lineTo(9 - stride,-4); ctx.lineTo(17 - stride,-1);
+  ctx.moveTo(-3,-21); ctx.lineTo(-8 + stride*.72,-10); ctx.lineTo(-15 + stride,-1);
+  ctx.moveTo(4,-21); ctx.lineTo(9 - stride*.72,-11); ctx.lineTo(16 - stride,-1);
   ctx.stroke();
-  ctx.strokeStyle = '#d8c8ac'; ctx.lineWidth = 4;
-  ctx.beginPath(); ctx.moveTo(-16 + stride,1); ctx.lineTo(-21 + stride,1); ctx.moveTo(16 - stride,-1); ctx.lineTo(21 - stride,-1); ctx.stroke();
-  ctx.fillStyle = '#b86e59';
-  ctx.beginPath(); ctx.moveTo(-10,-39); ctx.quadraticCurveTo(1,-47,11,-38); ctx.lineTo(12,-19); ctx.quadraticCurveTo(0,-13,-12,-19); ctx.closePath(); ctx.fill();
-  ctx.strokeStyle = '#dfac83'; ctx.lineWidth = 5;
-  ctx.beginPath(); ctx.moveTo(-7,-36); ctx.lineTo(-15,-28 + stride*.2); ctx.moveTo(7,-37); ctx.lineTo(16,-45 + stride*.2); ctx.stroke();
-  ctx.fillStyle = '#dfac83'; ctx.beginPath(); ctx.arc(-15,-28 + stride*.2,2.5,0,Math.PI*2); ctx.arc(16,-45 + stride*.2,2.5,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#244c5a';
-  ctx.beginPath(); ctx.moveTo(-8,-56); ctx.quadraticCurveTo(-8,-73,8,-72); ctx.quadraticCurveTo(23,-69,20,-50); ctx.quadraticCurveTo(18,-42,10,-39); ctx.lineTo(3,-43); ctx.quadraticCurveTo(14,-51,9,-62); ctx.quadraticCurveTo(0,-64,-3,-54); ctx.lineTo(-4,-43); ctx.quadraticCurveTo(-16,-49,-8,-56); ctx.fill();
-  ctx.fillStyle = '#e6b491'; ctx.beginPath(); ctx.ellipse(8,-54,8,10,.08,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#253b4b'; ctx.beginPath(); ctx.moveTo(-2,-59); ctx.quadraticCurveTo(8,-71,18,-60); ctx.lineTo(14,-55); ctx.quadraticCurveTo(6,-61,0,-53); ctx.closePath(); ctx.fill();
-  ctx.fillStyle = '#24323a'; ctx.fillRect(10,-55,2,2); ctx.fillRect(5,-55,2,2);
-  ctx.fillStyle = '#244c5a'; ctx.beginPath(); ctx.moveTo(-5,-47); ctx.quadraticCurveTo(-20,-52,-25-stride*.4,-42); ctx.lineTo(-11,-36); ctx.quadraticCurveTo(-2,-39,2,-45); ctx.fill();
+  ctx.fillStyle = '#eee8dc';
+  ctx.beginPath();
+  ctx.ellipse(-18 + stride,-1,7,3.5,-.12,0,Math.PI*2);
+  ctx.ellipse(18 - stride,-1,7,3.5,.12,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#cf7f52';
+  ctx.beginPath();
+  ctx.ellipse(-18 + stride,-2,5,2.5,-.12,0,Math.PI*2);
+  ctx.ellipse(18 - stride,-2,5,2.5,.12,0,Math.PI*2); ctx.fill();
+
+  // Long modest tunic with soft fabric shading and a moving hem.
+  const tunic = ctx.createLinearGradient(-13,-51,14,-17);
+  tunic.addColorStop(0,'#557c88'); tunic.addColorStop(.48,'#365d69'); tunic.addColorStop(1,'#254853');
+  ctx.fillStyle = tunic;
+  ctx.beginPath(); ctx.moveTo(-8,-52); ctx.quadraticCurveTo(0,-57,9,-51); ctx.lineTo(13,-24);
+  ctx.quadraticCurveTo(1,-17,-13,-23); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='rgba(216,233,224,.35)';ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.moveTo(1,-48);ctx.lineTo(2,-23);ctx.stroke();
+  ctx.strokeStyle='#294b56';ctx.lineWidth=6;
+  ctx.beginPath();ctx.moveTo(-7,-46);ctx.lineTo(-13,-36);ctx.lineTo(-16-stride*.35,-29);ctx.moveTo(7,-46);ctx.lineTo(13,-37);ctx.lineTo(15+stride*.35,-31);ctx.stroke();
+  ctx.fillStyle='#e6b18a';ctx.beginPath();ctx.arc(-16-stride*.35,-28,2.8,0,Math.PI*2);ctx.arc(15+stride*.35,-30,2.8,0,Math.PI*2);ctx.fill();
+
+  // Hijab silhouette, face, eyes, and the trailing scarf edge.
+  ctx.fillStyle='#1a2730';
+  ctx.beginPath();ctx.moveTo(-8,-57);ctx.quadraticCurveTo(-15,-71,0,-78);ctx.quadraticCurveTo(18,-79,21,-62);ctx.quadraticCurveTo(26,-50,16,-41);ctx.lineTo(8,-44);ctx.quadraticCurveTo(15,-53,10,-65);ctx.quadraticCurveTo(1,-71,-5,-60);ctx.lineTo(-6,-43);ctx.quadraticCurveTo(-17,-48,-8,-57);ctx.fill();
+  ctx.fillStyle='#e8bb98';ctx.beginPath();ctx.ellipse(8,-59,8.3,10.5,.08,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#172630';ctx.beginPath();ctx.moveTo(-3,-67);ctx.quadraticCurveTo(9,-79,19,-66);ctx.lineTo(15,-60);ctx.quadraticCurveTo(7,-68,0,-58);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#151c20';ctx.beginPath();ctx.ellipse(6,-60,1.4,1,0,0,Math.PI*2);ctx.ellipse(12,-60,1.4,1,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.14)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(-10,-57);ctx.quadraticCurveTo(-13,-69,-2,-74);ctx.stroke();
+  ctx.fillStyle='#243d49';ctx.beginPath();ctx.moveTo(-8,-53);ctx.quadraticCurveTo(-20,-57,-26-stride*.22,-50);ctx.lineTo(-15,-43);ctx.quadraticCurveTo(-7,-45,0,-51);ctx.fill();
   ctx.restore();
 }
 
@@ -105,6 +129,10 @@ function drawScene(ctx, game) {
   const water = ctx.createLinearGradient(0,horizon,0,h);
   water.addColorStop(0,'#28b9ef'); water.addColorStop(.48,'#159fe4'); water.addColorStop(1,'#087bc7');
   ctx.fillStyle=water;ctx.fillRect(0,horizon,w,h-horizon);
+  const sunGlow=ctx.createRadialGradient(w*.78,horizon*.62,3,w*.78,horizon*.62,h*.28);
+  sunGlow.addColorStop(0,'rgba(255,248,218,.8)');sunGlow.addColorStop(.18,'rgba(255,240,186,.36)');sunGlow.addColorStop(1,'rgba(255,240,186,0)');
+  ctx.fillStyle=sunGlow;ctx.fillRect(w*.5,0,w*.5,horizon+h*.12);
+  ctx.fillStyle='rgba(255,250,224,.84)';ctx.beginPath();ctx.arc(w*.78,horizon*.6,Math.max(15,h*.075),0,Math.PI*2);ctx.fill();
   // Small moving sea glints keep the horizon lively without distracting from play.
   ctx.save();
   for(let i=0;i<38;i+=1){
@@ -136,6 +164,19 @@ function drawScene(ctx, game) {
     const half=w*(.055+depth*.39);
     ctx.strokeStyle=`rgba(126,72,42,${.2+depth*.28})`; ctx.lineWidth=1+depth*2;
     ctx.beginPath();ctx.moveTo(w/2-half*.93,y);ctx.lineTo(w/2+half*.93,y);ctx.stroke();
+  }
+  // Repeating timber supports make the bridge read as a raised game track.
+  for(let n=0;n<7;n+=1){
+    const depth=(n/7+game.time*.2)%1;
+    const y=horizon+Math.pow(depth,1.7)*(h-horizon);
+    const half=w*(.055+depth*.39), postW=3+depth*8, postH=5+depth*14;
+    [-1,1].forEach((side)=>{
+      const px=w/2+side*half*.93;
+      ctx.fillStyle='rgba(56,62,55,.2)';ctx.beginPath();ctx.ellipse(px,y+postH*.68,postW*1.05,postH*.25,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#9f5b36';ctx.beginPath();ctx.roundRect(px-postW/2,y-postH,postW,postH+2,postW/2);ctx.fill();
+      ctx.fillStyle='#d08a55';ctx.beginPath();ctx.ellipse(px,y-postH,postW*.68,postW*.31,0,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='rgba(255,220,174,.48)';ctx.lineWidth=Math.max(1,depth*1.2);ctx.beginPath();ctx.moveTo(px-postW*.16,y-postH*.7);ctx.lineTo(px-postW*.16,y-postH*.2);ctx.stroke();
+    });
   }
 
   // Coins flow from the horizon down the three lanes.
