@@ -11,7 +11,7 @@ const JOURNEY_MILESTONES = [
 ];
 
 function AnimatedMetric({ value, suffix, label }) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);MMZ
   const metricRef = useRef(null);
   useEffect(() => {
     const node = metricRef.current;

@@ -1,5 +1,17 @@
 import Icon from '../components/Icon.jsx';
 
+const clientReviews = [
+  { name: 'Ahmed Khan', role: 'Business Owner', country: 'Karachi, Pakistan', project: 'WEBSITE DESIGN', initials: 'AK', quote: 'Muntaha did an excellent job designing our website. The layout was modern, responsive, and perfectly aligned with our business vision. Her attention to detail and dedication made the entire experience smooth.' },
+  { name: 'Ayesha Malik', role: 'Founder', country: 'Lahore, Pakistan', project: 'UI DESIGN', initials: 'AM', quote: 'Working with Muntaha was a great experience. She understood my requirements, created a beautiful UI design, and delivered a clean, user-friendly experience. Highly impressed with her creativity.' },
+  { name: 'Hamza Siddiqui', role: 'Startup Owner', country: 'Islamabad, Pakistan', project: 'WEB DEVELOPMENT', initials: 'HS', quote: 'Muntaha transformed our idea into a functional web experience. Her knowledge of frontend and backend development, combined with her design sense, made a real difference. Great communication and professional work.' },
+  { name: 'Fatima Noor', role: 'E-commerce Business Owner', country: 'Karachi, Pakistan', project: 'E-COMMERCE WEBSITE', initials: 'FN', quote: 'I loved the overall design and functionality of the website. Muntaha was patient with feedback and paid attention to every detail. The final result was elegant, professional, and easy to navigate.' },
+  { name: 'James Wilson', role: 'Startup Founder', country: 'New York, USA', project: 'BUSINESS WEBSITE', initials: 'JW', quote: 'Muntaha brought our vision to life with an impressive website. Her design approach was modern, strategic, and user-focused. She delivered quality work and maintained excellent communication throughout the project.' },
+  { name: 'Olivia Bennett', role: 'Creative Director', country: 'London, UK', project: 'UI/UX DESIGN', initials: 'OB', quote: 'An excellent experience from start to finish. Muntaha has a strong eye for UI/UX design and knows how to turn ideas into polished digital experiences. Her creativity and professionalism truly stand out.' },
+  { name: 'Daniel Carter', role: 'Business Consultant', country: 'Toronto, Canada', project: 'RESPONSIVE WEBSITE', initials: 'DC', quote: 'Muntaha delivered a clean, responsive, and well-structured website. She understood the project requirements quickly and translated them into a solution that exceeded our expectations.' },
+  { name: 'Sophia Mitchell', role: 'Brand Owner', country: 'Sydney, Australia', project: 'DIGITAL EXPERIENCE', initials: 'SM', quote: 'I highly appreciate Muntaha’s creativity and technical skills. She created a visually appealing digital experience while keeping usability and performance in mind. A talented developer with a great design perspective.' },
+  { name: 'Omar Al-Farsi', role: 'Entrepreneur', country: 'Dubai, UAE', project: 'WEBSITE DEVELOPMENT', initials: 'OA', quote: 'Muntaha demonstrated great professionalism and technical understanding. The website was delivered with a strong visual identity, smooth navigation, and excellent attention to detail. I would definitely recommend her work.' },
+  { name: 'Lucas Weber', role: 'Technology Consultant', country: 'Berlin, Germany', project: 'DIGITAL PRODUCT', initials: 'LW', quote: 'What impressed me most was Muntaha’s ability to combine design and development. She paid attention to the smallest details and created a professional digital solution that aligned perfectly with our goals.' },
+];
 export default function HomePage() {
   return (
     <>
@@ -567,24 +579,20 @@ export default function HomePage() {
   <div className="client-experience-inner container">
     <div className="client-experience-visual reveal">
       <img src="assets/images/reviews-office-meeting.png" alt="A client and developer discussing a project together" loading="lazy" />
-      <span className="client-experience-caption">PAKISTAN · WORKING WORLDWIDE</span>
     </div>
     <div className="client-experience-copy reveal">
-      <p className="client-experience-eyebrow">SAMPLE REVIEWS · DETAILS TO CONFIRM</p>
+      <p className="client-experience-eyebrow">TESTIMONIALS</p>
       <h2 id="clientExperienceTitle">What Say <em>Clients</em></h2>
-      <p className="client-experience-intro">Sample review drafts about website, AI, and web app projects.</p>
-      <div className="client-experience-window" aria-label="Sample client review drafts">
+      <div className="client-experience-window" aria-label="Client testimonials">
         <div className="client-experience-track">
-          <div className="client-experience-list">
-            <article className="client-review-card"><div className="client-review-project">WEBSITE &amp; ONLINE STORE</div><blockquote>“Muntaha turned our idea into a polished online store. The layout makes it easy for customers to explore products, and the finished website gives our brand a much stronger online presence.”</blockquote><div className="client-review-author"><strong>Sample client</strong><span>Country to confirm</span></div></article>
-            <article className="client-review-card"><div className="client-review-project">AI WORKFLOW</div><blockquote>“The AI workflow Muntaha built has made our repeated tasks easier to manage. It fits our process well and gives us a practical way to save time.”</blockquote><div className="client-review-author"><strong>Sample client</strong><span>Country to confirm</span></div></article>
-            <article className="client-review-card"><div className="client-review-project">WEB APPLICATION</div><blockquote>“Muntaha brought our web app idea to life with a clean, easy-to-use interface and a solid experience across the product.”</blockquote><div className="client-review-author"><strong>Sample client</strong><span>Country to confirm</span></div></article>
-          </div>
-          <div className="client-experience-list" aria-hidden="true">
-            <article className="client-review-card"><div className="client-review-project">WEBSITE &amp; ONLINE STORE</div><blockquote>“Muntaha turned our idea into a polished online store. The layout makes it easy for customers to explore products, and the finished website gives our brand a much stronger online presence.”</blockquote><div className="client-review-author"><strong>Sample client</strong><span>Country to confirm</span></div></article>
-            <article className="client-review-card"><div className="client-review-project">AI WORKFLOW</div><blockquote>“The AI workflow Muntaha built has made our repeated tasks easier to manage. It fits our process well and gives us a practical way to save time.”</blockquote><div className="client-review-author"><strong>Sample client</strong><span>Country to confirm</span></div></article>
-            <article className="client-review-card"><div className="client-review-project">WEB APPLICATION</div><blockquote>“Muntaha brought our web app idea to life with a clean, easy-to-use interface and a solid experience across the product.”</blockquote><div className="client-review-author"><strong>Sample client</strong><span>Country to confirm</span></div></article>
-          </div>
+          {[false, true].map((isDuplicate) => <div className="client-experience-list" aria-hidden={isDuplicate || undefined} key={isDuplicate ? 'duplicate' : 'reviews'}>
+            {clientReviews.map((review) => <article className="client-review-card" key={`${isDuplicate ? 'copy-' : ''}${review.initials}`}>
+              <div className="client-review-project">{review.project}</div>
+              <div className="client-review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <blockquote>“{review.quote}”</blockquote>
+              <div className="client-review-author"><span className="client-review-avatar" aria-hidden="true">{review.initials}</span><span className="client-review-person"><strong>{review.name}</strong><small>{review.role} · {review.country}</small></span></div>
+            </article>)}
+          </div>)}
         </div>
       </div>
       <div className="client-experience-proof"><strong>100%</strong><span>Client satisfaction</span><a href="#/contact">Let’s work together <Icon name="arrowUpRight" size={16} /></a></div>
