@@ -5336,7 +5336,6 @@ textarea:focus-visible {
 .client-review-stars { margin-top: 7px; color: #f2b51b; font-size: 1rem; letter-spacing: .12em; line-height: 1; }
 .client-review-card blockquote { margin: 12px 0; font-size: clamp(.88rem, 1.02vw, .98rem); line-height: 1.48; }
 .client-review-author { justify-content: flex-start; align-items: center; gap: 10px; }
-.client-review-avatar { display: grid; flex: 0 0 34px; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(23,23,21,.12); border-radius: 50%; background: rgba(255,255,255,.68); color: #56534d; font-size: .59rem; font-weight: 750; letter-spacing: .02em; }
 .client-review-person { display: flex; flex-direction: column; gap: 3px; }
 .client-review-person strong { color: #171715; font-size: .74rem; }
 .client-review-person small { color: #88847c; font-size: .66rem; }
@@ -5352,5 +5351,4 @@ textarea:focus-visible {
   .client-review-card { min-height: 228px; padding: 12px 0 10px; }
   .client-review-card blockquote { margin: 10px 0; font-size: .82rem; line-height: 1.42; }
   .client-review-stars { margin-top: 5px; font-size: .9rem; }
-  .client-review-avatar { flex-basis: 30px; width: 30px; height: 30px; }
 }

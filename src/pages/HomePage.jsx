@@ -590,7 +590,7 @@ export default function HomePage() {
               <div className="client-review-project">{review.project}</div>
               <div className="client-review-stars" aria-label="5 out of 5 stars">★★★★★</div>
               <blockquote>“{review.quote}”</blockquote>
-              <div className="client-review-author"><span className="client-review-avatar" aria-hidden="true">{review.initials}</span><span className="client-review-person"><strong>{review.name}</strong><small>{review.role} · {review.country}</small></span></div>
+              <div className="client-review-author"><span className="client-review-person"><strong>{review.name}</strong><small>{review.role} · {review.country}</small></span></div>
             </article>)}
           </div>)}
         </div>
