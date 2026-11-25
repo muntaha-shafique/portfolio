@@ -105,8 +105,8 @@ export default function AboutPage() {
 
     <section className="about-journey-section" aria-labelledby="aboutJourneyTitle">
       <div className="about-journey-heading">
-        <div><p className="about-section-kicker">ROADMAP</p><h2 id="aboutJourneyTitle">Our Creative <em>Journey</em></h2></div>
-        <p>From creative ideas to thoughtful digital products, my work spans graphic design, web development, and intelligent solutions that help businesses grow online.</p>
+        <div><p className="about-section-kicker">MY JOURNEY</p><h2 id="aboutJourneyTitle">My Creative <em>Journey</em></h2></div>
+        <p>My journey has grown from graphic design into web development and intelligent solutions, where I bring creative thinking and engineering together to build useful digital products.</p>
       </div>
       <div className="about-journey-navigation" aria-label="Journey timeline">
         <button type="button" aria-label="Previous journey milestone" onClick={() => goToJourney(activeJourney - 1)}>‹</button>
